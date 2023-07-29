@@ -1,5 +1,11 @@
+import ArticleContents from './components/ArticleContents';
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <ArticleContents></ArticleContents>
+    </>
+  );
 }
 
 export default App;
