@@ -10,11 +10,8 @@ import dabateicon_off from "../../images/dabateicon-off.svg";
 import QnAicon_on from "../../images/QnAicon-on.svg";
 import QnAicon_off from "../../images/QnAicon-off.svg";
 
-const DifficultyArticle = () => {
-    const author = "일상의기쁨";
-    const VoteOk = true;
-    const DebateOk = false;
-    const QnAOk = true;
+const DifficultyArticle = (props) => {
+    const { author, VoteOk, DebateOk, QnAOk } = props;
     return (
         <Box>
             <ArticleImage src={articleimage} />

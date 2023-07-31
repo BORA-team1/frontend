@@ -9,12 +9,9 @@ import InterestArticle from "../components/MainPage/InterestArticle";
 
 //images
 import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
-import article_image from "../images/article_image.svg";
-import picked_sentence from "../images/PickedSentence.svg";
-import difficulty_bar from "../images/난이도바.svg"; // 예비로 일단 해두기 나중에 직접 만드셔유 컴포넌트 여부는 알아서 하삼
 
 // props로 받아올 posts 구조 분해 할당
-const MainPage = () => {
+const AudiobookPage = () => {
     const user = "지민";
     return (
         <Container>
@@ -44,7 +41,6 @@ const MainPage = () => {
                 <DifficultyTitle>
                     난이도 선택해서 부담없이 골라읽기
                 </DifficultyTitle>
-                <DifficultyBar src={difficulty_bar} />
                 <DifficultyArticleList>
                     <DifficultyArticle
                         author="일상의기쁨"
@@ -72,22 +68,6 @@ const MainPage = () => {
                     />
                 </DifficultyArticleList>
 
-                {/*연령대 아티클 부분 */}
-                <OtherAgeGroupArticle>
-                    <AgeGroupTitle>
-                        우리 부모님{" "}
-                        <span style={{ height: "460px" }}>#40대</span>가
-                        관심있는 아티클 엿보기
-                    </AgeGroupTitle>
-                    <PickedArticle>
-                        <ArticleImage src={article_image} />
-                        <>
-                            <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
-                            <PickedSentence src={picked_sentence} />
-                            <PickedAuthor>by. 내일은선생님</PickedAuthor>
-                        </>
-                    </PickedArticle>
-                </OtherAgeGroupArticle>
                 {/* 관심사 아티클 부분 */}
                 <>
                     <InterestTitle>
@@ -106,7 +86,7 @@ const MainPage = () => {
     );
 };
 
-export default MainPage;
+export default AudiobookPage;
 
 //전체 styled
 
@@ -208,75 +188,12 @@ const DifficultyTitle = styled.div`
     margin-left: 20px;
 `;
 
-const DifficultyBar = styled.img`
-    margin: 20px 20px 10px;
-`;
-
 const DifficultyArticleList = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
     margin: 0px 20px;
-`;
-
-//연령별 추천 아티클 부분
-
-const OtherAgeGroupArticle = styled.div`
-    width: 390px;
-    height: 272px;
-
-    margin: 40px 0px;
-
-    background-color: #242237;
-`;
-
-const AgeGroupTitle = styled.div`
-    padding: 25px 0px 30px 20px;
-
-    font-family: "Pretendard";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 100%;
-    letter-spacing: -0.32px;
-
-    span {
-        color: #fff95f;
-        font-size: 16px;
-        font-weight: 700;
-    }
-`;
-
-const Intro = styled.div`
-    font-family: "Pretendard";
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 154%;
-`;
-
-const PickedArticle = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`;
-
-const ArticleImage = styled.img`
-    padding: 0px 20px;
-`;
-
-const PickedSentence = styled.img`
-    padding: 10px 0px 20px;
-`;
-
-const PickedAuthor = styled.div`
-    color: rgba(255, 255, 255, 0.5);
-    font-family: "Pretendard";
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 154%;
 `;
 
 //취향 아티클 부분
