@@ -12,7 +12,6 @@ import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const MyPage = () => {
-    const user = "지민";
     return (
         <Container>
             <TopBar />

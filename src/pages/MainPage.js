@@ -5,6 +5,7 @@ import styled from "styled-components";
 import TopBar from "../components/MainPage/TopBar";
 import TodayArticle from "../components/MainPage/TodayArticle";
 import DifficultyArticle from "../components/MainPage/DifficultyArticle";
+import DifficultyBar from "../components/MainPage/DifficultyBar";
 import InterestArticle from "../components/MainPage/InterestArticle";
 
 //images
@@ -44,7 +45,7 @@ const MainPage = () => {
                 <DifficultyTitle>
                     난이도 선택해서 부담없이 골라읽기
                 </DifficultyTitle>
-                <DifficultyBar src={difficulty_bar} />
+                <DifficultyBar />
                 <DifficultyArticleList>
                     <DifficultyArticle
                         author="일상의기쁨"
@@ -207,9 +208,9 @@ const DifficultyTitle = styled(FontStyle)`
     margin-left: 20px;
 `;
 
-const DifficultyBar = styled.img`
-    margin: 20px 20px 10px;
-`;
+// const DifficultyBar = styled.img`
+//     margin: 20px 20px 10px;
+// `;
 
 const DifficultyArticleList = styled.div`
     display: flex;
