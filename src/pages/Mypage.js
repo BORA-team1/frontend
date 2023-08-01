@@ -19,13 +19,10 @@ const MyPage = () => {
             <Scroll>
                 <>
                     {/* 듣는 아티클 부분 */}
-                    <ListingArticleTitle>
-                        듣는 아티클 기능 이용하기 📻
-                    </ListingArticleTitle>
-                    <ListingArticleEx>
-                        Bora의 아티클을 라디오처럼 편하게 들어보세요
-                    </ListingArticleEx>
-                    <ListingArticleBtn src={listeningarticle_btn} />
+                    <UserProfile></UserProfile>
+                    <BookMarkList>북마크</BookMarkList>
+                    <FollowingEditerList>팔로우한 에디터</FollowingEditerList>
+                    <SavedPlayList>저장한 재생목록</SavedPlayList>
                 </>
             </Scroll>
         </Container>
@@ -61,62 +58,32 @@ const Scroll = styled.div`
     position: relative;
     z-index: 0;
 `;
+//
 
-//듣는 아티클 부분
+const DetailBox = styled.div`
+    width: 320px;
+    display: inline-flex;
+    padding: 20px 15px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 
-const ListingArticleTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
+    border-radius: 15px;
+    background: var(--sub-background, #242237);
+`;
 
+const UserProfile = styled(DetailBox)`
+    height: 44px;
     margin-top: 20px;
-    margin-left: 20px;
 `;
 
-const ListingArticleEx = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 600;
-
-    margin: 10px 0px 10px 20px;
+const BookMarkList = styled(DetailBox)`
+    height: 151px;
 `;
 
-const ListingArticleBtn = styled.img`
-    margin: 10px 0px 50px 20px;
+const FollowingEditerList = styled(DetailBox)`
+    height: 81px;
 `;
 
-//오늘의 아티클 부분
-
-const TodayTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    letter-spacing: -0.36px;
-
-    margin-left: 20px;
-`;
-
-const TodayArticleListContainer = styled.div`
-    overflow-x: scroll;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`;
-
-const TodayArticleList = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 25px 20px 50px;
-    white-space: nowrap;
+const SavedPlayList = styled(DetailBox)`
+    height: 151px;
 `;

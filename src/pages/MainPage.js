@@ -81,11 +81,16 @@ const MainPage = () => {
                     </AgeGroupTitle>
                     <PickedArticle>
                         <ArticleImage src={article_image} />
-                        <>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
                             <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
                             <PickedSentence src={picked_sentence} />
                             <PickedAuthor>by. 내일은선생님</PickedAuthor>
-                        </>
+                        </div>
                     </PickedArticle>
                 </OtherAgeGroupArticle>
                 {/* 관심사 아티클 부분 */}
@@ -138,22 +143,22 @@ const Scroll = styled.div`
 
 //듣는 아티클 부분
 
-const ListingArticleTitle = styled.div`
+const FontStyle = styled.div`
     color: #fff;
     font-family: "Pretendard";
-    font-size: 18px;
     font-style: normal;
+`;
+
+const ListingArticleTitle = styled(FontStyle)`
+    font-size: 18px;
     font-weight: 700;
 
     margin-top: 20px;
     margin-left: 20px;
 `;
 
-const ListingArticleEx = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
+const ListingArticleEx = styled(FontStyle)`
     font-size: 12px;
-    font-style: normal;
     font-weight: 600;
 
     margin: 10px 0px 10px 20px;
@@ -165,11 +170,8 @@ const ListingArticleBtn = styled.img`
 
 //오늘의 아티클 부분
 
-const TodayTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
+const TodayTitle = styled(FontStyle)`
     font-size: 18px;
-    font-style: normal;
     font-weight: 700;
     letter-spacing: -0.36px;
 
@@ -197,11 +199,8 @@ const TodayArticleList = styled.div`
 
 // 난이도 아티클 부분
 
-const DifficultyTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
+const DifficultyTitle = styled(FontStyle)`
     font-size: 16px;
-    font-style: normal;
     font-weight: 700;
     letter-spacing: -0.32px;
 
@@ -231,12 +230,10 @@ const OtherAgeGroupArticle = styled.div`
     background-color: #242237;
 `;
 
-const AgeGroupTitle = styled.div`
+const AgeGroupTitle = styled(FontStyle)`
     padding: 25px 0px 30px 20px;
 
-    font-family: "Pretendard";
     font-size: 16px;
-    font-style: normal;
     font-weight: 500;
     line-height: 100%;
     letter-spacing: -0.32px;
@@ -248,10 +245,8 @@ const AgeGroupTitle = styled.div`
     }
 `;
 
-const Intro = styled.div`
-    font-family: "Pretendard";
+const Intro = styled(FontStyle)`
     font-size: 10px;
-    font-style: normal;
     font-weight: 700;
     line-height: 154%;
 `;
@@ -281,13 +276,10 @@ const PickedAuthor = styled.div`
 
 //취향 아티클 부분
 
-const InterestTitle = styled.div`
+const InterestTitle = styled(FontStyle)`
     margin-left: 20px;
 
-    color: #fff;
-    font-family: "Pretendard";
     font-size: 16px;
-    font-style: normal;
     font-weight: 700;
     line-height: 100%; /* 16px */
 `;

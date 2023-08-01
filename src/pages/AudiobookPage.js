@@ -8,7 +8,9 @@ import DifficultyArticle from "../components/MainPage/DifficultyArticle";
 import InterestArticle from "../components/MainPage/InterestArticle";
 
 //images
-import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
+import listeningarticle_title from "../images/listening_article_title.svg";
+import listeningarticle_ex from "../images/listening_article_ex.svg";
+import howtouse_btn from "../images/howtouse_listening_article.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
@@ -18,29 +20,33 @@ const AudiobookPage = () => {
             <TopBar />
             <Scroll>
                 {/* 듣는 아티클 부분 */}
-                <ListingArticleTitle>
-                    듣는 아티클 기능 이용하기 📻
-                </ListingArticleTitle>
-                <ListingArticleEx>
-                    Bora의 아티클을 라디오처럼 편하게 들어보세요
-                </ListingArticleEx>
-                <ListingArticleBtn src={listeningarticle_btn} />
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
+                    <ListingArticleTitle src={listeningarticle_title} />
+                    <ListingArticleEx src={listeningarticle_ex} />
+                    <ListingArticleBtn src={howtouse_btn} />
+                </div>
                 {/* 오늘의 아티클 부분 */}
-                <TodayTitle>{user} 님을 위한 오늘의 아티클 🔮</TodayTitle>
-                <TodayArticleListContainer>
-                    <TodayArticleList>
-                        <TodayArticle />
-                        <TodayArticle />
-                        <TodayArticle />
-                        <TodayArticle />
-                        <TodayArticle />
-                        <TodayArticle />
-                    </TodayArticleList>
-                </TodayArticleListContainer>
+                <TodayArticleBox>
+                    <TodayTitle>{user} 님을 위한 듣는 아티클</TodayTitle>
+                    <TodayArticleListContainer>
+                        <TodayArticleList>
+                            <TodayArticle />
+                            <TodayArticle />
+                            <TodayArticle />
+                            <TodayArticle />
+                            <TodayArticle />
+                            <TodayArticle />
+                        </TodayArticleList>
+                    </TodayArticleListContainer>
+                </TodayArticleBox>
                 {/* 난이도 아티클 부분 */}
-                <DifficultyTitle>
-                    난이도 선택해서 부담없이 골라읽기
-                </DifficultyTitle>
+                <DifficultyTitle>오늘 새로 나온 아티클 듣기</DifficultyTitle>
                 <DifficultyArticleList>
                     <DifficultyArticle
                         author="일상의기쁨"
@@ -71,7 +77,7 @@ const AudiobookPage = () => {
                 {/* 관심사 아티클 부분 */}
                 <>
                     <InterestTitle>
-                        {user} 님과 관심사가 비슷한 사람들이 읽은 글
+                        재생목록으로 듣는 아티클 시작하기
                     </InterestTitle>
                     <InterestArticleList>
                         <InterestArticle />
@@ -118,32 +124,27 @@ const Scroll = styled.div`
 
 //듣는 아티클 부분
 
-const ListingArticleTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-
-    margin-top: 20px;
-    margin-left: 20px;
+const ListingArticleTitle = styled.img`
+    margin-top: 30px;
 `;
 
-const ListingArticleEx = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 600;
-
-    margin: 10px 0px 10px 20px;
+const ListingArticleEx = styled.img`
+    margin-top: 20px;
 `;
 
 const ListingArticleBtn = styled.img`
-    margin: 10px 0px 50px 20px;
+    margin-top: 20px;
 `;
 
 //오늘의 아티클 부분
+
+const TodayArticleBox = styled.div`
+    width: 390px;
+    height: 272px;
+    margin: 50px 0px;
+
+    background: var(--sub-background, #242237);
+`;
 
 const TodayTitle = styled.div`
     color: #fff;
@@ -153,7 +154,8 @@ const TodayTitle = styled.div`
     font-weight: 700;
     letter-spacing: -0.36px;
 
-    margin-left: 20px;
+    margin-left: 85px; //center로 맞추는 게 훨씬 나을 듯
+    padding-top: 20px;
 `;
 
 const TodayArticleListContainer = styled.div`
@@ -200,6 +202,7 @@ const DifficultyArticleList = styled.div`
 
 const InterestTitle = styled.div`
     margin-left: 20px;
+    margin-top: 30px;
 
     color: #fff;
     font-family: "Pretendard";

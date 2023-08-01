@@ -31,6 +31,9 @@ const TopBar = () => {
     const navigatorM = () => {
         navigate("/mypage");
     };
+    const navigatorS = () => {
+        navigate("/searchingpage");
+    };
 
     return (
         <>
@@ -39,8 +42,8 @@ const TopBar = () => {
                     src={hamberger_bar}
                     onClick={openToggle} //클릭 이벤트 핸들러 함수 등록
                 />
-                <Logo src={logo} />
-                <SerchingBtn src={serching_btn} />
+                <Logo src={logo} onClick={navigatorH} />
+                <SerchingBtn src={serching_btn} onClick={navigatorS} />
             </Box>
             {toggle ? (
                 <SideBar>
