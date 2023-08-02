@@ -12,7 +12,6 @@ import InterestArticle from "../components/MainPage/InterestArticle";
 import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
 import article_image from "../images/article_image.svg";
 import picked_sentence from "../images/PickedSentence.svg";
-import difficulty_bar from "../images/난이도바.svg"; // 예비로 일단 해두기 나중에 직접 만드셔유 컴포넌트 여부는 알아서 하삼
 
 // props로 받아올 posts 구조 분해 할당
 const MainPage = () => {

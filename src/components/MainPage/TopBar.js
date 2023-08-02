@@ -26,7 +26,7 @@ const TopBar = () => {
         navigate("/audiobookpage");
     };
     const navigatorH = () => {
-        navigate("/home");
+        navigate("/");
     };
     const navigatorM = () => {
         navigate("/mypage");

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //components
@@ -8,10 +9,20 @@ import DifficultyArticle from "../components/MainPage/DifficultyArticle";
 import InterestArticle from "../components/MainPage/InterestArticle";
 
 //images
-import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
+import vector from "../images/vector_btn.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const MyPage = () => {
+    const navigate = useNavigate();
+    const navigatorB = () => {
+        navigate("/detailbookmarkpage");
+    };
+    const navigatorE = () => {
+        navigate("/detaileditorpage");
+    };
+    const navigatorP = () => {
+        navigate("/detailplaylistpage");
+    };
     return (
         <Container>
             <TopBar />
@@ -19,9 +30,24 @@ const MyPage = () => {
                 <>
                     {/* 듣는 아티클 부분 */}
                     <UserProfile></UserProfile>
-                    <BookMarkList>북마크</BookMarkList>
-                    <FollowingEditerList>팔로우한 에디터</FollowingEditerList>
-                    <SavedPlayList>저장한 재생목록</SavedPlayList>
+                    <BookMarkList>
+                        <TitleBox>
+                            <Title>북마크</Title>
+                            <BookMarkBtn src={vector} onClick={navigatorB} />
+                        </TitleBox>
+                    </BookMarkList>
+                    <FollowingEditorList>
+                        <TitleBox>
+                            <Title>팔로우한 에디터</Title>
+                            <BookMarkBtn src={vector} onClick={navigatorE} />
+                        </TitleBox>
+                    </FollowingEditorList>
+                    <SavedPlayList>
+                        <TitleBox>
+                            <Title>저장한 재생목록</Title>
+                            <BookMarkBtn src={vector} onClick={navigatorP} />
+                        </TitleBox>
+                    </SavedPlayList>
                 </>
             </Scroll>
         </Container>
@@ -61,7 +87,6 @@ const Scroll = styled.div`
 
 const DetailBox = styled.div`
     width: 320px;
-    display: inline-flex;
     padding: 20px 15px;
     margin-left: 20px;
     margin-bottom: 20px;
@@ -69,6 +94,11 @@ const DetailBox = styled.div`
     border-radius: 15px;
     background: var(--sub-background, #242237);
 `;
+
+const TitleBox = styled.div`
+    display: flex;
+    justify-content: space-between;
+`; //양쪽으로 쪼개는 박스
 
 const UserProfile = styled(DetailBox)`
     height: 44px;
@@ -79,10 +109,27 @@ const BookMarkList = styled(DetailBox)`
     height: 151px;
 `;
 
-const FollowingEditerList = styled(DetailBox)`
+const Title = styled.div``;
+
+const BookMarkBtn = styled.img`
+    width: 16px;
+    height: 16px;
+`;
+
+const FollowingEditorList = styled(DetailBox)`
     height: 81px;
+`;
+
+const EditorBtn = styled.img`
+    width: 16px;
+    height: 16px;
 `;
 
 const SavedPlayList = styled(DetailBox)`
     height: 151px;
+`;
+
+const PlayListBtn = styled.img`
+    width: 16px;
+    height: 16px;
 `;
