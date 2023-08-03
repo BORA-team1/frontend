@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
-import 추가버튼 from '../../images/추가버튼.png';
+import addbutton from '../../images/addbutton.png';
 
 const VoteBottomSheet = ({isOpen, onClose}) => {
   const [category, setCategory] = useState('A');
@@ -36,7 +36,7 @@ const VoteBottomSheet = ({isOpen, onClose}) => {
         <ReviewContatiner>
           <ReviewsTop>아직 생성된 투표가 없습니다.</ReviewsTop>
         </ReviewContatiner>
-        <CreateButton src={추가버튼}></CreateButton>
+        <CreateButton src={addbutton}></CreateButton>
       </BottomSheetContainer>
     </BottomSheetOverlay>
   );

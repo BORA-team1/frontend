@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import happy from '../../images/emoji/🥰.svg';
-import surprised from '../../images/emoji/😲.svg';
-import anger from '../../images/emoji/😡.svg';
-import sad from '../../images/emoji/😭.svg';
-import curious from '../../images/emoji/🧐.svg';
+import happy from '../../images/emoji/happy.svg';
+import surprised from '../../images/emoji/surprised.svg';
+import anger from '../../images/emoji/anger.svg';
+import sad from '../../images/emoji/sad.svg';
+import curious from '../../images/emoji/curious.svg';
 
 const EmojiBar = ({closeEmojiBar}) => {
   return (
