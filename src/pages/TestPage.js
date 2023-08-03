@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //components
-import DebateBottomSheet from "../../src/components/BottomSheet/DebateBottomSheet";
+import GroupSettingModal from "../../src/components/DebatePage/GroupSettingModal";
 
 //images
 import X from "../images/X.svg";
@@ -17,7 +17,7 @@ const TestPage = () => {
     };
     return (
         <Container>
-            <DebateBottomSheet />
+            <GroupSettingModal />
         </Container>
     );
 };

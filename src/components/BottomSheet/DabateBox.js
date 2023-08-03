@@ -1,60 +1,92 @@
 import styled from "styled-components";
+//img
+import usericon from "../../images/willbedeleted/UserIcon.svg";
 
-const InterestArticle = () => {
+const DateBox = () => {
+    const people = "6"; //임의 지정 props
     return (
         <Box>
-            <Title>제목이엄청나게길면이렇게됩니다</Title>
-            <TagBox>
-                <Tag>#태그1</Tag>
-                <Tag>#태그2</Tag>
-            </TagBox>
+            <Title>"수능을 쉽게 하면 사교육은 줄어들까?"</Title>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "350px",
+                }}
+            >
+                <TagBox>
+                    <UserIcon src={usericon} />
+                    <People>모집중/{people}명</People>
+                </TagBox>
+                <JoinBtn>참여하기</JoinBtn>
+            </div>
         </Box>
     );
 };
 
-export default InterestArticle;
+export default DateBox;
 
 const Box = styled.div`
     display: flex;
-    padding: 13px 12px;
-    margin-right: 10px;
+    padding: 20px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
 
-    width: 94px;
-    height: 32x;
+    width: 350px;
+    height: 64.7px;
 
-    border-radius: 10px;
-    border: 1px solid #353646;
-    background: #242237;
+    border-top: 1px solid var(--unnamed, #353646);
+    border-bottom: 1px solid var(--unnamed, #353646);
+    background: #1e1c2e;
 `;
 
-const Title = styled.div`
-    width: 94px;
-    height: 12px;
+const Font = styled.div`
+    color: #fff;
+    font-family: "Pretendard-Regular";
+    font-style: normal;
+`;
+
+const Title = styled(Font)`
+    width: 350px;
+    height: 23px;
 
     overflow: hidden;
-    color: #fff;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: "Pretendard";
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 100%; /* 12px */
+    font-size: 14.989px;
+    font-weight: 400;
+
+    margin-bottom: 5px;
 `;
 
 const TagBox = styled.div`
     display: flex;
+    align-items: center;
     flex-direction: row;
 `;
 
-const Tag = styled.div`
-    color: rgba(255, 255, 255, 0.5);
-    font-family: "Pretendard";
-    font-size: 10px;
-    font-style: normal;
+const UserIcon = styled.img`
+    width: 26.897px;
+    height: 36.677px;
+`;
+
+const People = styled(Font)`
+    font-size: 12px;
     font-weight: 600;
-    line-height: 100%; /* 10px */
+
+    margin-left: 8px;
+`;
+
+const JoinBtn = styled(Font)`
+    display: flex;
+    align-items: flex-start;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #fff;
+
+    color: var(--main-black, #1a1920);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
 `;

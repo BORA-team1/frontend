@@ -24,23 +24,9 @@ const DifficultyArticle = (props) => {
                 <ArticleAuthor>by. {author}</ArticleAuthor>
             </TextContainer>
             <IconBox>
-                {VoteOk ? (
-                    <VoteIcon src={voteicon_on} />
-                ) : (
-                    <VoteIcon src={voteicon_off} />
-                )}
-
-                {DebateOk ? (
-                    <DebateIcon src={dabateicon_on} />
-                ) : (
-                    <DebateIcon src={dabateicon_off} />
-                )}
-
-                {QnAOk ? (
-                    <QnAIcon src={QnAicon_on} />
-                ) : (
-                    <QnAIcon src={QnAicon_off} />
-                )}
+                <VoteIcon src={VoteOk ? voteicon_on : voteicon_off} />
+                <DebateIcon src={DebateOk ? dabateicon_on : dabateicon_off} />
+                <QnAIcon src={QnAOk ? QnAicon_on : QnAicon_off} />
             </IconBox>
         </Box>
     );
@@ -73,7 +59,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
     color: var(--main-purple, #5a45f5);
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-size: 11px;
     font-style: normal;
     font-weight: 600;
@@ -88,7 +74,7 @@ const Title = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-size: 13px;
     font-style: normal;
     font-weight: 600;
@@ -96,7 +82,7 @@ const Title = styled.div`
 
 const ArticleAuthor = styled.div`
     color: rgba(255, 255, 255, 0.5);
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-size: 9px;
     font-style: normal;
     font-weight: 600;

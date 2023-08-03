@@ -11,11 +11,7 @@ const TodayArticle = () => {
     const BookMarkOk = false;
     return (
         <Box>
-            {BookMarkOk ? (
-                <BookMark src={bookmark_on} />
-            ) : (
-                <BookMark src={bookmark_off} />
-            )}
+            <BookMark src={BookMarkOk ? bookmark_on : bookmark_off} />
             <Picture src={article_background} />
             <TitleBox>
                 <Title>제로 슈거와 아스파탐의 죄수?!</Title>
@@ -94,7 +90,7 @@ const Title = styled.div`
     color: #fff;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -107,7 +103,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
     color: rgba(255, 255, 255, 0.5);
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-size: 9px;
     overflow: hidden;
     text-overflow: ellipsis;
