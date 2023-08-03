@@ -3,12 +3,13 @@ import styled from "styled-components";
 
 //img
 import usericon from "../../images/willbedeleted/UserIcon.svg";
-import people_on from "../../images/people_on.svg";
-import people_off from "../../images/people_off.svg";
-import ready_debate from "../../images/ready_debate.svg";
-import start_debate from "../../images/start_debate.png";
+import people_on from "../../images/Debate/people_on.svg";
+import people_off from "../../images/Debate/people_off.svg";
+import ready_debate from "../../images/Debate/ready_debate.svg";
+import start_debate from "../../images/Debate/start_debate.png";
 
 const GroupSettingModal = () => {
+    //이거 1,2,3,4,5,6도 인원수 따라서 어떻게 나올지 한 번 상황 보고 위 아래로 1,2 하던가 배정을 잘 바꿔야할 듯
     const [people1, setPeople1] = useState(false);
     const [people2, setPeople2] = useState(false);
     const [people3, setPeople3] = useState(false);

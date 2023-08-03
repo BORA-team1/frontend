@@ -1,60 +1,55 @@
 import styled from "styled-components";
 
-const InterestArticle = () => {
+import ending_btn from "../../images/Debate/ending_btn.svg";
+
+const DebateEnd = () => {
     return (
         <Box>
-            <Title>제목이엄청나게길면이렇게됩니다</Title>
-            <TagBox>
-                <Tag>#태그1</Tag>
-                <Tag>#태그2</Tag>
-            </TagBox>
+            <Title>#토론종료</Title>
+
+            <Tag>
+                토론 종료에 동의하신다면 아래 버튼을 눌러주세요. <br /> 모든
+                참여자들이 버튼을 클릭하면 자동으로 종료됩니다.
+            </Tag>
+            <EndingBtn src={ending_btn} />
         </Box>
     );
 };
 
-export default InterestArticle;
+export default DebateEnd;
 
 const Box = styled.div`
     display: flex;
-    padding: 13px 12px;
-    margin-right: 10px;
+    width: 235px;
+    padding: 15px 12px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
 
-    width: 94px;
-    height: 32x;
-
-    border-radius: 10px;
-    border: 1px solid #353646;
-    background: #242237;
+    border-radius: 15px;
+    background: var(--card-color, #2b2c3f);
 `;
 
-const Title = styled.div`
-    width: 94px;
-    height: 12px;
-
-    overflow: hidden;
+const Font = styled.div`
     color: #fff;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: "Pretendard";
-    font-size: 12px;
+    font-family: "Pretendard-Regular";
     font-style: normal;
-    font-weight: 600;
-    line-height: 100%; /* 12px */
+    line-height: normal;
+    letter-spacing: -0.22px;
 `;
 
-const TagBox = styled.div`
-    display: flex;
-    flex-direction: row;
+const Title = styled(Font)`
+    color: var(--sub-purple, #a397ff);
+    font-size: 13px;
+    font-weight: 500;
 `;
 
-const Tag = styled.div`
-    color: rgba(255, 255, 255, 0.5);
-    font-family: "Pretendard";
+const Tag = styled(Font)`
     font-size: 10px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 100%; /* 10px */
+    font-weight: 400;
+`;
+
+const EndingBtn = styled.img`
+    width: 211px;
+    height: 37px;
 `;
