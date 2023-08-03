@@ -1,0 +1,31 @@
+.circle1 {
+  background-image: url('../../images/floatingbar/밑줄Off.svg');
+}
+
+.circle1:hover {
+  background-image: url('../../images/floatingbar/밑줄On.svg');
+}
+
+.circle2 {
+  background-image: url('../../images/floatingbar/질문하기Off.svg');
+}
+
+.circle2:hover {
+  background-image: url('../../images/floatingbar/질문하기On.svg');
+}
+
+.circle3 {
+  background-image: url('../../images/floatingbar/댓글달기Off.svg');
+}
+
+.circle3:hover {
+  background-image: url('../../images/floatingbar/댓글달기On.svg');
+}
+
+.circle4 {
+  background-image: url('../../images/floatingbar/감정표현Off.svg');
+}
+
+.circle4:hover {
+  background-image: url('../../images/floatingbar/감정표현On.svg');
+}
