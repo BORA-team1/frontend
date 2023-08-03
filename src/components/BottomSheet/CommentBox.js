@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
-import thumbsup from '../../images/thumbsup.svg';
+import heart from '../../images/heart.svg';
 
 const CommentBox = () => {
   return (
@@ -13,10 +13,13 @@ const CommentBox = () => {
         <Id>broaden_horizons</Id>
         <Content>이거 나.. 일부러 제로콜라만 먹었는데ㅠ</Content>
         <Plus>
-          <img src={thumbsup} alt='thumbsup'></img>
+          <img src={heart} alt='heart'></img>
           <div>좋아요</div>
           <span>·</span>
           <div>답글달기</div>
+          {/* user가 누구인지에 따라 삭제 버튼 온오프 */}
+          <span>·</span>
+          <div>삭제</div>
         </Plus>
       </ContentContainer>
     </Container>
@@ -27,7 +30,6 @@ export default CommentBox;
 
 const Container = styled.div`
   width: 350px;
-  margin-left: 20px;
   display: flex;
   flex-direction: row;
 `;
@@ -48,13 +50,13 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const Id = styled.div`
   color: white;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
 `;
@@ -63,9 +65,7 @@ const Content = styled.div`
   margin-top: 5px;
   margin-bottom: 10px;
   color: white;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 125%;
 `;
@@ -77,9 +77,7 @@ const Plus = styled.div`
   gap: 2px;
 
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Pretendard-Regular';
   font-size: 10px;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
 

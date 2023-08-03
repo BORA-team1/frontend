@@ -16,7 +16,6 @@ const CommentsList = () => {
 export default CommentsList;
 
 const Container = styled.div`
-  width: 390px;
   display: flex;
   flex-direction: column;
 `;
@@ -33,6 +32,8 @@ const Num = styled.div`
 `;
 
 const List = styled.div`
+  padding: 20px;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   gap: 25px;

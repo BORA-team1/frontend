@@ -75,6 +75,8 @@ const BottomSheetContainer = styled.div`
   box-shadow: 0 0 0 1px #353646 inset;
   background: var(--background, #161524);
   overflow-y: auto;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 
   &::-webkit-scrollbar {
     display: none;
@@ -88,9 +90,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: 'Pretendard-Regular';
   font-size: 15px;
-  font-style: normal;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
 
@@ -126,15 +126,15 @@ const ReviewContatiner = styled.div`
 const ReviewsTop = styled.div`
   margin: 20px 21px;
   color: #fff;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: 16px;
   letter-spacing: -0.24px;
 `;
 
 const List = styled.div`
+  padding: 20px;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   gap: 25px;

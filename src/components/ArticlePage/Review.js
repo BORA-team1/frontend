@@ -31,8 +31,6 @@ export default Review;
 
 const Container = styled.div`
   width: 350px;
-  margin-left: 20px;
-  height: 92px;
   display: flex;
   flex-direction: row;
 `;
@@ -50,15 +48,16 @@ const ProfileContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 296px;
-  height: 92px;
   display: flex;
   flex-direction: column;
   margin-left: 10px;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const Id = styled.div`
   color: white;
-  font-family: 'Pretendard-Regular';
+
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -69,9 +68,7 @@ const Content = styled.div`
   margin-top: 5px;
   margin-bottom: 10px;
   color: white;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 125%;
 `;
@@ -83,9 +80,7 @@ const Plus = styled.div`
   gap: 2px;
 
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Pretendard-Regular';
   font-size: 10px;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
 

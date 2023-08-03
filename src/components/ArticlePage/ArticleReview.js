@@ -26,7 +26,9 @@ const ArticleReview = () => {
             다른 한마디 더보기<img src={more} alt='morereview'></img>
           </MoreReview>
         </ReviewTop>
-        <Review></Review>
+        <ReviewContainer>
+          <Review></Review>
+        </ReviewContainer>
         <HR></HR>
       </ArticleReviewContainer>
       <ReviewsBottomSheet
@@ -43,7 +45,6 @@ export default ArticleReview;
 
 const ArticleReviewContainer = styled.div`
   width: 390px;
-  height: 151px;
   display: flex;
   flex-direction: column;
 `;
@@ -75,4 +76,10 @@ const ReviewTop = styled.div`
 const MoreReview = styled.div`
   cursor: pointer;
   display: flex;
+`;
+
+const ReviewContainer = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 15px;
 `;
