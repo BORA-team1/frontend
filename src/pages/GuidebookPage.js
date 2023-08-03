@@ -13,11 +13,11 @@ import InterestArticle from "../components/MainPage/InterestArticle";
 import X from "../images/X.svg";
 
 // props로 받아올 posts 구조 분해 할당
-const DetailEditorPage = () => {
+const GuidebookPage = () => {
     const navigate = useNavigate();
     const path = window.location.pathname;
-    const navigatorM = () => {
-        navigate("/mypage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+    const navigatorA = () => {
+        navigate("/audiobookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
     };
     return (
         <Container>
@@ -25,17 +25,17 @@ const DetailEditorPage = () => {
                 <>
                     <Box>
                         {/* 듣는 아티클 부분 */}
-                        <Del src={X} onClick={navigatorM} />
-                        <Title>팔로우한 에디터</Title>
+                        <Del src={X} onClick={navigatorA} />
+                        <Title>듣는 아티클 이용법</Title>
                     </Box>
-                    <div style={{ margin: "50px" }}>에디터 페이지입니다</div>
+                    <div style={{ margin: "50px" }}>이용법 페이지입니다</div>
                 </>
             </Scroll>
         </Container>
     );
 };
 
-export default DetailEditorPage;
+export default GuidebookPage;
 
 //전체 styled
 

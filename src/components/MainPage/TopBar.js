@@ -22,6 +22,7 @@ const TopBar = () => {
     };
 
     const navigate = useNavigate();
+    const path = window.location.pathname;
     const navigatorA = () => {
         navigate("/audiobookpage");
     };
@@ -43,7 +44,10 @@ const TopBar = () => {
                     onClick={openToggle} //클릭 이벤트 핸들러 함수 등록
                 />
                 <Logo src={logo} onClick={navigatorH} />
-                <SerchingBtn src={serching_btn} onClick={navigatorS} />
+                <SerchingBtn
+                    src={path == "/searchingpage" ? null : serching_btn}
+                    onClick={navigatorS}
+                />
             </Box>
             {toggle ? (
                 <SideBar>
@@ -67,23 +71,34 @@ export default TopBar;
 //TopBar 부분
 
 const Box = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
     height: 80px;
 
     border-bottom: 1px solid #353646;
 `;
 
 const Logo = styled.img`
+    position: absolute;
+    top: 27px;
+    left: 159px;
     width: 71px;
     height: 25px;
 `;
 
-const Hambergerbar = styled.img``;
+const Hambergerbar = styled.img`
+    position: absolute;
+    top: 27px;
+    left: 20px;
+`;
 
-const SerchingBtn = styled.img``;
+const SerchingBtn = styled.img`
+    position: absolute;
+    top: 27px;
+    right: 20px;
+`;
 
 const SideBar = styled.div`
     display: flex;

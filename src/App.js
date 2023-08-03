@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 //pages
 import MainPage from "./pages/MainPage";
 import AudiobookPage from "./pages/AudiobookPage";
+import GuidebookPage from "./pages/GuidebookPage";
 import MyPage from "./pages/Mypage";
 import DetailBookmarkPage from "./pages/DetailBookmarkPage";
 import DetailEditorPage from "./pages/DetailEditorPage";
@@ -19,6 +20,10 @@ function App() {
                     <Route
                         path={"/audiobookpage"}
                         element={<AudiobookPage />}
+                    ></Route>
+                    <Route
+                        path={"/guidebookpage"}
+                        element={<GuidebookPage />}
                     ></Route>
                     {/* 마이페이지 관련 페이지 */}
                     <Route path={"/mypage"} element={<MyPage />}></Route>

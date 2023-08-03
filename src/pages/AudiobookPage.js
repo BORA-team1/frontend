@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 //components
 import TopBar from "../components/MainPage/TopBar";
@@ -15,6 +16,10 @@ import howtouse_btn from "../images/howtouse_listening_article.svg";
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
     const user = "지민";
+    const navigate = useNavigate();
+    const navigatorG = () => {
+        navigate("/guidebookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+    };
     return (
         <Container>
             <TopBar />
@@ -29,7 +34,10 @@ const AudiobookPage = () => {
                 >
                     <ListingArticleTitle src={listeningarticle_title} />
                     <ListingArticleEx src={listeningarticle_ex} />
-                    <ListingArticleBtn src={howtouse_btn} />
+                    <ListingArticleBtn
+                        src={howtouse_btn}
+                        onClick={navigatorG}
+                    />
                 </div>
                 {/* 오늘의 아티클 부분 */}
                 <TodayArticleBox>

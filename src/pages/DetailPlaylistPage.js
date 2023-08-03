@@ -22,9 +22,12 @@ const DetailPlaylistPage = () => {
         <Container>
             <Scroll>
                 <>
-                    {/* 듣는 아티클 부분 */}
-                    <Del src={X} onClick={navigatorM} />
-                    <div> 재생목록 페이지입니다</div>
+                    <Box>
+                        {/* 듣는 아티클 부분 */}
+                        <Del src={X} onClick={navigatorM} />
+                        <Title>저장한 재생목록</Title>
+                    </Box>
+                    <div style={{ margin: "50px" }}> 재생목록 페이지입니다</div>
                 </>
             </Scroll>
         </Container>
@@ -61,7 +64,33 @@ const Scroll = styled.div`
     z-index: 0;
 `;
 
+const Box = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    border-bottom: 1px solid #353646;
+`;
+
+const Title = styled.div`
+    margin: 20px;
+    color: #fff;
+    font-family: "Pretendard";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 15px */
+    letter-spacing: -0.3px;
+`;
+
 const Del = styled.img`
+    position: absolute;
+    left: 20px;
     width: 18px;
     height: 18px;
+    margin: 20px;
 `;
