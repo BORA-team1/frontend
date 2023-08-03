@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 //img
-import articleimage from "../../images/difficulty-article_image-1.svg";
+import articleimage from "../../../images/difficulty-article_image-1.svg";
 
-import voteicon_on from "../../images/voteicon-on.svg";
-import voteicon_off from "../../images/voteicon-off.svg";
-import dabateicon_on from "../../images/dabateicon-on.svg";
-import dabateicon_off from "../../images/dabateicon-off.svg";
-import QnAicon_on from "../../images/QnAicon-on.svg";
-import QnAicon_off from "../../images/QnAicon-off.svg";
+import voteicon_on from "../../../images/DifficultyArticle/voteicon-on.svg";
+import voteicon_off from "../../../images/DifficultyArticle/voteicon-off.svg";
+import dabateicon_on from "../../../images/DifficultyArticle/dabateicon-on.svg";
+import dabateicon_off from "../../../images/DifficultyArticle/dabateicon-off.svg";
+import QnAicon_on from "../../../images/DifficultyArticle/QnAicon-on.svg";
+import QnAicon_off from "../../../images/DifficultyArticle/QnAicon-off.svg";
 
 const DifficultyArticle = (props) => {
     const { author, VoteOk, DebateOk, QnAOk } = props;

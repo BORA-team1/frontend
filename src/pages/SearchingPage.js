@@ -2,15 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 //components
-import TopBar from "../components/MainPage/TopBar";
-import TodayArticle from "../components/MainPage/TodayArticle";
-import DifficultyArticle from "../components/MainPage/DifficultyArticle";
-import InterestArticle from "../components/MainPage/InterestArticle";
+import TopBar from "../components/Common/TopBar";
 
 //images
 import app_explaination from "../images/app_explain.svg";
 import picked_keyword from "../images/picked_keyword.svg";
-import serching_btn from "../images/serching_btn.svg";
+import serching_btn from "../images/TopBar/serching_btn.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const SearchingPage = () => {

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 //images
-import logo from "../../images/Logo.svg";
-import hamberger_bar from "../../images/hamberger_bar.svg";
-import serching_btn from "../../images/serching_btn.svg";
+import logo from "../../images/TopBar/Logo.svg";
+import hamberger_bar from "../../images/TopBar/hamberger_bar.svg";
+import serching_btn from "../../images/TopBar/serching_btn.svg";
 
 //img
-import watchingPageBtn from "../../images/watchingarticlePage-Btn.svg";
-import audiobookPageBtn from "../../images/listeningarticlePage-Btn.svg";
-import myPageBtn from "../../images/myPage-Btn.svg";
+import boraarticle from "../../images/TopBar/topbar_boraarticle.svg";
+import myPage from "../../images/TopBar/myPage-Btn.svg";
+import help from "../../images/TopBar/topbar_help.svg";
 
 const TopBar = () => {
     const [toggle, setToggle] = useState(false);
@@ -23,8 +23,8 @@ const TopBar = () => {
 
     const navigate = useNavigate();
     const path = window.location.pathname;
-    const navigatorA = () => {
-        navigate("/audiobookpage");
+    const navigatorG = () => {
+        navigate("/guidebookpage");
     };
     const navigatorH = () => {
         navigate("/");
@@ -52,14 +52,11 @@ const TopBar = () => {
             {toggle ? (
                 <SideBar>
                     <WatchingArticlePage
-                        src={watchingPageBtn}
+                        src={boraarticle}
                         onClick={navigatorH}
                     />
-                    <AudioBookPage
-                        src={audiobookPageBtn}
-                        onClick={navigatorA}
-                    />
-                    <MyPage src={myPageBtn} onClick={navigatorM} />
+                    <AudioBookPage src={myPage} onClick={navigatorM} />
+                    <MyPage src={help} onClick={navigatorG} />
                 </SideBar>
             ) : null}
         </>

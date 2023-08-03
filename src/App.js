@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 //pages
 import MainPage from "./pages/MainPage";
@@ -10,6 +11,9 @@ import DetailBookmarkPage from "./pages/DetailBookmarkPage";
 import DetailEditorPage from "./pages/DetailEditorPage";
 import DetailPlaylistPage from "./pages/DetailPlaylistPage";
 import SearchingPage from "./pages/SearchingPage";
+
+//TEST
+import TestPage from "./pages/TestPage";
 
 function App() {
     return (
@@ -43,6 +47,8 @@ function App() {
                         path={"/searchingpage"}
                         element={<SearchingPage />}
                     ></Route>
+                    {/* //TEST */}
+                    <Route path={"/testpage"} element={<TestPage />}></Route>
                 </Routes>
             </Router>
         </>

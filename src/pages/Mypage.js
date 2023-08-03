@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //components
-import TopBar from "../components/MainPage/TopBar";
-import TodayArticle from "../components/MainPage/TodayArticle";
-import DifficultyArticle from "../components/MainPage/DifficultyArticle";
-import InterestArticle from "../components/MainPage/InterestArticle";
+import TopBar from "../components/Common/TopBar";
+import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
+import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
+import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
 
 //images
 import vector from "../images/vector_btn.svg";

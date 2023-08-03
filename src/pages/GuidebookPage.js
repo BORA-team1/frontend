@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //components
-import TopBar from "../components/MainPage/TopBar";
-import TodayArticle from "../components/MainPage/TodayArticle";
-import DifficultyArticle from "../components/MainPage/DifficultyArticle";
-import InterestArticle from "../components/MainPage/InterestArticle";
+import TopBar from "../components/Common/TopBar";
 
 //images
 import X from "../images/X.svg";

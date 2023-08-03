@@ -1,11 +1,11 @@
 import styled from "styled-components";
 //components
-import Difficulty from "../MainPage/Difficulty";
+import Difficulty from "../../Common/Difficulty";
 
 //img
-import article_background from "../../images/article_background1.svg";
-import bookmark_on from "../../images/bookmark_on.svg";
-import bookmark_off from "../../images/bookmark-off.svg";
+import article_background from "../../../images/article_background1.svg";
+import bookmark_on from "../../../images/bookmark_on.svg";
+import bookmark_off from "../../../images/bookmark-off.svg";
 
 const TodayArticle = () => {
     const BookMarkOk = false;

@@ -2,26 +2,26 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 //components
-import DifficultyArticle from "../../components/MainPage/DifficultyArticle";
+import DifficultyArticle from "./MainCommon/DifficultyArticle";
 
 //images
-import starone_on from "../../images/starone_on.svg";
-import startwo_on from "../../images/startwo_on.svg";
-import starthree_on from "../../images/starthree_on.svg";
-import starone_off from "../../images/starone_off.svg";
-import startwo_off from "../../images/startwo_off.svg";
-import starthree_off from "../../images/starthree_off.svg";
+import starone_on from "../../images/DifficultyBar/starone_on.svg";
+import startwo_on from "../../images/DifficultyBar/startwo_on.svg";
+import starthree_on from "../../images/DifficultyBar/starthree_on.svg";
+import starone_off from "../../images/DifficultyBar/starone_off.svg";
+import startwo_off from "../../images/DifficultyBar/startwo_off.svg";
+import starthree_off from "../../images/DifficultyBar/starthree_off.svg";
 //프로그래스바 통째로 받아온 거
-import light from "../../images/difficulty_bar_light.svg";
-import medium from "../../images/difficulty_bar__medium.svg";
-import heavy from "../../images/difficulty_bar_heavy.svg";
+import light from "../../images/DifficultyBar/difficulty_bar_light.svg";
+import medium from "../../images/DifficultyBar/difficulty_bar__medium.svg";
+import heavy from "../../images/DifficultyBar/difficulty_bar_heavy.svg";
 //문구..ㅎ
-import textlight_on from "../../images/text_light_on.svg";
-import textmedium_on from "../../images/text_medium_on.svg";
-import textheavy_on from "../../images/text_heavy_on.svg";
-import textlight_off from "../../images/text_light_off.svg";
-import textmedium_off from "../../images/text_medium_off.svg";
-import textheavy_off from "../../images/text_heavy_off.svg";
+import textlight_on from "../../images/DifficultyBar/text_light_on.svg";
+import textmedium_on from "../../images/DifficultyBar/text_medium_on.svg";
+import textheavy_on from "../../images/DifficultyBar/text_heavy_on.svg";
+import textlight_off from "../../images/DifficultyBar/text_light_off.svg";
+import textmedium_off from "../../images/DifficultyBar/text_medium_off.svg";
+import textheavy_off from "../../images/DifficultyBar/text_heavy_off.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const DifficultyBar = () => {
