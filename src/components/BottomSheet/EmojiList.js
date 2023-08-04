@@ -42,7 +42,6 @@ const EmojiList = ({openEmojiBar}) => {
 export default EmojiList;
 
 const Container = styled.div`
-  padding: 20px;
   display: flex;
   flex-direction: row;
   gap: 8px;

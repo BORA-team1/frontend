@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import SentenceBox from './SentenceBox';
 import CommentBox from './CommentBox';
-import CommentsList from './CommentsList';
 
 const SentencesBottomSheet = ({isOpen, onClose}) => {
   const [category, setCategory] = useState('A');
@@ -46,7 +45,6 @@ const SentencesBottomSheet = ({isOpen, onClose}) => {
             <CommentBox></CommentBox>
           </CommentBoxContainer>
         </SentencesList>
-        <CommentsList></CommentsList>
       </BottomSheetContainer>
     </BottomSheetOverlay>
   );

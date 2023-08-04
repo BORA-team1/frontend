@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 
-const QnABox = () => {
+const QBox = () => {
   return (
     <Container>
       <ProfileContainer>
@@ -10,88 +10,72 @@ const QnABox = () => {
       </ProfileContainer>
       <ContentContainer>
         <Id>broaden_horizons</Id>
-        <Content>
-          그럼 제로슈거 음료에는 다 아스파탐이 들어가는 건가요? 다른 성분의
-          대체당은 아스파탐만큼 보편적이지 않은 것인지 궁금합니다!
-        </Content>
+        <Content>방과후 돌봄 교실이 뭔가요??</Content>
         <Plus>
-          <div>답변 0개</div>
-          <span>·</span>
-          <div>삭제</div>
+          <div>답변 2개</div>
         </Plus>
       </ContentContainer>
     </Container>
   );
 };
 
-export default QnABox;
+export default QBox;
 
 const Container = styled.div`
-  width: 302px;
-  padding: 25px 20px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-
+  width: 269px;
+  padding: 18px;
+  box-sizing: border-box;
   border-radius: 10px;
-  border: 1px solid var(--unnamed, #353646);
-  background: var(--card-color, #2b2c3f);
+  border: 0.891px solid #382d8c;
+  gap: 7px;
 `;
 
 const ProfileContainer = styled.div`
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
 
   img {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     object-fit: cover;
   }
 `;
 
 const ContentContainer = styled.div`
-  width: 296px;
+  width: 185px;
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  gap: 4.454px;
   font-family: 'Pretendard-Regular';
   font-style: normal;
-  line-height: normal;
 `;
 
 const Id = styled.div`
+  font-size: 11px;
   color: white;
-  font-size: 12px;
   font-weight: 600;
+  line-height: normal;
 `;
 
 const Content = styled.div`
-  margin-top: 5px;
-  margin-bottom: 10px;
   color: white;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 139.336%;
 `;
 
 const Plus = styled.div`
+  color: rgba(255, 255, 255, 0.5);
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  gap: 2px;
 
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 10px;
-  font-weight: 500;
-
-  img {
-    width: 9px;
-    height: 9.212px;
-    cursor: pointer;
-  }
-
-  div {
-    cursor: pointer;
-  }
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 133.5%;
 `;

@@ -6,6 +6,7 @@ import FloatingBar from './FloatingBar';
 import articlebackground from '../../images/articlebackground.png';
 import './Article.css';
 import EmojiBar from './EmojiBar';
+import ContentPopup from './ContentPopup';
 
 const Article = () => {
   const [selectedHighlight, setSelectedHighlight] = useState(null);
@@ -77,22 +78,7 @@ const Article = () => {
           </p>
           <ContextBar></ContextBar>
         </Context>
-        <Context>
-          <p onClick={highlightText} className='highlight-text'>
-            혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’
-            고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩
-            팩트체크 해볼게요
-          </p>
-          <ContextBar></ContextBar>
-        </Context>
-        <Context>
-          <p onClick={highlightText} className='highlight-text'>
-            혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’
-            고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩
-            팩트체크 해볼게요
-          </p>
-          <ContextBar></ContextBar>
-        </Context>
+        <ContentPopup></ContentPopup>
         <Context>
           <p onClick={highlightText} className='highlight-text'>
             혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’
@@ -228,8 +214,6 @@ const ArticleContent = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 37.4px;
-  margin-left: 20px;
-  width: 345px;
 
   color: white;
   font-family: 'Pretendard-Regular';
@@ -242,7 +226,11 @@ const ArticleContent = styled.div`
 const Context = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  gap: 10px;
+
+  p {
+    width: 330px;
+  }
 `;
 
 const ContextBar = styled.div`
@@ -250,7 +238,6 @@ const ContextBar = styled.div`
   height: auto;
   background-color: #2b2c3f;
   border-radius: 10px;
-  margin-left: 10px;
 `;
 
 const EditerFollow = styled.div`

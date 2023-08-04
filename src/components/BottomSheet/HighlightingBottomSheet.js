@@ -215,5 +215,6 @@ const ExpandSpace = styled.div`
 const EmojiListContainer = styled.div`
   margin-top: 192px;
   width: 390px;
+  padding: 20px;
   box-sizing: border-box;
 `;
