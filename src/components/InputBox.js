@@ -15,7 +15,6 @@ export default InputBox;
 
 const InputBoxContainer = styled.div`
   width: 350px;
-  padding: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;

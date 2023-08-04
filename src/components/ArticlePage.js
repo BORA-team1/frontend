@@ -11,7 +11,9 @@ const ArticlePage = () => {
       <StatusBar></StatusBar>
       <Article></Article>
       <ArticleReview></ArticleReview>
-      <InputBox></InputBox>
+      <InputBoxPosition>
+        <InputBox></InputBox>
+      </InputBoxPosition>
     </Wrapper>
   );
 };
@@ -20,4 +22,10 @@ export default ArticlePage;
 
 const Wrapper = styled.div`
   padding-bottom: 50px;
+`;
+
+const InputBoxPosition = styled.div`
+  width: 390px;
+  padding: 21px 20px;
+  box-sizing: border-box;
 `;

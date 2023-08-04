@@ -148,6 +148,8 @@ const HR = styled.div`
 
 const InputBoxPosition = styled.div`
   width: 390px;
+  padding: 21px 20px;
+  box-sizing: border-box;
   border-top: 1px solid #353646;
   position: absolute;
   bottom: 0;
