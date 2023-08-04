@@ -12,9 +12,6 @@ import DetailEditorPage from "./pages/DetailEditorPage";
 import DetailPlaylistPage from "./pages/DetailPlaylistPage";
 import SearchingPage from "./pages/SearchingPage";
 
-//TEST
-import TestPage from "./pages/TestPage";
-
 function App() {
     return (
         <>
@@ -47,8 +44,6 @@ function App() {
                         path={"/searchingpage"}
                         element={<SearchingPage />}
                     ></Route>
-                    {/* //TEST */}
-                    <Route path={"/testpage"} element={<TestPage />}></Route>
                 </Routes>
             </Router>
         </>

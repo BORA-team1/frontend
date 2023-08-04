@@ -1,106 +1,36 @@
+//
 import React from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 //components
-import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
-import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
-import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
+import AudiobookTitleBox from "../components/AudiobookPage/AudiobookTitleBox";
+import PlayingBar from "../components/AudiobookPage/PlayingBar";
 
 //images
-import listeningarticle_title from "../images/listening_article_title.svg";
-import listeningarticle_ex from "../images/listening_article_ex.svg";
-import howtouse_btn from "../images/howtouse_listening_article.svg";
+import X from "../images/X.svg";
 
 // props로 받아올 posts 구조 분해 할당
-const AudiobookPage = () => {
-    const user = "지민";
+const DetailEditorPage = () => {
     const navigate = useNavigate();
-    const navigatorG = () => {
-        navigate("/guidebookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+    const path = window.location.pathname;
+    const navigatorM = () => {
+        navigate("/mypage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
     };
     return (
         <Container>
-            <TopBar />
+            <AudiobookTitleBox />
             <Scroll>
-                {/* 듣는 아티클 부분 */}
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <ListingArticleTitle src={listeningarticle_title} />
-                    <ListingArticleEx src={listeningarticle_ex} />
-                    <ListingArticleBtn
-                        src={howtouse_btn}
-                        onClick={navigatorG}
-                    />
-                </div>
-                {/* 오늘의 아티클 부분 */}
-                <TodayArticleBox>
-                    <TodayTitle>{user} 님을 위한 듣는 아티클</TodayTitle>
-                    <TodayArticleListContainer>
-                        <TodayArticleList>
-                            <TodayArticle />
-                            <TodayArticle />
-                            <TodayArticle />
-                            <TodayArticle />
-                            <TodayArticle />
-                            <TodayArticle />
-                        </TodayArticleList>
-                    </TodayArticleListContainer>
-                </TodayArticleBox>
-                {/* 난이도 아티클 부분 */}
-                <DifficultyTitle>오늘 새로 나온 아티클 듣기</DifficultyTitle>
-                <DifficultyArticleList>
-                    <DifficultyArticle
-                        author="일상의기쁨"
-                        VoteOk={false}
-                        DebateOk={false}
-                        QnAOk={true}
-                    />
-                    <DifficultyArticle
-                        author="NewRules"
-                        VoteOk={false}
-                        DebateOk={true}
-                        QnAOk={true}
-                    />
-                    <DifficultyArticle
-                        author="K팝고인물"
-                        VoteOk={true}
-                        DebateOk={false}
-                        QnAOk={true}
-                    />
-                    <DifficultyArticle
-                        author="쉬운경제"
-                        VoteOk={false}
-                        DebateOk={false}
-                        QnAOk={true}
-                    />
-                </DifficultyArticleList>
-
-                {/* 관심사 아티클 부분 */}
                 <>
-                    <InterestTitle>
-                        재생목록으로 듣는 아티클 시작하기
-                    </InterestTitle>
-                    <InterestArticleList>
-                        <InterestArticle />
-                        <InterestArticle />
-                        <InterestArticle />
-                        <InterestArticle />
-                        <InterestArticle />
-                    </InterestArticleList>
+                    <div style={{ margin: "50px" }}>에디터 페이지입니다</div>
                 </>
             </Scroll>
+            <PlayingBar />
         </Container>
     );
 };
 
-export default AudiobookPage;
+export default DetailEditorPage;
 
 //전체 styled
 
@@ -109,7 +39,6 @@ const Container = styled.div`
     flex-direction: column;
     position: relative;
 
-    position: relative;
     max-width: 390px;
     max-height: 844px;
     margin: 0px auto;
@@ -130,105 +59,33 @@ const Scroll = styled.div`
     z-index: 0;
 `;
 
-//듣는 아티클 부분
-
-const ListingArticleTitle = styled.img`
-    margin-top: 30px;
-`;
-
-const ListingArticleEx = styled.img`
-    margin-top: 20px;
-`;
-
-const ListingArticleBtn = styled.img`
-    margin-top: 20px;
-`;
-
-//오늘의 아티클 부분
-
-const TodayArticleBox = styled.div`
-    width: 390px;
-    height: 272px;
-    margin: 50px 0px;
-
-    background: var(--sub-background, #242237);
-`;
-
-const TodayTitle = styled.div`
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    letter-spacing: -0.36px;
-
-    margin-left: 85px; //center로 맞추는 게 훨씬 나을 듯
-    padding-top: 20px;
-`;
-
-const TodayArticleListContainer = styled.div`
-    overflow-x: scroll;
-    width: 100%;
+const Box = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    position: relative;
+
+    border-bottom: 1px solid #353646;
 `;
 
-const TodayArticleList = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 25px 20px 50px;
-    white-space: nowrap;
-`;
-
-// 난이도 아티클 부분
-
-const DifficultyTitle = styled.div`
+const Title = styled.div`
+    margin: 20px;
     color: #fff;
     font-family: "Pretendard";
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
-    font-weight: 700;
-    letter-spacing: -0.32px;
-
-    margin-left: 20px;
+    font-weight: 600;
+    line-height: 100%; /* 15px */
+    letter-spacing: -0.3px;
 `;
 
-const DifficultyArticleList = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    margin: 0px 20px;
-`;
-
-//취향 아티클 부분
-
-const InterestTitle = styled.div`
-    margin-left: 20px;
-    margin-top: 30px;
-
-    color: #fff;
-    font-family: "Pretendard";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 100%; /* 16px */
-`;
-
-const InterestArticleList = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 25px 20px 190px;
-
-    overflow-x: scroll;
-    width: 390px;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
+const Del = styled.img`
+    position: absolute;
+    left: 20px;
+    width: 18px;
+    height: 18px;
+    margin: 20px;
 `;
