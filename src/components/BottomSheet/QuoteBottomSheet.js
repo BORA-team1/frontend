@@ -2,18 +2,13 @@ import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import Quotation from './Quotation';
 
-const ReviewsBottomSheet = ({isOpen, onClose}) => {
-  if (!isOpen) return null;
-
+const QuoteBottomSheet = ({closeBottomSheet}) => {
   return (
-    <BottomSheetOverlay onClick={onClose}>
-      <BottomSheetContainer
-        isOpen={isOpen}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <BottomSheetOverlay>
+      <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
         <BottomSheetHeader>
           <HeaderText>
-            <CloseBottomSheet onClick={onClose}>닫기</CloseBottomSheet>
+            <CloseBottomSheet onClick={closeBottomSheet}>닫기</CloseBottomSheet>
             <span>밑줄</span>
           </HeaderText>
           <HR></HR>
@@ -28,7 +23,7 @@ const ReviewsBottomSheet = ({isOpen, onClose}) => {
   );
 };
 
-export default ReviewsBottomSheet;
+export default QuoteBottomSheet;
 
 const slideUp = keyframes`
   from {

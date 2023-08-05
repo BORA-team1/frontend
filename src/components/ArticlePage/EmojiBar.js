@@ -6,24 +6,36 @@ import anger from '../../images/emoji/anger.svg';
 import sad from '../../images/emoji/sad.svg';
 import curious from '../../images/emoji/curious.svg';
 
-const EmojiBar = ({closeEmojiBar}) => {
+const EmojiBar = ({
+  closeEmojiBar,
+  isBottomSheetOpen,
+  handleOpenBottomSheet,
+  showListC,
+}) => {
+  const emojiClick = () => {
+    closeEmojiBar();
+    if (!isBottomSheetOpen) {
+      handleOpenBottomSheet();
+      showListC();
+    }
+  };
   return (
     <Wrapper onClick={closeEmojiBar}>
       <Container>
         <div>
-          <img src={happy} alt='happy' onClick={closeEmojiBar}></img>
+          <img src={happy} alt='happy' onClick={emojiClick}></img>
         </div>
         <div>
-          <img src={surprised} alt='surprised' onClick={closeEmojiBar}></img>
+          <img src={surprised} alt='surprised' onClick={emojiClick}></img>
         </div>
         <div>
-          <img src={anger} alt='anger' onClick={closeEmojiBar}></img>
+          <img src={anger} alt='anger' onClick={emojiClick}></img>
         </div>
         <div>
-          <img src={sad} alt='sad' onClick={closeEmojiBar}></img>
+          <img src={sad} alt='sad' onClick={emojiClick}></img>
         </div>
         <div>
-          <img src={curious} alt='curious' onClick={closeEmojiBar}></img>
+          <img src={curious} alt='curious' onClick={emojiClick}></img>
         </div>
       </Container>
     </Wrapper>
@@ -33,6 +45,7 @@ const EmojiBar = ({closeEmojiBar}) => {
 export default EmojiBar;
 
 const Wrapper = styled.div`
+  z-index: 2;
   position: fixed;
   top: 0;
   width: 390px;
@@ -42,7 +55,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 90px;
   width: 335px;
   height: 61px;

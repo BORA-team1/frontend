@@ -1,28 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import more from '../../images/more.svg';
 import Review from './Review';
-import ReviewsBottomSheet from '../BottomSheet/ReviewsBottomSheet';
-import BottomBar from './BottomBar';
 
-const ArticleReview = () => {
-  const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
-
-  const handleOpenBottomSheet = () => {
-    setBottomSheetOpen(true);
-  };
-
-  const handleCloseBottomSheet = () => {
-    setBottomSheetOpen(false);
-  };
-
+const ArticleReview = ({handleBottomSheet}) => {
   return (
     <>
       <ArticleReviewContainer>
         <HR></HR>
         <ReviewTop>
           <div>한마디 6개</div>
-          <MoreReview onClick={handleOpenBottomSheet}>
+          <MoreReview id='review' onClick={handleBottomSheet}>
             다른 한마디 더보기<img src={more} alt='morereview'></img>
           </MoreReview>
         </ReviewTop>
@@ -31,12 +19,6 @@ const ArticleReview = () => {
         </ReviewContainer>
         <HR></HR>
       </ArticleReviewContainer>
-      <ReviewsBottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={handleCloseBottomSheet}
-      ></ReviewsBottomSheet>
-
-      <BottomBar handleOpenBottomSheet={handleOpenBottomSheet}></BottomBar>
     </>
   );
 };

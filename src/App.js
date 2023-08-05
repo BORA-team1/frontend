@@ -1,35 +1,25 @@
-import ArticlePage from './components/ArticlePage';
-import styled from 'styled-components';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import './App.css';
+
+import ArticlePage from './pages/ArticlePage';
+import DebatePage from './pages/DebatePage';
+import AllContentsPage from './pages/AllContentsPage';
 
 function App() {
   return (
-    <Wrapper>
-      <Container>
-        <ArticlePage></ArticlePage>
-      </Container>
-    </Wrapper>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/article' element={<ArticlePage />}></Route>
+          <Route path='/article/debate' element={<DebatePage />}></Route>
+          <Route
+            path='/article/allcontents'
+            element={<AllContentsPage />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
 export default App;
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const Container = styled.div`
-  background: var(--background, #161524);
-  margin: 0px;
-  width: 390px;
-  height: 100%;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;

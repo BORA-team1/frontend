@@ -1,9 +1,17 @@
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import more from '../../images/more.svg';
+import QuoteBottomSheet from './QuoteBottomSheet';
 
-const VoteCreateModal = () => {
+const VoteCreateModal = ({closeModal}) => {
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [text, setText] = useState('');
+  const openBottomSheet = () => {
+    setBottomSheetOpen(true);
+  };
+  const closeBottomSheet = () => {
+    setBottomSheetOpen(false);
+  };
   const saveQnA = (event) => {
     setText(event.target.value);
   };
@@ -16,7 +24,7 @@ const VoteCreateModal = () => {
 
   return (
     <Wrapper>
-      <CreateButton>등록</CreateButton>
+      <CreateButton onClick={closeModal}>등록</CreateButton>
       <Container>
         <Title>투표</Title>
         <TextInput>
@@ -34,9 +42,14 @@ const VoteCreateModal = () => {
           <input placeholder='항목을 입력해 주세요.'></input>
           <input placeholder='항목을 입력해 주세요.'></input>
         </ListInput>
-        <Quoting>
+        <Quoting id='quote' onClick={openBottomSheet}>
           인용하기<img src={more} alt='morereview'></img>
         </Quoting>
+        {bottomSheetOpen && (
+          <QuoteBottomSheet
+            closeBottomSheet={closeBottomSheet}
+          ></QuoteBottomSheet>
+        )}
       </Container>
     </Wrapper>
   );
@@ -46,6 +59,7 @@ export default VoteCreateModal;
 
 const Wrapper = styled.div`
   position: fixed;
+  z-index: 2;
   top: 0;
   width: 390px;
   height: 100%;
@@ -53,6 +67,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const Container = styled.div`
@@ -135,9 +152,7 @@ const CreateButton = styled.div`
   right: 20px;
   color: rgba(255, 255, 255, 0.7);
 
-  font-family: 'Pretendard-Regular';
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
   line-height: 136.5%; /* 24.57px */
   letter-spacing: -0.36px;
@@ -155,9 +170,7 @@ const Quoting = styled.div`
   backdrop-filter: blur(5px);
   color: #fff;
 
-  font-family: 'Pretendard-Regular';
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
   cursor: pointer;
@@ -176,9 +189,7 @@ const Title = styled.div`
   background: var(--main-purple, #5a45f5);
 
   color: #fff;
-  font-family: 'Pretendard-Regular';
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
   line-height: normal;
 `;

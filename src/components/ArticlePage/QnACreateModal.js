@@ -1,7 +1,11 @@
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 
-const QnACreateModal = () => {
+const QnACreateModal = ({
+  closeQnACreateModal,
+  handleOpenBottomSheet,
+  showListB,
+}) => {
   const [text, setText] = useState('');
   const saveQnA = (event) => {
     setText(event.target.value);
@@ -15,7 +19,15 @@ const QnACreateModal = () => {
 
   return (
     <Wrapper>
-      <CreateButton>등록</CreateButton>
+      <CreateButton
+        onClick={() => {
+          closeQnACreateModal();
+          handleOpenBottomSheet();
+          showListB();
+        }}
+      >
+        등록
+      </CreateButton>
       <Container>
         <Title>Q&A</Title>
         <TextInput>
@@ -37,6 +49,7 @@ export default QnACreateModal;
 
 const Wrapper = styled.div`
   position: fixed;
+  z-index: 2;
   top: 0;
   width: 390px;
   height: 100%;

@@ -1,20 +1,58 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import './FloatingBar.css';
+import QnACreateModal from './QnACreateModal';
+import EmojiBar from './EmojiBar';
 
 const FloatingBar = ({
   addToHighlights,
+  isBottomSheetOpen,
   handleOpenBottomSheet,
+  showListA,
+  showListB,
+  showListC,
+  isEmojiBarOpen,
   openEmojiBar,
+  closeEmojiBar,
 }) => {
+  const [isQnAOpen, setIsQnAOpen] = useState(false);
+
+  const openQnACreateModal = () => {
+    setIsQnAOpen(true);
+  };
+  const closeQnACreateModal = () => {
+    setIsQnAOpen(false);
+  };
+
   return (
     <Wrapper>
       <Container>
         <div className='circle1' onClick={addToHighlights}></div>
-        <div className='circle2'></div>
-        <div className='circle3' onClick={handleOpenBottomSheet}></div>
+        <div className='circle2' onClick={openQnACreateModal}></div>
+        <div
+          className='circle3'
+          onClick={() => {
+            handleOpenBottomSheet();
+            showListA();
+          }}
+        ></div>
         <div className='circle4' onClick={openEmojiBar}></div>
       </Container>
+      {isQnAOpen && (
+        <QnACreateModal
+          closeQnACreateModal={closeQnACreateModal}
+          handleOpenBottomSheet={handleOpenBottomSheet}
+          showListB={showListB}
+        ></QnACreateModal>
+      )}
+      {isEmojiBarOpen && (
+        <EmojiBar
+          closeEmojiBar={closeEmojiBar}
+          isBottomSheetOpen={isBottomSheetOpen}
+          handleOpenBottomSheet={handleOpenBottomSheet}
+          showListC={showListC}
+        ></EmojiBar>
+      )}
     </Wrapper>
   );
 };

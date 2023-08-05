@@ -6,24 +6,23 @@ import DebateNow from './DebateNow';
 const ContentPopup = () => {
   const [isPopupOpen, setPopupOpen] = useState(true);
 
-  const openPopup = () => {
-    setPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setPopupOpen(false);
+  const handlePopup = () => {
+    setPopupOpen(!isPopupOpen);
   };
 
   return (
     <Container>
-      {/* 접고 피는 버튼 아직X */}
+      {/* 화살표 추가하기 */}
       <Sentence>
         “킬러 문항을 없앤다고 수능 사교육이 줄어들진 않는다는 거예요.”
       </Sentence>
-      <ContentContainer>
-        {/* <VoteResult></VoteResult> */}
-        <DebateNow></DebateNow>
-      </ContentContainer>
+      {isPopupOpen && (
+        <ContentContainer>
+          {/* <VoteResult></VoteResult> */}
+          <DebateNow></DebateNow>
+        </ContentContainer>
+      )}
+      <Popup onClick={handlePopup} isPopupOpen={isPopupOpen}></Popup>
     </Container>
   );
 };
@@ -31,8 +30,8 @@ const ContentPopup = () => {
 export default ContentPopup;
 
 const Container = styled.div`
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: -35px;
+  margin-bottom: -20px;
   width: 390px;
   display: flex;
   flex-direction: column;
@@ -55,4 +54,13 @@ const ContentContainer = styled.div`
   padding-left: 36px;
   box-sizing: border-box;
   background: #2b2c3f;
+`;
+
+const Popup = styled.div`
+  margin-top: -10px;
+  margin-left: 315px;
+  width: 27px;
+  height: 19px;
+  border-radius: 5px;
+  background: ${(props) => (props.isPopupOpen ? '#2b2c3f' : '#3f405b')};
 `;

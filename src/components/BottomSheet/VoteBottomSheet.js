@@ -1,42 +1,77 @@
 import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import addbutton from '../../images/addbutton.png';
+import VoteCreateModal from './VoteCreateModal';
 
-const VoteBottomSheet = ({isOpen, onClose}) => {
+const VoteBottomSheet = ({handleCloseBottomSheet}) => {
+  const [isModalOpen, setModalOpen] = useState(false);
   const [category, setCategory] = useState('A');
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
-  if (!isOpen) return null;
+
+  const barPosition = {
+    A: '0',
+    B: '130px',
+    C: '260px',
+  };
 
   return (
-    <BottomSheetOverlay onClick={onClose}>
+    <BottomSheetOverlay>
       <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
         <BottomSheetHeader>
           <HeaderText>
-            <CloseBottomSheet onClick={onClose}>닫기</CloseBottomSheet>
+            <CloseBottomSheet onClick={handleCloseBottomSheet}>
+              닫기
+            </CloseBottomSheet>
             <span>투표</span>
           </HeaderText>
           <HR></HR>
           <Category>
             <div>
-              <span onClick={showListA}>진행중</span>
+              <span
+                className={category === 'A' ? 'active' : ''}
+                onClick={showListA}
+              >
+                진행중
+              </span>
             </div>
             <div>
-              <span onClick={showListB}>완료된</span>
+              <span
+                className={category === 'B' ? 'active' : ''}
+                onClick={showListB}
+              >
+                완료된
+              </span>
             </div>
             <div>
-              <span onClick={showListC}>내가만든</span>
+              <span
+                className={category === 'C' ? 'active' : ''}
+                onClick={showListC}
+              >
+                내가만든
+              </span>
             </div>
           </Category>
+          <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
         {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
         <ReviewContatiner>
           <ReviewsTop>아직 생성된 투표가 없습니다.</ReviewsTop>
         </ReviewContatiner>
-        <CreateButton src={addbutton}></CreateButton>
+        <CreateButton src={addbutton} onClick={openModal}></CreateButton>
+        {isModalOpen && (
+          <VoteCreateModal closeModal={closeModal}></VoteCreateModal>
+        )}
       </BottomSheetContainer>
     </BottomSheetOverlay>
   );
@@ -120,9 +155,7 @@ const Category = styled.div`
   display: flex;
   flex-direction: row;
 
-  font-family: 'Pretendard-Regular';
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
   line-height: 18px;
   letter-spacing: -0.28px;
@@ -140,6 +173,19 @@ const Category = styled.div`
   div > span {
     cursor: pointer;
   }
+
+  div > span.active {
+    color: white;
+  }
+`;
+
+const Bar = styled.div`
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  width: 130px;
+  background-color: white;
+  transition: left 0.3s ease;
 `;
 
 const ReviewContatiner = styled.div`

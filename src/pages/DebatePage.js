@@ -64,7 +64,6 @@ const DebatePage = () => {
 export default DebatePage;
 
 const Wrapper = styled.div`
-  position: fixed;
   z-index: 1;
   width: 390px;
   height: 844px;

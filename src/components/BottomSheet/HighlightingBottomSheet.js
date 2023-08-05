@@ -1,36 +1,32 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import CommentsList from './CommentsList';
 import QnAList from './QnAList';
 import EmojiList from './EmojiList';
-import EmojiBar from '../ArticlePage/EmojiBar';
 import InputBox from '../InputBox';
 
 const HighlightingBottomSheet = ({
   onClose,
   expanded,
   setExpanded,
-  isEmojiBarOpen,
+  category,
+  showListA,
+  showListB,
+  showListC,
   openEmojiBar,
-  closeEmojiBar,
 }) => {
-  const [category, setCategory] = useState('A');
-
-  const showListA = () => setCategory('A');
-  const showListB = () => setCategory('B');
-  const showListC = () => setCategory('C');
-
   const openExpandSpace = () => {
     setExpanded(true);
   };
 
+  const barPosition = {
+    A: '0',
+    B: '130px',
+    C: '260px',
+  };
+
   return (
-    <BottomSheetOverlay
-      onClick={() => {
-        onClose();
-        closeEmojiBar();
-      }}
-    >
+    <BottomSheetOverlay onClick={onClose}>
       <BottomSheetContainer
         onClick={(e) => e.stopPropagation()}
         expanded={expanded}
@@ -49,15 +45,31 @@ const HighlightingBottomSheet = ({
           <HR></HR>
           <Category>
             <div>
-              <span onClick={showListA}>댓글</span>
+              <span
+                onClick={showListA}
+                className={category === 'A' ? 'active' : ''}
+              >
+                댓글
+              </span>
             </div>
             <div>
-              <span onClick={showListB}>Q&A</span>
+              <span
+                onClick={showListB}
+                className={category === 'B' ? 'active' : ''}
+              >
+                Q&A
+              </span>
             </div>
             <div>
-              <span onClick={showListC}>감정표현</span>
+              <span
+                onClick={showListC}
+                className={category === 'C' ? 'active' : ''}
+              >
+                감정표현
+              </span>
             </div>
           </Category>
+          <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
         {category === 'A' && (
@@ -73,9 +85,6 @@ const HighlightingBottomSheet = ({
         {category === 'C' && (
           <EmojiListContainer>
             <EmojiList openEmojiBar={openEmojiBar}></EmojiList>
-            {isEmojiBarOpen && (
-              <EmojiBar closeEmojiBar={closeEmojiBar}></EmojiBar>
-            )}
           </EmojiListContainer>
         )}
 
@@ -172,13 +181,11 @@ const Category = styled.div`
   display: flex;
   flex-direction: row;
 
-  font-family: 'Pretendard-Regular';
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
   line-height: 18px;
   letter-spacing: -0.28px;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.5);
   box-sizing: border-box;
   border-bottom: 1px solid rgba(53, 54, 70, 0.3);
 
@@ -192,6 +199,19 @@ const Category = styled.div`
   div > span {
     cursor: pointer;
   }
+
+  div > span.active {
+    color: white;
+  }
+`;
+
+const Bar = styled.div`
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  width: 130px;
+  background-color: white;
+  transition: left 0.3s ease;
 `;
 
 const HR = styled.div`

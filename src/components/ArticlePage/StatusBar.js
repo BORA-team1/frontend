@@ -38,5 +38,5 @@ const Statusbar = styled.div`
   top: 0;
   width: 390px;
   height: 47px;
-  z-index: 1;
+  z-index: 2;
 `;

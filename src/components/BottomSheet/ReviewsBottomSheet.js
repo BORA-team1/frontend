@@ -3,18 +3,15 @@ import styled, {keyframes} from 'styled-components';
 import Review from '../ArticlePage/Review';
 import InputBox from '../InputBox';
 
-const ReviewsBottomSheet = ({isOpen, onClose}) => {
-  if (!isOpen) return null;
-
+const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
   return (
-    <BottomSheetOverlay onClick={onClose}>
-      <BottomSheetContainer
-        isOpen={isOpen}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <BottomSheetOverlay>
+      <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
         <BottomSheetHeader>
           <HeaderText>
-            <CloseBottomSheet onClick={onClose}>닫기</CloseBottomSheet>
+            <CloseBottomSheet onClick={handleCloseBottomSheet}>
+              닫기
+            </CloseBottomSheet>
             <span>한마디</span>
           </HeaderText>
           <HR></HR>
@@ -36,21 +33,12 @@ const ReviewsBottomSheet = ({isOpen, onClose}) => {
 
 export default ReviewsBottomSheet;
 
-const slideUp = keyframes`
+const slideInAnimation = keyframes`
   from {
     transform: translateY(100%);
   }
   to {
     transform: translateY(0);
-  }
-`;
-
-const slideDown = keyframes`
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
   }
 `;
 
@@ -82,7 +70,7 @@ const BottomSheetContainer = styled.div`
     display: none;
   }
 
-  animation: ${({isOpen}) => (isOpen ? slideUp : slideDown)} 0.3s ease-in-out;
+  animation: ${slideInAnimation} 0.3s ease-out;
 `;
 
 const BottomSheetHeader = styled.div`

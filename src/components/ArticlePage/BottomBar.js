@@ -6,19 +6,29 @@ import vote from '../../images/vote.svg';
 import debate from '../../images/debate.svg';
 import contentOn from '../../images/contentOn.svg';
 
-const BottomBar = () => {
+const BottomBar = ({handleBottomSheet}) => {
   return (
     <BottomBarContainer>
       <div>
-        <img src={han} alt='한마디'></img>
+        <img
+          src={han}
+          alt='한마디'
+          id='review'
+          onClick={handleBottomSheet}
+        ></img>
         <span>한마디</span>
       </div>
       <div>
-        <img src={sentences} alt='밑줄모음'></img>
+        <img
+          src={sentences}
+          alt='밑줄모음'
+          id='sentences'
+          onClick={handleBottomSheet}
+        ></img>
         <span>밑줄모음</span>
       </div>
       <div>
-        <img src={vote} alt='투표'></img>
+        <img src={vote} alt='투표' id='vote' onClick={handleBottomSheet}></img>
         <span>투표만들기</span>
       </div>
       <div>

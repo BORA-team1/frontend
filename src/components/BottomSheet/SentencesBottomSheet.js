@@ -3,38 +3,67 @@ import styled, {keyframes} from 'styled-components';
 import SentenceBox from './SentenceBox';
 import CommentBox from './CommentBox';
 
-const SentencesBottomSheet = ({isOpen, onClose}) => {
+const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
   const [category, setCategory] = useState('A');
 
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
   const showListD = () => setCategory('D');
-  // if (!isOpen) return null;
+
+  const barPosition = {
+    A: '0',
+    B: '97.5px',
+    C: '195px',
+    D: '292.5px',
+  };
 
   return (
-    <BottomSheetOverlay onClick={onClose}>
+    <BottomSheetOverlay>
       <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
         <BottomSheetHeader>
           <HeaderText>
-            <CloseBottomSheet onClick={onClose}>닫기</CloseBottomSheet>
+            <CloseBottomSheet onClick={handleCloseBottomSheet}>
+              닫기
+            </CloseBottomSheet>
             <span>밑줄모음</span>
           </HeaderText>
           <HR></HR>
           <Category>
             <div>
-              <span onClick={showListA}>밑줄</span>
+              <span
+                className={category === 'A' ? 'active' : ''}
+                onClick={showListA}
+              >
+                밑줄
+              </span>
             </div>
             <div>
-              <span onClick={showListB}>댓글</span>
+              <span
+                className={category === 'B' ? 'active' : ''}
+                onClick={showListB}
+              >
+                댓글
+              </span>
             </div>
             <div>
-              <span onClick={showListC}>Q&A</span>
+              <span
+                className={category === 'C' ? 'active' : ''}
+                onClick={showListC}
+              >
+                Q&A
+              </span>
             </div>
             <div>
-              <span onClick={showListD}>감정표현</span>
+              <span
+                className={category === 'D' ? 'active' : ''}
+                onClick={showListD}
+              >
+                감정표현
+              </span>
             </div>
           </Category>
+          <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
         {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
@@ -146,6 +175,19 @@ const Category = styled.div`
   div > span {
     cursor: pointer;
   }
+
+  div > span.active {
+    color: white;
+  }
+`;
+
+const Bar = styled.div`
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  width: 97.5px;
+  background-color: white;
+  transition: left 0.3s ease;
 `;
 
 const SentencesList = styled.div`

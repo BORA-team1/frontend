@@ -1,18 +1,27 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import CommentBox from '../components/BottomSheet/CommentBox';
-import EmojiList from '../components/BottomSheet/EmojiList';
-import DebateNow from '../components/ArticlePage/DebateNow';
+
 import VoteNow from '../components/ArticlePage/VoteNow';
+import DebateNow from '../components/ArticlePage/DebateNow';
 import QBox from '../components/AllContentPage/QBox';
 import ABox from '../components/AllContentPage/ABox';
 import qnaconnect from '../images/qnaconnect.svg';
+import CommentBox from '../components/BottomSheet/CommentBox';
+import EmojiList from '../components/BottomSheet/EmojiList';
 
 const AllContentsPage = () => {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <ArticleTitle>
-        <CloseBottomSheet>닫기</CloseBottomSheet>
+        <ClosePage
+          onClick={() => {
+            navigate('/article');
+          }}
+        >
+          닫기
+        </ClosePage>
         사교육비 대책과 수능 킬러 문항
       </ArticleTitle>
       <SectionBar>
@@ -83,7 +92,7 @@ const ArticleTitle = styled.div`
   letter-spacing: -0.3px;
 `;
 
-const CloseBottomSheet = styled.div`
+const ClosePage = styled.div`
   position: absolute;
   left: 20px;
   width: 26px;
