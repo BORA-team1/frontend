@@ -1,0 +1,31 @@
+.circle1 {
+  background-image: url('../../images/floatingbar/highlightingOff.svg');
+}
+
+.circle1:hover {
+  background-image: url('../../images/floatingbar/highlightingOn.svg');
+}
+
+.circle2 {
+  background-image: url('../../images/floatingbar/qnaOff.svg');
+}
+
+.circle2:hover {
+  background-image: url('../../images/floatingbar/qnaOn.svg');
+}
+
+.circle3 {
+  background-image: url('../../images/floatingbar/commentOff.svg');
+}
+
+.circle3:hover {
+  background-image: url('../../images/floatingbar/commentOn.svg');
+}
+
+.circle4 {
+  background-image: url('../../images/floatingbar/emojiOff.svg');
+}
+
+.circle4:hover {
+  background-image: url('../../images/floatingbar/emojiOn.svg');
+}
