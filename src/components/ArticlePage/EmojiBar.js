@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import happy from '../../images/emoji/happy.svg';
 import surprised from '../../images/emoji/surprised.svg';
@@ -12,30 +12,53 @@ const EmojiBar = ({
   handleOpenBottomSheet,
   showListC,
 }) => {
-  const emojiClick = () => {
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
+
+  const handleEmojiSelect = (number) => {
+    console.log(number);
+    setSelectedEmoji(number);
+    //저장 후 이모지 바를 바로 닫아버려서 콘솔에 null만 뜸
+    console.log(selectedEmoji);
     closeEmojiBar();
     if (!isBottomSheetOpen) {
       handleOpenBottomSheet();
       showListC();
     }
   };
+
   return (
-    <Wrapper onClick={closeEmojiBar}>
+    <Wrapper>
       <Container>
         <div>
-          <img src={happy} alt='happy' onClick={emojiClick}></img>
+          <img
+            src={happy}
+            alt='happy'
+            onClick={() => handleEmojiSelect(1)}
+          ></img>
         </div>
         <div>
-          <img src={surprised} alt='surprised' onClick={emojiClick}></img>
+          <img
+            src={surprised}
+            alt='surprised'
+            onClick={() => handleEmojiSelect(2)}
+          ></img>
         </div>
         <div>
-          <img src={anger} alt='anger' onClick={emojiClick}></img>
+          <img
+            src={anger}
+            alt='anger'
+            onClick={() => handleEmojiSelect(3)}
+          ></img>
         </div>
         <div>
-          <img src={sad} alt='sad' onClick={emojiClick}></img>
+          <img src={sad} alt='sad' onClick={() => handleEmojiSelect(4)}></img>
         </div>
         <div>
-          <img src={curious} alt='curious' onClick={emojiClick}></img>
+          <img
+            src={curious}
+            alt='curious'
+            onClick={() => handleEmojiSelect(5)}
+          ></img>
         </div>
       </Container>
     </Wrapper>
@@ -69,6 +92,7 @@ const Container = styled.div`
   box-shadow: 0px 4.206896781921387px 6.31034517288208px 0px rgba(0, 0, 0, 0.3);
 
   div {
+    z-index: 3;
     display: flex;
     justify-content: center;
     align-items: center;

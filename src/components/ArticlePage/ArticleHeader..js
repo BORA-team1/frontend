@@ -1,13 +1,31 @@
-import React from 'react';
-import {useNavigate} from 'react-router-dom';
+// import React, {useState, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import Difficulty from '../Common/Difficulty';
 import articlebackground from '../../images/articlebackground.png';
 import audioicon from '../../images/audioicon.png';
-import './Article.css';
+// import axios from 'axios';
 
 const ArticleHeader = () => {
+  const {id} = useParams();
   const navigate = useNavigate();
+  // const [hashtags, setHashtags] = useState([]);
+
+  // useEffect(() => {
+  //   getHashtags();
+  // }, []);
+
+  // const getHashtags = () => {
+  //   axios
+  //     .get('URL')
+  //     .then((response) => {
+  //       setHashtags(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error', error);
+  //     });
+  // };
+
   return (
     <Wrapper>
       <BackgroundImg>
@@ -17,19 +35,24 @@ const ArticleHeader = () => {
       <ButtonContainer>
         <AllContentsButton
           onClick={() => {
-            navigate('/article/allcontents');
+            navigate(`/article/${id}/allcontents`);
           }}
         >
           콘텐츠 모아보기
         </AllContentsButton>
         <AudioBookButton>
-          <img src={audioicon}></img>
+          <img src={audioicon} alt='오디오 북 아이콘'></img>
         </AudioBookButton>
       </ButtonContainer>
       <TitleContainer>
         <ArticleTitleTop>
-          {/* 해시태그 나중에 수정 */}
-          <ArticleTag>#라이프 · #건강</ArticleTag>
+          <ArticleTag>
+            {/* {hashtags.map((tag, index) => (
+              <TagItem key={index}>{tag}</TagItem>
+            ))} */}
+            <TagItem>#라이프</TagItem>
+            <TagItem>#건강</TagItem>
+          </ArticleTag>
           <Difficulty size='medium' difficulty='light'>
             light
           </Difficulty>
@@ -143,10 +166,21 @@ const ArticleTitleTop = styled.div`
   justify-content: space-between;
 `;
 
-const ArticleTag = styled.div`
+const ArticleTag = styled.ul`
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.32px;
+  list-style: none;
+  padding: 0;
+`;
+
+const TagItem = styled.li`
+  display: inline-block;
+  margin-right: 5px;
+  &:not(:last-child)::after {
+    content: ' • ';
+    margin: 0 5px;
+  }
 `;
 
 const ArticleTitleText = styled.div`

@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import SentenceBox from './SentenceBox';
+import SentenceBoxEmoji from './SentenceBoxEmoji';
 import CommentBox from './CommentBox';
+import QnABox from './QnABox';
 
 const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
   const [category, setCategory] = useState('A');
-
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
@@ -67,13 +68,36 @@ const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
         </BottomSheetHeader>
 
         {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
-        <SentencesList>
-          <Num>문장 1개</Num>
-          <SentenceBox></SentenceBox>
-          <CommentBoxContainer>
-            <CommentBox></CommentBox>
-          </CommentBoxContainer>
-        </SentencesList>
+        {category === 'A' && (
+          <SentencesList>
+            <Num>문장 1개</Num>
+            <SentenceBox></SentenceBox>
+          </SentencesList>
+        )}
+        {category === 'B' && (
+          <SentencesList>
+            <Num>댓글 1개</Num>
+            <SentenceBox></SentenceBox>
+            <CommentBoxContainer>
+              <CommentBox></CommentBox>
+            </CommentBoxContainer>
+          </SentencesList>
+        )}
+        {category === 'C' && (
+          <SentencesList>
+            <Num>질문 1개</Num>
+            <SentenceBox></SentenceBox>
+            <QnAContainer>
+              <QnABox></QnABox>
+            </QnAContainer>
+          </SentencesList>
+        )}
+        {category === 'D' && (
+          <SentencesList>
+            <Num>표현 1개</Num>
+            <SentenceBoxEmoji></SentenceBoxEmoji>
+          </SentencesList>
+        )}
       </BottomSheetContainer>
     </BottomSheetOverlay>
   );
@@ -209,6 +233,12 @@ const Num = styled.div`
 
 const CommentBoxContainer = styled.div`
   padding: 20px;
+  border-bottom: 1px solid #353646;
+  background: #1e1c2e;
+`;
+
+const QnAContainer = styled.div`
+  padding: 20px 62px;
   border-bottom: 1px solid #353646;
   background: #1e1c2e;
 `;

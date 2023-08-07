@@ -5,12 +5,12 @@ const SentenceBox = () => {
   return (
     <Container>
       <Sentence>
-        “ 혹시 요즘 아스파탐 논란 보고혹시 요즘 아스파탐 논란 보고 ‘제로슈거
+        “ 혹시 요즘 아스파탐 논란 보고 혹시 요즘 아스파탐 논란 보고 ‘제로슈거
         음료 안 마시는 게 낫나?’ 고민한 사람 있나요? ”
       </Sentence>
-      <SelectButton>
+      {/* <SelectButton>
         <span>삭제</span>
-      </SelectButton>
+      </SelectButton> */}
     </Container>
   );
 };

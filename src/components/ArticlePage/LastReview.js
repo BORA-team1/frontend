@@ -1,32 +1,59 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
-import heart from '../../images/heart.svg';
+import thumbsup from '../../images/thumbsup.svg';
+import thumbsupclick from '../../images/thumbsupclick.svg';
 
-const CommentBox = ({commentCt, commentId, handleCommentDelete}) => {
+const Review = ({lastReviewContent, handleDelete, lastReviewId}) => {
+  const [clickIcon, setClickIcon] = useState(false);
+
+  const handleClickIcon = () => {
+    setClickIcon(!clickIcon);
+  };
+
   return (
     <Container>
       <ProfileContainer>
         <img src={profile} alt='profileimg'></img>
       </ProfileContainer>
       <ContentContainer>
-        <Id>broaden_horizons</Id>
-        <Content>{commentCt}</Content>
+        <Id>zimmmni</Id>
+        <Content>{lastReviewContent}</Content>
         <Plus>
-          <img src={heart} alt='heart'></img>
-          <div>좋아요</div>
+          {clickIcon ? (
+            <img
+              src={thumbsupclick}
+              alt='thumbsup'
+              onClick={handleClickIcon}
+            ></img>
+          ) : (
+            <img src={thumbsup} alt='thumbsup' onClick={handleClickIcon}></img>
+          )}
+
+          <div
+            style={{
+              color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+            }}
+          >
+            6
+          </div>
+          <span>·</span>
+          {clickIcon ? (
+            <div onClick={handleClickIcon}>추천 취소</div>
+          ) : (
+            <div onClick={handleClickIcon}>추천해요</div>
+          )}
           <span>·</span>
           <div>답글달기</div>
-          {/* user가 누구인지에 따라 삭제 버튼 온오프 */}
           <span>·</span>
-          <div onClick={() => handleCommentDelete(commentId)}>삭제</div>
+          <div onClick={() => handleDelete(lastReviewId)}>삭제</div>
         </Plus>
       </ContentContainer>
     </Container>
   );
 };
 
-export default CommentBox;
+export default Review;
 
 const Container = styled.div`
   width: 350px;
@@ -56,7 +83,9 @@ const ContentContainer = styled.div`
 
 const Id = styled.div`
   color: white;
+
   font-size: 12px;
+  font-style: normal;
   font-weight: 600;
   line-height: normal;
 `;

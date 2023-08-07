@@ -1,20 +1,26 @@
 import React, {useState} from 'react';
-import {SheetContext} from '../contexts/SheetContext';
+// import {SheetContext} from '../contexts/SheetContext';
 import styled from 'styled-components';
 
 import StatusBar from '../components/ArticlePage/StatusBar';
 import ArticleHeader from '../components/ArticlePage/ArticleHeader.';
 import ArticleContent from '../components/ArticlePage/ArticleContent';
 import ArticleReview from '../components/ArticlePage/ArticleReview';
-import InputBox from '../components/InputBox';
 import BottomBar from '../components/ArticlePage/BottomBar';
 
 import ReviewsBottomSheet from '../components/BottomSheet/ReviewsBottomSheet';
-import HighlightingBottomSheet from '../components/BottomSheet/HighlightingBottomSheet';
 import VoteBottomSheet from '../components/BottomSheet/VoteBottomSheet';
 import SentencesBottomSheet from '../components/BottomSheet/SentencesBottomSheet';
 
 const ArticlePage = () => {
+  const [isContentson, setContentson] = useState('true');
+
+  //콘텐츠 켜짐/꺼짐
+  const handleContentsOn = () => {
+    setContentson(!isContentson);
+    console.log(isContentson);
+  };
+
   const [bottomSheetOpen, setBottomSheetOpen] = useState(null);
 
   const handleBottomSheet = (e) => {
@@ -30,11 +36,6 @@ const ArticlePage = () => {
     review: (
       <ReviewsBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />
     ),
-    highlighting: (
-      <HighlightingBottomSheet
-        handleCloseBottomSheet={handleCloseBottomSheet}
-      />
-    ),
     vote: <VoteBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />,
     sentences: (
       <SentencesBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />
@@ -42,19 +43,20 @@ const ArticlePage = () => {
   };
 
   return (
-    <SheetContext.Provider value={handleBottomSheet}>
-      <Wrapper>
-        <StatusBar></StatusBar>
-        <ArticleHeader></ArticleHeader>
-        <ArticleContent></ArticleContent>
-        <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
-        <InputBoxPosition>
-          <InputBox></InputBox>
-        </InputBoxPosition>
-        <BottomBar handleBottomSheet={handleBottomSheet}></BottomBar>
-        {bottomSheetOpen && <div>{selectBottomSheet[bottomSheetOpen]}</div>}
-      </Wrapper>
-    </SheetContext.Provider>
+    // <SheetContext.Provider value={handleBottomSheet}>
+    <Wrapper>
+      <StatusBar></StatusBar>
+      <ArticleHeader></ArticleHeader>
+      <ArticleContent isContentson={isContentson}></ArticleContent>
+      <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
+      <BottomBar
+        isContentson={isContentson}
+        handleContentsOn={handleContentsOn}
+        handleBottomSheet={handleBottomSheet}
+      ></BottomBar>
+      {bottomSheetOpen && <div>{selectBottomSheet[bottomSheetOpen]}</div>}
+    </Wrapper>
+    // </SheetContext.Provider>
   );
 };
 
@@ -65,11 +67,4 @@ const Wrapper = styled.div`
   margin: 0px;
   width: 390px;
   height: 100%;
-  padding-bottom: 50px;
-`;
-
-const InputBoxPosition = styled.div`
-  width: 390px;
-  padding: 21px 20px;
-  box-sizing: border-box;
 `;

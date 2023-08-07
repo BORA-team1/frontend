@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import CommentsList from './CommentsList';
 import QnAList from './QnAList';
 import EmojiList from './EmojiList';
-import InputBox from '../InputBox';
+import submiticon from '../../images/submiticon.svg';
+// import axios from 'axios';
 
 const HighlightingBottomSheet = ({
+  // handleCloseContentSheet,
   onClose,
   expanded,
   setExpanded,
@@ -14,11 +16,38 @@ const HighlightingBottomSheet = ({
   showListB,
   showListC,
   openEmojiBar,
+  selectedSentence,
 }) => {
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
+
+  //댓글 저장
+  const handleCommentSubmit = () => {
+    if (comment.trim() === '') return null;
+    const newComment = {
+      id: comments.length + 1,
+      content: comment,
+    };
+    setComments([...comments, newComment]);
+    console.log(comments);
+    setComment('');
+  };
+
+  //댓글 삭제
+  const handleCommentDelete = (commentId) => {
+    const updatedComments = comments.filter(
+      (comment) => comment.id !== commentId
+    );
+    setComments(updatedComments);
+    console.log(comments);
+  };
+
+  //바텀시트 확장하기
   const openExpandSpace = () => {
     setExpanded(true);
   };
 
+  //카테고리 이동 시 흰색 바 이동
   const barPosition = {
     A: '0',
     B: '130px',
@@ -26,7 +55,12 @@ const HighlightingBottomSheet = ({
   };
 
   return (
-    <BottomSheetOverlay onClick={onClose}>
+    <BottomSheetOverlay
+      onClick={() => {
+        onClose();
+        // handleCloseContentSheet();
+      }}
+    >
       <BottomSheetContainer
         onClick={(e) => e.stopPropagation()}
         expanded={expanded}
@@ -36,11 +70,12 @@ const HighlightingBottomSheet = ({
             <CloseBottomSheet
               onClick={() => {
                 onClose();
+                // handleCloseContentSheet();
               }}
             >
               닫기
             </CloseBottomSheet>
-            <Sentense>"문장"</Sentense>
+            <Sentense>" {selectedSentence} "</Sentense>
           </HeaderText>
           <HR></HR>
           <Category>
@@ -73,25 +108,48 @@ const HighlightingBottomSheet = ({
         </BottomSheetHeader>
 
         {category === 'A' && (
-          <ExpandSpace onClick={openExpandSpace}>
-            <CommentsList></CommentsList>
-          </ExpandSpace>
+          <>
+            <ExpandSpace onClick={openExpandSpace}>
+              <CommentsList
+                comments={comments}
+                handleCommentDelete={handleCommentDelete}
+              ></CommentsList>
+            </ExpandSpace>
+            <InputBoxPosition>
+              <Inputbox
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></Inputbox>
+              <img
+                onClick={handleCommentSubmit}
+                src={submiticon}
+                alt='submiticon'
+              ></img>
+            </InputBoxPosition>
+          </>
         )}
         {category === 'B' && (
-          <ExpandSpace onClick={openExpandSpace}>
-            <QnAList expanded={expanded}></QnAList>
-          </ExpandSpace>
+          <>
+            <ExpandSpace onClick={openExpandSpace}>
+              <QnAList expanded={expanded}></QnAList>
+            </ExpandSpace>
+            <InputBoxPosition>
+              <Inputbox
+              // value={review}
+              // onChange={(e) => setReview(e.target.value)}
+              ></Inputbox>
+              <img
+                // onClick={handleSubmit}
+                src={submiticon}
+                alt='submiticon'
+              ></img>
+            </InputBoxPosition>
+          </>
         )}
         {category === 'C' && (
           <EmojiListContainer>
             <EmojiList openEmojiBar={openEmojiBar}></EmojiList>
           </EmojiListContainer>
-        )}
-
-        {category !== 'C' && (
-          <InputBoxPosition>
-            <InputBox></InputBox>
-          </InputBoxPosition>
         )}
       </BottomSheetContainer>
     </BottomSheetOverlay>
@@ -173,6 +231,7 @@ const Sentense = styled.div`
   text-align: center;
   color: #fff;
   font-weight: 400;
+  word-break: keep-all;
 `;
 
 const Category = styled.div`
@@ -227,6 +286,35 @@ const InputBoxPosition = styled.div`
   border-top: 1px solid #353646;
   position: absolute;
   bottom: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+`;
+
+const Inputbox = styled.input`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  padding-left: 10px;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
 const ExpandSpace = styled.div`

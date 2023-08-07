@@ -17,7 +17,7 @@ const AllContentsPage = () => {
       <ArticleTitle>
         <ClosePage
           onClick={() => {
-            navigate('/article');
+            navigate(-1);
           }}
         >
           닫기

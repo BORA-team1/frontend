@@ -6,15 +6,19 @@ const QnACreateModal = ({
   handleOpenBottomSheet,
   showListB,
 }) => {
-  const [text, setText] = useState('');
-  const saveQnA = (event) => {
-    setText(event.target.value);
-  };
+  const [question, setQuestion] = useState('');
+  const [questions, setQuestions] = useState([]);
 
   const textRef = useRef();
   const handleResizeHeight = () => {
     textRef.current.style.height = 'auto';
     textRef.current.style.height = textRef.current.scrollHeight + 'px';
+  };
+
+  const handleSubmit = () => {
+    setQuestions([...questions, question]);
+    console.log(questions);
+    setQuestion('');
   };
 
   return (
@@ -24,6 +28,7 @@ const QnACreateModal = ({
           closeQnACreateModal();
           handleOpenBottomSheet();
           showListB();
+          handleSubmit();
         }}
       >
         등록
@@ -34,10 +39,11 @@ const QnACreateModal = ({
           <textarea
             ref={textRef}
             onInput={handleResizeHeight}
-            onChange={saveQnA}
+            onChange={(e) => setQuestion(e.target.value)}
+            value={question}
             placeholder='질문을 입력해 주세요.'
             rows={1}
-            maxlength='72'
+            maxLength='72'
           ></textarea>
         </TextInput>
       </Container>

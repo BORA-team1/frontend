@@ -10,10 +10,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/article' element={<ArticlePage />}></Route>
-          <Route path='/article/debate' element={<DebatePage />}></Route>
+          <Route path='/article/:id' element={<ArticlePage />}></Route>
+          <Route path='/article/:id/debate' element={<DebatePage />}></Route>
           <Route
-            path='/article/allcontents'
+            path='article/:id/allcontents'
             element={<AllContentsPage />}
           ></Route>
         </Routes>

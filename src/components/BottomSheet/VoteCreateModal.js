@@ -3,17 +3,21 @@ import styled from 'styled-components';
 import more from '../../images/more.svg';
 import QuoteBottomSheet from './QuoteBottomSheet';
 
-const VoteCreateModal = ({closeModal}) => {
+const VoteCreateModal = ({
+  handleSubmit,
+  voteTitle,
+  setVoteTitle,
+  options,
+  handleOptionChange,
+}) => {
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
-  const [text, setText] = useState('');
+
+  //인용 바텀시트 띄우기
   const openBottomSheet = () => {
     setBottomSheetOpen(true);
   };
   const closeBottomSheet = () => {
     setBottomSheetOpen(false);
-  };
-  const saveQnA = (event) => {
-    setText(event.target.value);
   };
 
   const textRef = useRef();
@@ -24,23 +28,37 @@ const VoteCreateModal = ({closeModal}) => {
 
   return (
     <Wrapper>
-      <CreateButton onClick={closeModal}>등록</CreateButton>
+      <CreateButton onClick={handleSubmit}>등록</CreateButton>
       <Container>
         <Title>투표</Title>
         <TextInput>
           <textarea
             ref={textRef}
             onInput={handleResizeHeight}
-            onChange={saveQnA}
+            value={voteTitle}
+            onChange={(e) => setVoteTitle(e.target.value)}
             placeholder='질문을 입력해 주세요.'
             rows={1}
             maxlength='72'
           ></textarea>
         </TextInput>
         <ListInput>
+          {options.map((option, index) => (
+            <input
+              key={index}
+              value={option}
+              onChange={(e) => handleOptionChange(index, e.target.value)}
+              placeholder='항목을 입력해 주세요.'
+            ></input>
+          ))}
+          {/* <input
+            key={index}
+            value={option}
+            onChange={(e) => handleOptionChange(index, e.target.value)}
+            placeholder='항목을 입력해 주세요.'
+          ></input>
           <input placeholder='항목을 입력해 주세요.'></input>
-          <input placeholder='항목을 입력해 주세요.'></input>
-          <input placeholder='항목을 입력해 주세요.'></input>
+          <input placeholder='항목을 입력해 주세요.'></input> */}
         </ListInput>
         <Quoting id='quote' onClick={openBottomSheet}>
           인용하기<img src={more} alt='morereview'></img>

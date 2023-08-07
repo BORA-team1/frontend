@@ -2,12 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 import CommentBox from './CommentBox';
 
-const CommentsList = () => {
+const CommentsList = ({comments, handleCommentDelete}) => {
+  // const loadComments = () => {
+  //   axios
+  //     .get(`URL`)
+  //     .then((response) => {
+  //       setComments (response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('get Error: 질문', error);
+  //     });
+  // };
   return (
     <Container>
-      <Num>한마디 6개</Num>
+      <Num>댓글 {comments.length}개</Num>
       <List>
-        <CommentBox></CommentBox>
+        {comments.map((comment) => (
+          <CommentBox
+            key={comment.id}
+            commentCt={comment.content}
+            commentId={comment.id}
+            handleCommentDelete={handleCommentDelete}
+          ></CommentBox>
+        ))}
       </List>
     </Container>
   );

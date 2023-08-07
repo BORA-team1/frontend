@@ -67,6 +67,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
+  color: #fff;
   font-size: 14.989px;
   font-weight: 400;
   line-height: 151.336%;

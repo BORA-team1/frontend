@@ -2,11 +2,19 @@ import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import addbutton from '../../images/addbutton.png';
 import VoteCreateModal from './VoteCreateModal';
+import SentenceBox from './SentenceBox';
+import VoteBox from './VoteBox';
+import VoteResult from '../ArticlePage/VoteResult';
 
 const VoteBottomSheet = ({handleCloseBottomSheet}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [category, setCategory] = useState('A');
+  const [voteTitle, setVoteTitle] = useState(''); //투표 타이틀
+  const [options, setOptions] = useState(['', '', '']); //투표 항목 3개
+  const [votes, setVotes] = useState([]); // 생성된 투표가 저장되는 배열
+  const [completedVoteList, setCompletedVoteList] = useState([]); // 완료된 투표가 저장되는 배열
 
+  //투표 생성 모달 띄우기
   const openModal = () => {
     setModalOpen(true);
   };
@@ -14,9 +22,42 @@ const VoteBottomSheet = ({handleCloseBottomSheet}) => {
     setModalOpen(false);
   };
 
+  //카테고리
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
+
+  // 항목 입력 변경 이벤트 처리
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+  };
+
+  // 모달에서 등록 버튼을 눌렀을 때 실행되는 함수 (투표 생성)
+  const handleSubmit = () => {
+    closeModal();
+
+    // 투표 항목 저장 로직 추가
+    const newVote = {
+      title: voteTitle,
+      options: options,
+    };
+
+    // 투표 리스트에 추가
+    setVotes([...votes, newVote]);
+
+    // 저장 후 초기화
+    setVoteTitle('');
+    setOptions(['', '', '']);
+  };
+
+  //투표 종료하기
+  const handleVoteComplete = (index) => () => {
+    const completedVote = votes.splice(index, 1)[0];
+    setVotes([...votes]);
+    setCompletedVoteList([...completedVoteList, completedVote]);
+  };
 
   const barPosition = {
     A: '0',
@@ -64,13 +105,68 @@ const VoteBottomSheet = ({handleCloseBottomSheet}) => {
           <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
-        {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
-        <ReviewContatiner>
-          <ReviewsTop>아직 생성된 투표가 없습니다.</ReviewsTop>
-        </ReviewContatiner>
-        <CreateButton src={addbutton} onClick={openModal}></CreateButton>
-        {isModalOpen && (
-          <VoteCreateModal closeModal={closeModal}></VoteCreateModal>
+        {/* 카테고리 별 리스트*/}
+        {category === 'A' && (
+          <>
+            <ListContatiner>
+              {votes.length === 0 ? (
+                <ListNum>아직 생성된 투표가 없습니다.</ListNum>
+              ) : (
+                <ListNum>투표 {votes.length}개</ListNum>
+              )}
+
+              {votes.map((vote, index) => (
+                <div key={index}>
+                  <SentenceBox></SentenceBox>
+                  <VoteBoxContainer>
+                    <VoteBox
+                      vote={vote}
+                      handleVoteComplete={handleVoteComplete}
+                    ></VoteBox>
+                    <VoteEnd onClick={handleVoteComplete(vote.index)}>
+                      투표 종료하기
+                    </VoteEnd>
+                  </VoteBoxContainer>
+                </div>
+              ))}
+            </ListContatiner>
+            <CreateButton src={addbutton} onClick={openModal}></CreateButton>
+            {isModalOpen && (
+              <VoteCreateModal
+                handleSubmit={handleSubmit}
+                voteTitle={voteTitle}
+                setVoteTitle={setVoteTitle}
+                options={options}
+                handleOptionChange={handleOptionChange}
+              ></VoteCreateModal>
+            )}
+          </>
+        )}
+        {category === 'B' && (
+          <>
+            <ListContatiner>
+              <ListNum>투표 1개</ListNum>
+              <SentenceBox></SentenceBox>
+              <VoteResultContainer>
+                <VoteResult></VoteResult>
+              </VoteResultContainer>
+            </ListContatiner>
+          </>
+        )}
+        {category === 'C' && (
+          <>
+            <ListContatiner>
+              <ListNum>아직 생성된 투표가 없습니다.</ListNum>
+              {votes.map((vote, index) => (
+                <div key={index}>
+                  <SentenceBox></SentenceBox>
+                  <VoteBoxContainer>
+                    <VoteBox vote={vote}></VoteBox>
+                  </VoteBoxContainer>
+                </div>
+              ))}
+            </ListContatiner>
+          </>
         )}
       </BottomSheetContainer>
     </BottomSheetOverlay>
@@ -188,14 +284,14 @@ const Bar = styled.div`
   transition: left 0.3s ease;
 `;
 
-const ReviewContatiner = styled.div`
+const ListContatiner = styled.div`
   margin-top: 125px;
   width: 390px;
   display: flex;
   flex-direction: column;
 `;
 
-const ReviewsTop = styled.div`
+const ListNum = styled.div`
   margin: 20px 21px;
   color: #fff;
   font-family: 'Pretendard-Regular';
@@ -210,6 +306,40 @@ const HR = styled.div`
   width: 390px;
   height: 5px;
   background: #353646;
+`;
+
+const VoteBoxContainer = styled.div`
+  width: 390px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #1e1c2e;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #353646;
+  color: #fff;
+`;
+const VoteEnd = styled.div`
+  padding: 7px 14px;
+  width: fit-content;
+  margin-top: 30px;
+  border-radius: 20px;
+  border: 1.2px solid #fff;
+  backdrop-filter: blur(5px);
+  font-family: 'Pretendard-Regular';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  cursor: pointer;
+`;
+
+const VoteResultContainer = styled.div`
+  width: 390px;
+  padding: 20px 50px;
+  box-sizing: border-box;
+  background: #1e1c2e;
+  display: flex;
+  border-bottom: 1px solid #353646;
 `;
 
 const CreateButton = styled.img`

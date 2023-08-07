@@ -1,9 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import Review from '../ArticlePage/Review';
-import InputBox from '../InputBox';
+import submiticon from '../../images/submiticon.svg';
 
 const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
+  //한마디 등록
+  const [review, setReview] = useState('');
+  const [reviews, setReviews] = useState([]);
+
+  const handleReviewsSubmit = () => {
+    if (review.trim() === '') return null;
+    const newReview = {
+      id: reviews.length + 1,
+      content: review,
+    };
+    setReviews([...reviews, newReview]);
+    setReview('');
+    console.log(reviews);
+  };
+
+  //한마디 삭제
+  const handleDelete = (id) => {
+    const updatedReviews = reviews.filter((review) => review.id !== id);
+    setReviews(updatedReviews);
+  };
+
   return (
     <BottomSheetOverlay>
       <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
@@ -18,13 +39,28 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
         </BottomSheetHeader>
 
         <ReviewContatiner>
-          <ReviewsTop>한마디 6개</ReviewsTop>
+          <ReviewsTop>한마디 {reviews.length}개</ReviewsTop>
           <List>
-            <Review></Review>
+            {reviews.map((review) => (
+              <Review
+                key={review.id}
+                review={review.content}
+                reviewId={review.id}
+                handleDelete={handleDelete}
+              ></Review>
+            ))}
           </List>
         </ReviewContatiner>
         <InputBoxPosition>
-          <InputBox></InputBox>
+          <Inputbox
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+          ></Inputbox>
+          <img
+            onClick={handleReviewsSubmit}
+            src={submiticon}
+            alt='submiticon'
+          ></img>
         </InputBoxPosition>
       </BottomSheetContainer>
     </BottomSheetOverlay>
@@ -141,4 +177,32 @@ const InputBoxPosition = styled.div`
   border-top: 1px solid #353646;
   position: absolute;
   bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+`;
+
+const Inputbox = styled.input`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  padding-left: 10px;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;

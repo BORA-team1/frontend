@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
+import votedicon from '../../images/votedicon.svg';
 
-const VoteBox = () => {
+const VoteBox = ({vote}) => {
+  const [votedIndex, setVotedIndex] = useState(-1); // 투표된 항목의 인덱스
+
+  // 투표 처리 함수
+  const handleVote = (index) => {
+    if (votedIndex === -1) {
+      setVotedIndex(index);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -11,15 +21,25 @@ const VoteBox = () => {
         </ProfileContainer>
         <ContentContainer>
           <Id>broaden_horizons</Id>
-          <Content>이거 나.. 일부러 제로콜라만 먹었는데ㅠ</Content>
+          <Content>{vote.title}</Content>
         </ContentContainer>
       </Header>
       <List>
-        <div>아직 그냥 사먹는다.</div>
-        <div>아직 그냥 사먹는다.</div>
-        <div>아직 그냥 사먹는다.</div>
+        {vote.options.map((option, index) => (
+          <div
+            key={index}
+            onClick={() => handleVote(index)}
+            style={{
+              backgroundColor: votedIndex === index ? '#5A45F5' : '#6a6881',
+            }}
+          >
+            {option}
+            {votedIndex === index && (
+              <CheckCircle src={votedicon} alt='투표 완료'></CheckCircle>
+            )}
+          </div>
+        ))}
       </List>
-      <VoteEnd>투표 종료하기</VoteEnd>
     </Container>
   );
 };
@@ -82,7 +102,6 @@ const List = styled.div`
   div {
     width: 350px;
     border-radius: 10px;
-    background: #6a6881;
     border: none;
     outline: none;
     padding: 16px 20px 16px 20px;
@@ -94,14 +113,7 @@ const List = styled.div`
   }
 `;
 
-const VoteEnd = styled.div`
-  padding: 7px 14px;
-  width: fit-content;
-  margin-top: 30px;
-  border-radius: 20px;
-  border: 1.2px solid #fff;
-  backdrop-filter: blur(5px);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: normal;
+const CheckCircle = styled.img`
+  position: absolute;
+  right: 40px;
 `;

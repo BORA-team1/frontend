@@ -27,15 +27,8 @@ const QnABox = () => {
 export default QnABox;
 
 const Container = styled.div`
-  width: 302px;
-  padding: 25px 20px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-
-  border-radius: 10px;
-  border: 1px solid var(--unnamed, #353646);
-  background: var(--card-color, #2b2c3f);
 `;
 
 const ProfileContainer = styled.div`

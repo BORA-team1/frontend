@@ -5,8 +5,9 @@ import sentences from '../../images/sentences.svg';
 import vote from '../../images/vote.svg';
 import debate from '../../images/debate.svg';
 import contentOn from '../../images/contentOn.svg';
+import contentOff from '../../images/contentOff.svg';
 
-const BottomBar = ({handleBottomSheet}) => {
+const BottomBar = ({handleBottomSheet, isContentson, handleContentsOn}) => {
   return (
     <BottomBarContainer>
       <div>
@@ -36,8 +37,25 @@ const BottomBar = ({handleBottomSheet}) => {
         <span>토론만들기</span>
       </div>
       <div>
-        <img src={contentOn} alt='콘텐츠'></img>
-        <span>콘텐츠켜짐</span>
+        {isContentson ? (
+          <>
+            <img
+              src={contentOn}
+              alt='콘텐츠켜짐'
+              onClick={handleContentsOn}
+            ></img>
+            <span>콘텐츠켜짐</span>
+          </>
+        ) : (
+          <>
+            <img
+              src={contentOff}
+              alt='콘텐츠꺼짐'
+              onClick={handleContentsOn}
+            ></img>
+            <span>콘텐츠꺼짐</span>
+          </>
+        )}
       </div>
     </BottomBarContainer>
   );

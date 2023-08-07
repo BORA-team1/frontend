@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
+import thumbsupclick from '../../images/thumbsupclick.svg';
 
-const Review = () => {
+const Review = ({review, handleDelete, reviewId}) => {
+  const [clickIcon, setClickIcon] = useState(false);
+
+  const handleClickIcon = () => {
+    setClickIcon(!clickIcon);
+  };
+
   return (
     <Container>
       <ProfileContainer>
@@ -11,16 +18,35 @@ const Review = () => {
       </ProfileContainer>
       <ContentContainer>
         <Id>zimmmni</Id>
-        <Content>
-          결국 아스파탐이 발암 가능 물질에 포함됐다고 하네요..! 😂 알룰로스는
-          천연감미료라 그쪽으로 관심이 쏠리고 있다는데 이거에 대해서도 팩트체크
-          해주시면 좋을거 같아요!
-        </Content>
+        <Content>{review}</Content>
         <Plus>
-          <img src={thumbsup} alt='thumbsup'></img>
-          <div>추천해요</div>
+          {clickIcon ? (
+            <img
+              src={thumbsupclick}
+              alt='thumbsup'
+              onClick={handleClickIcon}
+            ></img>
+          ) : (
+            <img src={thumbsup} alt='thumbsup' onClick={handleClickIcon}></img>
+          )}
+
+          <div
+            style={{
+              color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+            }}
+          >
+            6
+          </div>
+          <span>·</span>
+          {clickIcon ? (
+            <div onClick={handleClickIcon}>추천 취소</div>
+          ) : (
+            <div onClick={handleClickIcon}>추천해요</div>
+          )}
           <span>·</span>
           <div>답글달기</div>
+          <span>·</span>
+          <div onClick={() => handleDelete(reviewId)}>삭제</div>
         </Plus>
       </ContentContainer>
     </Container>

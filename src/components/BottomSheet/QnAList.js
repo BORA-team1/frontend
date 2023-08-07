@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import QnABox from './QnABox';
+// import axios from 'axios';
 
 const QnAList = ({expanded}) => {
   return (
@@ -8,13 +9,21 @@ const QnAList = ({expanded}) => {
       <Num>질문 1개</Num>
       {expanded ? (
         <List expanded={expanded}>
-          <QnABox></QnABox>
-          <QnABox></QnABox>
-          <QnABox></QnABox>
+          <QnAContainer>
+            <QnABox></QnABox>
+          </QnAContainer>
+          <QnAContainer>
+            <QnABox></QnABox>
+          </QnAContainer>
+          <QnAContainer>
+            <QnABox></QnABox>
+          </QnAContainer>
         </List>
       ) : (
         <List expanded={expanded}>
-          <QnABox></QnABox>
+          <QnAContainer>
+            <QnABox></QnABox>
+          </QnAContainer>
           <Box1></Box1>
           <Box2></Box2>
         </List>
@@ -48,6 +57,16 @@ const List = styled.div`
   align-items: center;
 
   gap: ${(props) => (props.expanded ? '25px' : '0px')};
+`;
+
+const QnAContainer = styled.div`
+  width: 302px;
+  padding: 25px 20px;
+  box-sizing: border-box;
+
+  border-radius: 10px;
+  border: 1px solid var(--unnamed, #353646);
+  background: var(--card-color, #2b2c3f);
 `;
 
 const Box1 = styled.div`

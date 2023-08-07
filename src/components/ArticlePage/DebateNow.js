@@ -12,11 +12,12 @@ const DebateNow = () => {
           <div>주제로</div>
           <Member>
             <div>
-              <img></img>
+              {/* 프로필사진 넣기 */}
+              <img alt='profile'></img>
               <span>04jjk</span>
             </div>
             <div>
-              <img></img>
+              <img alt='profile'></img>
               <span>오늘</span>
             </div>
           </Member>
