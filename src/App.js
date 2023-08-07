@@ -13,20 +13,11 @@ import DetailEditorPage from "./pages/DetailEditorPage";
 import DetailPlaylistPage from "./pages/DetailPlaylistPage";
 import SearchingPage from "./pages/SearchingPage";
 
-import ArticlePage from './pages/ArticlePage';
-import DebatePage from './pages/DebatePage';
-import AllContentsPage from './pages/AllContentsPage';
+import ArticlePage from "./pages/ArticlePage";
+import DebatePage from "./pages/DebatePage";
+import AllContentsPage from "./pages/AllContentsPage";
 
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
     return (
         <>
             <Router>
@@ -62,13 +53,19 @@ function App() {
                         path={"/searchingpage"}
                         element={<SearchingPage />}
                     ></Route>
-                  {/* 세부 페이지 */}
-                  <Route path='/article/:id' element={<ArticlePage />}></Route>
-          <Route path='/article/:id/debate' element={<DebatePage />}></Route>
-          <Route
-            path='article/:id/allcontents'
-            element={<AllContentsPage />}
-          ></Route>
+                    {/* 세부 페이지 */}
+                    <Route
+                        path="/article/:id"
+                        element={<ArticlePage />}
+                    ></Route>
+                    <Route
+                        path="/article/:id/debate"
+                        element={<DebatePage />}
+                    ></Route>
+                    <Route
+                        path="article/:id/allcontents"
+                        element={<AllContentsPage />}
+                    ></Route>
                 </Routes>
             </Router>
         </>
