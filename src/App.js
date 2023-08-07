@@ -4,7 +4,6 @@ import "./App.css";
 
 //pages
 import MainPage from "./pages/MainPage";
-import AudiobookPage from "./pages/AudiobookPage";
 import GuidebookPage from "./pages/GuidebookPage";
 import EntirePage from "./pages/EntirePage";
 import MyPage from "./pages/Mypage";
@@ -14,6 +13,7 @@ import DetailPlaylistPage from "./pages/DetailPlaylistPage";
 import SearchingPage from "./pages/SearchingPage";
 
 import ArticlePage from "./pages/ArticlePage";
+import AudiobookPage from "./pages/AudiobookPage";
 import DebatePage from "./pages/DebatePage";
 import AllContentsPage from "./pages/AllContentsPage";
 
@@ -23,10 +23,6 @@ function App() {
             <Router>
                 <Routes>
                     <Route path={"/"} element={<MainPage />}></Route>
-                    <Route
-                        path={"/audiobookpage"}
-                        element={<AudiobookPage />}
-                    ></Route>
                     <Route
                         path={"/guidebookpage"}
                         element={<GuidebookPage />}
@@ -57,6 +53,10 @@ function App() {
                     <Route
                         path="/article/:id"
                         element={<ArticlePage />}
+                    ></Route>
+                    <Route
+                        path={"/article/:id/audio"}
+                        element={<AudiobookPage />}
                     ></Route>
                     <Route
                         path="/article/:id/debate"

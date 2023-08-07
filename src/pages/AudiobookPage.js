@@ -6,6 +6,8 @@ import styled from "styled-components";
 //components
 import AudiobookTitleBox from "../components/AudiobookPage/AudiobookTitleBox";
 import PlayingBar from "../components/AudiobookPage/PlayingBar";
+import SentenceSplit from "../components/Common/SentenceSplit";
+import AudioContent from "../components/AudiobookPage/AudioContent";
 
 //images
 import X from "../images/X.svg";
@@ -25,7 +27,7 @@ const AudiobookPage = () => {
                 <Scroll>
                     <>
                         <div style={{ margin: "50px" }}>
-                            에디터 페이지입니다
+                            <AudioContent />
                         </div>
                     </>
                 </Scroll>
