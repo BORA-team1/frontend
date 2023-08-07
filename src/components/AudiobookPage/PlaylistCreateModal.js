@@ -11,14 +11,14 @@ import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
 import guidebtn from "../../images/Audiobook/guidebtn.svg";
 import createbtn from "../../images/Audiobook/createbtn.svg";
 
-const PlaylistCreateModal = ({ openCreateModal, closeCreateModal }) => {
+const PlaylistCreateModal = ({
+    createModal,
+    closeCreateModal,
+    handleOpenCompleteModal,
+}) => {
     const navigate = useNavigate();
     const navigatorG = () => {
         navigate("/guidebookpage");
-    };
-    const [text, setText] = useState("");
-    const saveTheme = (event) => {
-        setText(event.target.value);
     };
     //input 입력창
     // 두 개의 입력 창에 초기값 설정
@@ -36,17 +36,21 @@ const PlaylistCreateModal = ({ openCreateModal, closeCreateModal }) => {
     };
 
     //완료 모달
-    const [showCompleteModal, setShowCompleteModal] = useState(false);
+    // const handleSubmit = () => {
+    //     closeCreateModal(); // Close the CreateModal
+    //     handleOpenCompleteModal(); // Open the PlaylistCompleteModal
+    // };
+    const [completeModal, setCompleteModal] = useState(false);
 
     const handleSubmit = () => {
-        setShowCompleteModal(true);
+        setCompleteModal(true);
     };
 
     const closeCompleteModal = () => {
-        setShowCompleteModal(false);
+        setCompleteModal(false);
     };
 
-    return openCreateModal ? (
+    return createModal ? (
         <>
             <Wrapper>
                 <Container>
@@ -67,8 +71,9 @@ const PlaylistCreateModal = ({ openCreateModal, closeCreateModal }) => {
                     </BtnBox>
                 </Container>
 
-                {showCompleteModal && (
+                {completeModal && (
                     <PlaylistCompleteModal
+                        completeModal={completeModal}
                         closeCompleteModal={closeCompleteModal}
                         value1={title} // 첫 번째 입력 값
                         value2={description} // 두 번째 입력 값

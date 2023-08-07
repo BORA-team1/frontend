@@ -6,6 +6,7 @@ import "./App.css";
 import MainPage from "./pages/MainPage";
 import AudiobookPage from "./pages/AudiobookPage";
 import GuidebookPage from "./pages/GuidebookPage";
+import EntirePage from "./pages/EntirePage";
 import MyPage from "./pages/Mypage";
 import DetailBookmarkPage from "./pages/DetailBookmarkPage";
 import DetailEditorPage from "./pages/DetailEditorPage";
@@ -25,6 +26,10 @@ function App() {
                     <Route
                         path={"/guidebookpage"}
                         element={<GuidebookPage />}
+                    ></Route>
+                    <Route
+                        path={"/entirepage"}
+                        element={<EntirePage />}
                     ></Route>
                     {/* 마이페이지 관련 페이지 */}
                     <Route path={"/mypage"} element={<MyPage />}></Route>

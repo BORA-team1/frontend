@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 
 //components
 import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
+import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
 import Audiobook from "../AudiobookPage/Audiobook";
 
 //img
@@ -13,11 +14,20 @@ const PlaylistBottomSheet = ({
     handleCloseBottomSheet,
 }) => {
     const [createModal, setcreateModal] = useState(false);
+    const [completeModal, setCompleteModal] = useState(false);
     const openCreateModal = () => {
         setcreateModal(true);
     };
     const closeCreateModal = () => {
         setcreateModal(false);
+    };
+
+    const handleOpenCompleteModal = () => {
+        setCompleteModal(true);
+    };
+
+    const handleCloseCompleteModal = () => {
+        setCompleteModal(false);
     };
     if (!handleOpenBottomSheet) return null;
 
@@ -50,10 +60,22 @@ const PlaylistBottomSheet = ({
                 </BottomSheetContainer>
 
                 {createModal ? (
-                    <PlaylistCreateModal
-                        openCreateModal={openCreateModal}
-                        closeCreateModal={closeCreateModal}
-                    />
+                    <>
+                        <PlaylistCreateModal
+                            createModal={createModal}
+                            closeCreateModal={closeCreateModal}
+                            handleOpenCompleteModal={handleOpenCompleteModal}
+                        />
+
+                        {completeModal && (
+                            <PlaylistCompleteModal
+                                completeModal={completeModal}
+                                handleCloseCompleteModal={
+                                    handleCloseCompleteModal
+                                }
+                            />
+                        )}
+                    </>
                 ) : null}
             </BottomSheetOverlay>
         </>

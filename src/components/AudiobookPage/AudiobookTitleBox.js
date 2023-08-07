@@ -1,30 +1,55 @@
+import React, { useState } from "react";
 import styled from "styled-components";
+
+//components
+import PlaylistDetailBottomSheet from "../../components/AudiobookPage/PlaylistDetailBottomSheet";
 
 //img
 import more from "../../images/more.svg";
 import audiobookdetail from "../../images/Audiobook/audiobookdetail.svg";
 
 const AudiobookTitleBox = () => {
+    //바텀시트
+    const [showBottomSheet, setShowBottomSheet] = useState(false);
+
+    const handleOpenBottomSheet = () => {
+        setShowBottomSheet(true);
+    };
+
+    const handleCloseBottomSheet = () => {
+        setShowBottomSheet(false);
+    };
     return (
-        <Box>
-            <ChangeBtn>
-                보는 아티클로 읽기 <img src={more} alt="morereview" />
-            </ChangeBtn>
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                }}
-            >
-                <Title>제로 슈거와 아스파탐의 죄수?!</Title>
-                <AudiobookDetail src={audiobookdetail} />
-            </div>
-            <TagBox>
-                <Difficulty>Light</Difficulty>
-                <Tag>라이프</Tag>
-                <Tag>건강</Tag>
-            </TagBox>
-        </Box>
+        <>
+            <Box>
+                <ChangeBtn>
+                    보는 아티클로 읽기 <img src={more} alt="morereview" />
+                </ChangeBtn>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                    }}
+                >
+                    <Title>제로 슈거와 아스파탐의 죄수?!</Title>
+                    <AudiobookDetail
+                        src={audiobookdetail}
+                        onClick={handleOpenBottomSheet}
+                    />
+                </div>
+                <TagBox>
+                    <Difficulty>Light</Difficulty>
+                    <Tag>라이프</Tag>
+                    <Tag>건강</Tag>
+                </TagBox>
+            </Box>
+
+            {showBottomSheet && (
+                <PlaylistDetailBottomSheet
+                    handleCloseBottomSheet={handleCloseBottomSheet}
+                />
+            )}
+        </>
     );
 };
 

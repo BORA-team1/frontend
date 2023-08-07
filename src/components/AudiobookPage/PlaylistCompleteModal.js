@@ -10,7 +10,7 @@ import explanation from "../../images/Audiobook/explanation_playlistconplete.svg
 import mypagebtn from "../../images/Audiobook/mypageBtn.svg";
 import okbtn from "../../images/Audiobook/okbtn.svg";
 
-const PlaylistCompleteModal = ({ closeCompleteModal }) => {
+const PlaylistCompleteModal = ({ completeModal, closeCompleteModal }) => {
     const navigate = useNavigate();
     const navigatorM = () => {
         navigate("/mypage");
@@ -27,7 +27,7 @@ const PlaylistCompleteModal = ({ closeCompleteModal }) => {
             closeCompleteModal();
         }
     };
-    return (
+    return completeModal ? (
         <>
             <Wrapper>
                 <Container ref={containerRef} onClick={handleClickOutside}>
@@ -40,7 +40,7 @@ const PlaylistCompleteModal = ({ closeCompleteModal }) => {
                 </Container>
             </Wrapper>
         </>
-    );
+    ) : null;
 };
 
 export default PlaylistCompleteModal;

@@ -13,13 +13,17 @@ import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
 import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
 import article_image from "../images/article_image.svg";
 import picked_sentence from "../images/PickedSentence.svg";
+import entire_btn from "../images/entireBtn.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const MainPage = () => {
     const user = "지민";
     const navigate = useNavigate();
-    const navigatorA = () => {
-        navigate("/audiobookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+    const navigatorG = () => {
+        navigate("/guidebookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+    };
+    const navigatorE = () => {
+        navigate("/entirepage");
     };
     return (
         <Container>
@@ -27,14 +31,15 @@ const MainPage = () => {
             <Scroll>
                 {/* 듣는 아티클 부분 */}
                 <ListingArticleTitle>
-                    듣는 아티클 기능 이용하기 📻
+                    라디오 아티클 기능 이용하기 📻
                 </ListingArticleTitle>
                 <ListingArticleEx>
-                    Bora의 아티클을 라디오처럼 편하게 들어보세요
+                    <span>창밖을보라</span>의 아티클을 라디오처럼 편하게
+                    들어보세요.
                 </ListingArticleEx>
                 <ListingArticleBtn
                     src={listeningarticle_btn}
-                    onClick={navigatorA}
+                    onClick={navigatorG}
                 />
                 {/* 오늘의 아티클 부분 */}
                 <TodayTitle>{user} 님을 위한 오늘의 아티클 🔮</TodayTitle>
@@ -50,7 +55,7 @@ const MainPage = () => {
                 </TodayArticleListContainer>
                 {/* 난이도 아티클 부분 */}
                 <DifficultyTitle>
-                    난이도 선택해서 부담없이 골라읽기
+                    <span>난이도 선택</span>해서 부담없이 골라읽기
                 </DifficultyTitle>
                 <DifficultyBar />
                 <DifficultyArticleList>
@@ -79,6 +84,7 @@ const MainPage = () => {
                         QnAOk={true}
                     />
                 </DifficultyArticleList>
+                <EntireBtn src={entire_btn} onClick={navigatorE} />
 
                 {/*연령대 아티클 부분 */}
                 <OtherAgeGroupArticle>
@@ -104,7 +110,8 @@ const MainPage = () => {
                 {/* 관심사 아티클 부분 */}
                 <>
                     <InterestTitle>
-                        {user} 님과 관심사가 비슷한 사람들이 읽은 글
+                        <span>재생목록</span>으로 <span>라디오 아티클</span>{" "}
+                        들어보기
                     </InterestTitle>
                     <InterestArticleList>
                         <InterestArticle />
@@ -153,13 +160,13 @@ const Scroll = styled.div`
 
 const FontStyle = styled.div`
     color: #fff;
-    font-family: "Pretendard";
+    font-family: "Pretendard-Regular";
     font-style: normal;
 `;
 
 const ListingArticleTitle = styled(FontStyle)`
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 600;
 
     margin-top: 20px;
     margin-left: 20px;
@@ -167,9 +174,14 @@ const ListingArticleTitle = styled(FontStyle)`
 
 const ListingArticleEx = styled(FontStyle)`
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
 
     margin: 10px 0px 10px 20px;
+    span {
+        color: var(--sub-purple, #a397ff);
+        font-size: 12px;
+        font-weight: 500;
+    }
 `;
 
 const ListingArticleBtn = styled.img`
@@ -209,15 +221,14 @@ const TodayArticleList = styled.div`
 
 const DifficultyTitle = styled(FontStyle)`
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.32px;
 
     margin-left: 20px;
+    span {
+        font-weight: 700;
+    }
 `;
-
-// const DifficultyBar = styled.img`
-//     margin: 20px 20px 10px;
-// `;
 
 const DifficultyArticleList = styled.div`
     display: flex;
@@ -225,6 +236,11 @@ const DifficultyArticleList = styled.div`
     align-items: flex-start;
 
     margin: 0px 20px;
+`;
+
+const EntireBtn = styled.img`
+    margin-top: 30px;
+    margin-left: 148.75px;
 `;
 
 //연령별 추천 아티클 부분
@@ -288,8 +304,12 @@ const InterestTitle = styled(FontStyle)`
     margin-left: 20px;
 
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 100%; /* 16px */
+
+    span {
+        font-weight: 700;
+    }
 `;
 
 const InterestArticleList = styled.div`

@@ -62,13 +62,20 @@ const BookMark = styled.img`
 `;
 
 const Picture = styled.img`
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
     width: 100%;
     object-fit: cover;
 `;
 
 const TitleBox = styled.div`
-    /* position: relative;
-    z-index: 10; */
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
 
     display: flex;
     width: 113.2px;
@@ -76,24 +83,22 @@ const TitleBox = styled.div`
     padding: 10px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
-    flex-shrink: 0;
-
     background: #2b2c3f;
 `;
 
 const Title = styled.div`
-    height: 29.7px;
+    width: 113.2px;
+    height: 30px;
     align-self: stretch;
 
     overflow: hidden;
     color: #fff;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
     font-family: "Pretendard-Regular";
     font-size: 12px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
 `;
 
 const TagBox = styled.div`
