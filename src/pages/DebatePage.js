@@ -4,7 +4,7 @@ import articlebackground from '../images/articlebackground.png';
 import closebutton from '../images/closebutton.svg';
 import more from '../images/more.svg';
 import info from '../images/info.svg';
-import InputBox from '../components/InputBox';
+import InputBox from '../components/Common/InputBox';
 
 const DebatePage = () => {
   return (

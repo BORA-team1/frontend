@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import submiticon from '../images/submiticon.svg';
+import submiticon from '../../images/submiticon.svg';
 
 const InputBox = () => {
   return (
