@@ -1,29 +1,29 @@
-import React from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
-import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
-import DifficultyBar from "../components/MainPage/DifficultyBar";
-import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
+import TopBar from '../components/Common/TopBar';
+import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
+import DifficultyArticle from '../components/MainPage/MainCommon/DifficultyArticle';
+import DifficultyBar from '../components/MainPage/DifficultyBar';
+import InterestArticle from '../components/MainPage/MainCommon/InterestArticle';
 
 //images
-import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
-import article_image from "../images/article_image.svg";
-import picked_sentence from "../images/PickedSentence.svg";
-import entire_btn from "../images/entireBtn.svg";
+import listeningarticle_btn from '../images/ListeningArticleBtn.svg';
+import article_image from '../images/article_image.svg';
+import picked_sentence from '../images/PickedSentence.svg';
+import entire_btn from '../images/entireBtn.svg';
 
 // props로 받아올 posts 구조 분해 할당
 const MainPage = () => {
-  const user = "지민";
+  const user = '지민';
   const navigate = useNavigate();
-  const navigatorG = () => {
-    navigate("/guidebookpage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+  const navigatorP = () => {
+    navigate('/article/1');
   };
   const navigatorE = () => {
-    navigate("/entirepage");
+    navigate('/entirepage');
   };
   return (
     <Container>
@@ -36,17 +36,17 @@ const MainPage = () => {
         <ListingArticleEx>
           <span>창밖을보라</span>의 아티클을 라디오처럼 편하게 들어보세요.
         </ListingArticleEx>
-        <ListingArticleBtn src={listeningarticle_btn} onClick={navigatorG} />
+        <ListingArticleBtn
+          src={listeningarticle_btn}
+          onClick={() => {
+            navigate('/guidebookpage');
+          }}
+        />
         {/* 오늘의 아티클 부분 */}
         <TodayTitle>{user} 님을 위한 오늘의 아티클 🔮</TodayTitle>
         <TodayArticleListContainer>
           <TodayArticleList>
-            <TodayArticle />
-            <TodayArticle />
-            <TodayArticle />
-            <TodayArticle />
-            <TodayArticle />
-            <TodayArticle />
+            <TodayArticle navigatorP={navigatorP}></TodayArticle>
           </TodayArticleList>
         </TodayArticleListContainer>
         {/* 난이도 아티클 부분 */}
@@ -62,19 +62,19 @@ const MainPage = () => {
             QnAOk={true}
           />
           <DifficultyArticle
-            author="NewRules"
+            author='NewRules'
             VoteOk={false}
             DebateOk={true}
             QnAOk={true}
           />
           <DifficultyArticle
-            author="K팝고인물"
+            author='K팝고인물'
             VoteOk={true}
             DebateOk={false}
             QnAOk={true}
           />
           <DifficultyArticle
-            author="쉬운경제"
+            author='쉬운경제'
             VoteOk={false}
             DebateOk={false}
             QnAOk={true}
@@ -154,7 +154,7 @@ const Scroll = styled.div`
 
 const FontStyle = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -309,7 +309,11 @@ const InterestTitle = styled(FontStyle)`
 const InterestArticleList = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 25px 20px 190px;
+  //오른 쪽 빈 공간 생기지 않게 수정함
+  margin: 25px 0px 190px;
+  padding-left: 20px;
+  gap: 20px;
+  box-sizing: border-box;
 
   overflow-x: scroll;
   width: 390px;
