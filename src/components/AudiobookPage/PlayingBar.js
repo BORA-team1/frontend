@@ -1,22 +1,22 @@
-import React, {useState, useRef} from 'react';
-import styled from 'styled-components';
-import AudioPlayer from 'react-audio-player';
+import React, { useState, useRef } from "react";
+import styled from "styled-components";
+import AudioPlayer from "react-audio-player";
 
 //components
-import WarningModal from '../AudiobookPage/WarningModal';
-import PlaylistBottomSheet from '../AudiobookPage/PlaylistBottomSheet';
+import WarningModal from "../AudiobookPage/WarningModal";
+import PlaylistBottomSheet from "../AudiobookPage/PlaylistBottomSheet";
 
 //img
-import playlisticon from '../../images/Audiobook/playlisticon.svg';
-import beforesecond from '../../images/Audiobook/beforesecond.svg';
-import start from '../../images/Audiobook/start.svg';
-import stop from '../../images/Audiobook/stop.svg';
-import aftersecond from '../../images/Audiobook/aftersecond.svg';
-import bookmarkicon_on from '../../images/Audiobook/bookmarkicon_on.svg';
-import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
+import playlisticon from "../../images/Audiobook/playlisticon.svg";
+import beforesecond from "../../images/Audiobook/beforesecond.svg";
+import start from "../../images/Audiobook/start.svg";
+import stop from "../../images/Audiobook/stop.svg";
+import aftersecond from "../../images/Audiobook/aftersecond.svg";
+import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
+import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
 
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
-// import example from "../../audio/example.m4a";
+import example from "../../audio/example.mp3";
 
 const PlayingBar = () => {
   //bookmark
@@ -59,49 +59,34 @@ const PlayingBar = () => {
   };
 
   //오디오 재생 관련 파일
-  const audioRef = useRef(null); // useRef를 사용합니다.
-  const [stopgo, setStopGo] = useState(false); //나중에 전달하면서 사용!
-  const reStopGo = () => {
-    setStopGo(!stopgo);
-  };
-  const [audioPlaying, setAudioPlaying] = useState(false); // 오디오 재생 여부 상태
-  const [currentTime, setCurrentTime] = useState(0); // 오디오 현재 재생 시간
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  // BookmarkIcon 버튼 클릭 시 30초 뒤로 이동
-  const handleSkipForward = () => {
-    if (audioRef.current) {
-      const newTime = audioRef.current.audioEl.currentTime + 30;
-      audioRef.current.audioEl.currentTime = Math.min(
-        newTime,
-        audioRef.current.audioEl.duration
-      );
-      setCurrentTime(newTime);
-    }
-  };
-
-  // BeforeSecond 버튼 클릭 시 10초 전으로 이동
-  const handleSkipBackward = () => {
-    if (audioRef.current) {
-      const newTime = audioRef.current.audioEl.currentTime - 10;
-      audioRef.current.audioEl.currentTime = Math.max(newTime, 0);
-      setCurrentTime(newTime);
-    }
-  };
-
-  // StopnGo 버튼 클릭 시 오디오 재생 또는 정지
   const handlePlayPause = () => {
     if (audioRef.current) {
-      if (audioPlaying) {
-        audioRef.current.audioEl.pause();
-        console.log(audioPlaying);
+      if (isPlaying) {
+        audioRef.current.pause(); // 일시 정지
       } else {
-        audioRef.current.audioEl.play();
-        console.log(audioPlaying);
+        audioRef.current.play(); // 재생
       }
-      setAudioPlaying(!audioPlaying);
-      console.log(audioPlaying);
-    } else {
-      console.log(audioPlaying);
+      setIsPlaying(!isPlaying); // 상태 토글
+    }
+  };
+
+  const handleSkipBackward = () => {
+    if (audioRef.current) {
+      const newTime = audioRef.current.currentTime - 10;
+      audioRef.current.currentTime = Math.max(newTime, 0);
+    }
+  };
+
+  const handleSkipForward = () => {
+    if (audioRef.current) {
+      const newTime = audioRef.current.currentTime + 30;
+      audioRef.current.currentTime = Math.min(
+        newTime,
+        audioRef.current.duration
+      );
     }
   };
   return (
@@ -109,7 +94,8 @@ const PlayingBar = () => {
       <Box>
         <PlayListIcon src={playlisticon} onClick={handleClick} />
         <BeforeSecond onClick={handleSkipBackward} src={beforesecond} />
-        <StopnGo onClick={handlePlayPause} src={audioPlaying ? stop : start} />
+        <audio ref={audioRef} src={example} />
+        <StopnGo onClick={handlePlayPause} src={isPlaying ? stop : start} />
         <AfterSecond onClick={handleSkipForward} src={aftersecond} />
         <BookmarkIcon
           onClick={reBookmark}

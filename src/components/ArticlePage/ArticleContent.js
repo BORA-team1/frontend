@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 // import axios from 'axios';
 
 import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
@@ -174,7 +174,7 @@ const ArticleContent = ({isContentson}) => {
   return (
     <Wrapper>
       {longTexts.map((longTexts, index) => {
-        const sentences = longTexts.content.split('. '); // 문장 분리
+         const sentences = longTexts.content.split(/\. |\? /);  // 문장 분리
         return (
           <>
             <Section key={index} className='ebook-container'>
@@ -247,68 +247,68 @@ const ArticleContent = ({isContentson}) => {
             {isContentson && <ContentPopup></ContentPopup>}
           </>
         );
-      })}
+      )}
 
-      <EditerFollow>이 포스트의 에디터 팔로우하기</EditerFollow>
-      {selectedSentence && (
-        <FloatingBar
-          addToHighlights={addToHighlights}
-          isBottomSheetOpen={isBottomSheetOpen}
-          selectedSentence={selectedSentence}
-          handleOpenBottomSheet={handleOpenBottomSheet}
-          showListA={showListA}
-          showListB={showListB}
-          showListC={showListC}
-          isQnAOpen={isQnAOpen}
-          openQnACreateModal={openQnACreateModal}
-          closeQnACreateModal={closeQnACreateModal}
-          isInputOpen={isInputOpen}
-          openInputBox={openInputBox}
-          closeInputBox={closeInputBox}
-          isEmojiBarOpen={isEmojiBarOpen}
-          openEmojiBar={openEmojiBar}
-          closeEmojiBar={closeEmojiBar}
-        ></FloatingBar>
-      )}
-      {isBottomSheetOpen && (
-        <HighlightingBottomSheet
-          onClose={handleCloseBottomSheet}
-          expanded={expanded}
-          setExpanded={setExpanded}
-          category={category}
-          showListA={showListA}
-          showListB={showListB}
-          showListC={showListC}
-          openEmojiBar={openEmojiBar}
-          closeEmojiBar={closeEmojiBar}
-          selectedSentence={selectedSentence}
-          selectedIndex={selectedIndex}
-        ></HighlightingBottomSheet>
-      )}
-    </Wrapper>
-  );
+            <EditerFollow>이 포스트의 에디터 팔로우하기</EditerFollow>
+            {selectedSentence && (
+                <FloatingBar
+                    addToHighlights={addToHighlights}
+                    isBottomSheetOpen={isBottomSheetOpen}
+                    selectedSentence={selectedSentence}
+                    handleOpenBottomSheet={handleOpenBottomSheet}
+                    showListA={showListA}
+                    showListB={showListB}
+                    showListC={showListC}
+                    isQnAOpen={isQnAOpen}
+                    openQnACreateModal={openQnACreateModal}
+                    closeQnACreateModal={closeQnACreateModal}
+                    isInputOpen={isInputOpen}
+                    openInputBox={openInputBox}
+                    closeInputBox={closeInputBox}
+                    isEmojiBarOpen={isEmojiBarOpen}
+                    openEmojiBar={openEmojiBar}
+                    closeEmojiBar={closeEmojiBar}
+                ></FloatingBar>
+            )}
+            {isBottomSheetOpen && (
+                <HighlightingBottomSheet
+                    onClose={handleCloseBottomSheet}
+                    expanded={expanded}
+                    setExpanded={setExpanded}
+                    category={category}
+                    showListA={showListA}
+                    showListB={showListB}
+                    showListC={showListC}
+                    openEmojiBar={openEmojiBar}
+                    closeEmojiBar={closeEmojiBar}
+                    selectedSentence={selectedSentence}
+                    selectedIndex={selectedIndex}
+                ></HighlightingBottomSheet>
+            )}
+        </Wrapper>
+    );
 };
 
 export default ArticleContent;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 37.4px;
-  gap: 50px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 37.4px;
+    gap: 50px;
 
-  color: white;
-  font-family: 'Pretendard-Regular';
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 169.336%;
+    color: white;
+    font-family: "Pretendard-Regular";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 169.336%;
 `;
 
 const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
 `;
 
 // const SectionTitle = styled.div`
@@ -319,30 +319,30 @@ const Section = styled.div`
 // `;
 
 const SectionContent = styled.div`
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 `;
 
 const TextContainer = styled.div`
-  width: ${(props) => (props.isContentson ? '330px' : '345px')};
+    width: ${(props) => (props.isContentson ? "330px" : "345px")};
 `;
 
 const BarContainer = styled.div`
-  width: 25px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    width: 25px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const SectionBar = styled.div`
-  width: 5px;
-  height: 100%;
-  background-color: #2b2c3f;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    width: 5px;
+    height: 100%;
+    background-color: #2b2c3f;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const Icon = styled.div`
@@ -364,16 +364,16 @@ const Icon = styled.div`
 `;
 
 const EditerFollow = styled.div`
-  display: flex;
-  width: fit-content;
-  padding: 10px 35px;
-  margin: 20px 76px 40px 76px;
+    display: flex;
+    width: fit-content;
+    padding: 10px 35px;
+    margin: 20px 76px 40px 76px;
 
-  border-radius: 20px;
-  background: #5a45f5;
+    border-radius: 20px;
+    background: #5a45f5;
 
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
 `;

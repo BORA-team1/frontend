@@ -102,7 +102,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

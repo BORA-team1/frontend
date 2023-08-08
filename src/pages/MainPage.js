@@ -56,7 +56,7 @@ const MainPage = () => {
         <DifficultyBar />
         <DifficultyArticleList>
           <DifficultyArticle
-            author='일상의기쁨'
+            author="일상의기쁨"
             VoteOk={false}
             DebateOk={false}
             QnAOk={true}
@@ -85,15 +85,15 @@ const MainPage = () => {
         {/*연령대 아티클 부분 */}
         <OtherAgeGroupArticle>
           <AgeGroupTitle>
-            우리 부모님 <span style={{height: '460px'}}>#40대</span>가 관심있는
-            아티클 엿보기
+            우리 부모님 <span style={{ height: "460px" }}>#40대</span>가
+            관심있는 아티클 엿보기
           </AgeGroupTitle>
           <PickedArticle>
             <ArticleImage src={article_image} />
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
@@ -285,7 +285,7 @@ const PickedSentence = styled.img`
 
 const PickedAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard';
+  font-family: "Pretendard";
   font-size: 10px;
   font-style: normal;
   font-weight: 500;
