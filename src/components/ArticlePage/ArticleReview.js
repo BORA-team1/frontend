@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import more from '../../images/more.svg';
-import LastReview from './LastReview';
+import Review from './Review';
 import submiticon from '../../images/submiticon.svg';
 
 const ArticleReview = ({handleBottomSheet}) => {
@@ -41,11 +41,11 @@ const ArticleReview = ({handleBottomSheet}) => {
         </ReviewTop>
         <ReviewContainer>
           {reviews.length > 0 && (
-            <LastReview
-              lastReviewId={lastReview.id}
-              lastReviewContent={lastReview.content}
+            <Review
+              reviewId={lastReview.id}
+              review={lastReview.content}
               handleDelete={handleDelete}
-            ></LastReview>
+            ></Review>
           )}
         </ReviewContainer>
         <HR></HR>

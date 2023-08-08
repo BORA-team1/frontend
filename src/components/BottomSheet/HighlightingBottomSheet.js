@@ -7,7 +7,6 @@ import submiticon from '../../images/submiticon.svg';
 // import axios from 'axios';
 
 const HighlightingBottomSheet = ({
-  // handleCloseContentSheet,
   onClose,
   expanded,
   setExpanded,
@@ -58,7 +57,6 @@ const HighlightingBottomSheet = ({
     <BottomSheetOverlay
       onClick={() => {
         onClose();
-        // handleCloseContentSheet();
       }}
     >
       <BottomSheetContainer
@@ -70,7 +68,6 @@ const HighlightingBottomSheet = ({
             <CloseBottomSheet
               onClick={() => {
                 onClose();
-                // handleCloseContentSheet();
               }}
             >
               닫기

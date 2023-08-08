@@ -1,41 +1,45 @@
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 //components
-import Difficulty from "../../Common/Difficulty";
-
-// Data
-import { articleData } from "../../../data/_mock/articledata";
+import Difficulty from '../../Common/Difficulty';
 
 //img
-import article_background from "../../../images/article_background1.svg";
-import bookmark_on from "../../../images/bookmark_on.svg";
-import bookmark_off from "../../../images/bookmark-off.svg";
+import article_background from '../../../images/article_background1.svg';
+import bookmark_on from '../../../images/bookmark_on.svg';
+import bookmark_off from '../../../images/bookmark-off.svg';
 
-const TodayArticle = () => {
-  const BookMarkOk = false;
+import {articleData} from '../../../data/_mock/articledata';
+
+const TodayArticle = ({navigatorP}) => {
   return (
-    <Box>
-      <BookMark src={BookMarkOk ? bookmark_on : bookmark_off} />
-      <Picture src={article_background} />
-      <TitleBox>
-        <Title>제로 슈거와 아스파탐의 죄수?!</Title>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            width: "113px",
-          }}
-        >
-          <TagBox>
-            <Tag>#라이프</Tag>
-            <Tag>#건강</Tag>
-          </TagBox>
-          <Difficulty size="small" difficulty="light">
-            light
-          </Difficulty>
-        </div>
-      </TitleBox>
-    </Box>
+    <>
+      {articleData[0].Random.map((article) => (
+        <Box onClick={navigatorP} key={article.post_id}>
+          <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
+          <Picture src={article_background} />
+          <TitleBox>
+            <Title>{article.title}</Title>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                width: '113px',
+              }}
+            >
+              <TagBox>
+                {article.hashtag.map((tag, tagIndex) => (
+                  <Tag key={tagIndex}>#{tag.hashtag}</Tag>
+                ))}
+              </TagBox>
+              <Difficulty size='small' difficulty='heavy'>
+                light
+              </Difficulty>
+            </div>
+          </TitleBox>
+        </Box>
+      ))}
+    </>
   );
 };
 
@@ -98,20 +102,27 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
 `;
 
-const TagBox = styled.div`
+const TagBox = styled.ul`
   display: flex;
   flex-direction: row;
+  list-style: none;
+  padding: 0;
 `;
 
-const Tag = styled.div`
+const Tag = styled.li`
+  display: inline-block;
+  &:not(:last-child)::after {
+    content: ' • ';
+    margin: 0 1px;
+  }
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
