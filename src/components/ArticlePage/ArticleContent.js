@@ -23,9 +23,15 @@ const ArticleContent = ({isContentson}) => {
 
   //하이라이팅 바텀시트 오픈/클로즈
   const handleOpenBottomSheet = () => {
+    if (hoveredIndex) {
+      setSelectedSentence(hoveredIndex);
+    }
     setBottomSheetOpen(true);
   };
   const handleCloseBottomSheet = () => {
+    if (selectedSentence) {
+      setSelectedSentence(null);
+    }
     setBottomSheetOpen(false);
     setExpanded(false);
   };
@@ -78,8 +84,9 @@ const ArticleContent = ({isContentson}) => {
 
   //클릭하면 글자 색 바뀌기
   const highlightText = (sentence) => {
-    setSelectedSentence(sentence);
-    console.log(selectedSentence);
+    setSelectedSentence((prevSelected) =>
+      prevSelected === sentence ? null : sentence
+    );
   };
 
   //클릭한 문장 정보 저장
@@ -98,6 +105,40 @@ const ArticleContent = ({isContentson}) => {
       setSelectedSentence(null);
     }
   };
+
+  //아이콘 호버 시 문장 색 바뀌기
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const onHover = (sentence) => {
+    setHoveredIndex(sentence);
+  };
+  const offHover = () => {
+    setHoveredIndex(null);
+  };
+
+  //콘텐츠 존재할 때만 아이콘 띄우기
+  // const [data, setData] = useState([]);
+
+  // const mockData = [
+  //   {
+  //     id: 1,
+  //     content:
+  //       '요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요',
+  //     LineCom: '댓글',
+  //   },
+  //   {
+  //     id: 2,
+  //     content:
+  //       '요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요',
+  //     LineCom: '댓글',
+  //   },
+  // ];
+
+  //섹션의 높이값 추출하기
+  // const sectionRef = useRef(null);
+  // if (sectionRef.current) {
+  //   const sectionHeight = sectionRef.current.clientHeight;
+  //   console.log(sectionHeight)
+  // }
 
   //섹션 타이틀 가져오기
   // const getSectionTitle = () => {
@@ -152,7 +193,8 @@ const ArticleContent = ({isContentson}) => {
                           style={{
                             cursor: 'pointer',
                             color:
-                              selectedSentence === sentence
+                              selectedSentence === sentence ||
+                              hoveredIndex === sentence
                                 ? '#A397FF'
                                 : 'white',
 
@@ -177,14 +219,26 @@ const ArticleContent = ({isContentson}) => {
                 {isContentson && (
                   <BarContainer>
                     <SectionBar>
-                      <Icon onClick={handleOpenBottomSheet}>
-                        <div></div>
-                        <img src={comment} alt='comment'></img>
-                      </Icon>
-                      <Icon onClick={handleOpenBottomSheet}>
+                      {sentences.map((sentence, sentenceIndex) => {
+                        return (
+                          <Icon
+                            key={sentenceIndex}
+                            onMouseEnter={() => onHover(sentence)}
+                            onMouseLeave={offHover}
+                            onClick={handleOpenBottomSheet}
+                            style={{
+                              height: `${500 / sentences.length}%`,
+                            }}
+                          >
+                            <div></div>
+                            <img src={comment} alt='comment'></img>
+                          </Icon>
+                        );
+                      })}
+                      {/* <Icon>
                         <div></div>
                         <img src={qna} alt='qna'></img>
-                      </Icon>
+                      </Icon> */}
                     </SectionBar>
                   </BarContainer>
                 )}
@@ -272,6 +326,7 @@ const SectionContent = styled.div`
 const TextContainer = styled.div`
   width: ${(props) => (props.isContentson ? '330px' : '345px')};
 `;
+
 const BarContainer = styled.div`
   width: 25px;
   height: auto;
@@ -292,7 +347,7 @@ const SectionBar = styled.div`
 
 const Icon = styled.div`
   width: 14x;
-  height: auto;
+  /* height: auto; */
   display: flex;
   flex-direction: column;
   align-items: flex-end;

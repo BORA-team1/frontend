@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import submiticon from '../../images/submiticon.svg';
 
 const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
+  //댓글 저장하는 로직 추가하기
+
   return (
     <Wrapper>
       <InputBoxContainer>
