@@ -8,7 +8,7 @@ import article_background from '../../../images/article_background1.svg';
 import bookmark_on from '../../../images/bookmark_on.svg';
 import bookmark_off from '../../../images/bookmark-off.svg';
 
-import {articleData} from '../../../data/articledata';
+import {articleData} from '../../../data/_mock/articledata';
 
 const TodayArticle = ({navigatorP}) => {
   return (
@@ -102,7 +102,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
