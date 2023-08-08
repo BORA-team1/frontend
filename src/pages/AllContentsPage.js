@@ -1,14 +1,14 @@
-import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import VoteNow from '../components/ArticlePage/VoteNow';
-import DebateNow from '../components/ArticlePage/DebateNow';
-import QBox from '../components/AllContentPage/QBox';
-import ABox from '../components/AllContentPage/ABox';
-import qnaconnect from '../images/qnaconnect.svg';
-import CommentBox from '../components/BottomSheet/CommentBox';
-import EmojiList from '../components/BottomSheet/EmojiList';
+import VoteNow from "../components/ArticlePage/VoteNow";
+import DebateNow from "../components/ArticlePage/DebateNow";
+import QBox from "../components/AllContentPage/QBox";
+import ABox from "../components/AllContentPage/ABox";
+import qnaconnect from "../images/qnaconnect.svg";
+import CommentBox from "../components/BottomSheet/CommentBox";
+import EmojiList from "../components/BottomSheet/EmojiList";
 
 const AllContentsPage = () => {
   const navigate = useNavigate();
@@ -73,9 +73,10 @@ const Wrapper = styled.div`
   background: var(--background, #161524);
   display: flex;
   flex-direction: column;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
   padding-bottom: 33.32px;
+  margin: 0px auto;
 `;
 
 const ArticleTitle = styled.div`

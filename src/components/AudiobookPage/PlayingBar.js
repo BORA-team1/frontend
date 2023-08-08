@@ -18,7 +18,7 @@ import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
 import example from '../../audio/example.mp3';
 
-const PlayingBar = () => {
+const PlayingBar = (isAudioPlaying, setIsAudioPlaying) => {
   //bookmark
   const [bookmark, setBookmark] = useState(false);
   const reBookmark = () => {
