@@ -41,7 +41,13 @@ const ArticleHeader = () => {
           콘텐츠 모아보기
         </AllContentsButton>
         <AudioBookButton>
-          <img src={audioicon} alt='오디오 북 아이콘'></img>
+          <img
+            onClick={() => {
+              navigate(`/article/${id}/audio`);
+            }}
+            src={audioicon}
+            alt='오디오 북 아이콘'
+          ></img>
         </AudioBookButton>
       </ButtonContainer>
       <TitleContainer>
