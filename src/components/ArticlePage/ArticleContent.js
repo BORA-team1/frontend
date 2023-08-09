@@ -286,6 +286,24 @@ const TextContainer = styled.div`
   width: ${(props) => (props.isContentson ? "330px" : "345px")};
 `;
 
+const HighlightedSpan = styled.span`
+  cursor: pointer;
+  color: ${(props) =>
+    props.selectedSentence === props.sentence ||
+    props.hoveredIndex === props.sentence
+      ? "#A397FF"
+      : "white"};
+  background-color: ${(props) =>
+    props.selectedSentence
+      ? "transparent"
+      : props.highlights.some(
+          (highlight) =>
+            highlight.index === props.longTexts.num &&
+            highlight.sentenceIndex === props.sentenceIndex
+        )
+      ? "rgba(170, 158, 255, 0.35)"
+      : "transparent"};
+`;
 const BarContainer = styled.div`
   width: 25px;
   height: auto;

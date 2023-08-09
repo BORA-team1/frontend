@@ -44,7 +44,7 @@ const AudioContent = ({ isAudioPlaying }) => {
   return (
     <Wrapper>
       {longTexts.map((longText, index) => {
-        const sentences = longText.content.split(/\. |\? /);
+        const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
 
         return (
           <Section key={index} className="ebook-container">
@@ -56,9 +56,6 @@ const AudioContent = ({ isAudioPlaying }) => {
                     key={sentenceIndex}
                   >
                     {sentence.trim()}
-                    {sentenceIndex < sentences.length - 1 &&
-                      ((sentence.slice(-1) === "?" && " ") ||
-                        (sentence.slice(-1) !== "?" && ". "))}
                   </HighlightedSpan>
                 ))}
               </TextContainer>
