@@ -8,7 +8,6 @@ import CommentInput from './CommentInput';
 const FloatingBar = ({
   addToHighlights,
   isBottomSheetOpen,
-  selectedSentence,
   handleOpenBottomSheet,
   showListA,
   showListB,
@@ -30,19 +29,19 @@ const FloatingBar = ({
         <div
           className='circle2'
           onClick={() => {
-            openQnACreateModal(selectedSentence);
+            openQnACreateModal();
           }}
         ></div>
         <div
           className='circle3'
           onClick={() => {
-            openInputBox(selectedSentence);
+            openInputBox();
           }}
         ></div>
         <div
           className='circle4'
           onClick={() => {
-            openEmojiBar(selectedSentence);
+            openEmojiBar();
           }}
         ></div>
       </Container>
