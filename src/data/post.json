@@ -1,0 +1,343 @@
+{
+  "data": [
+    {
+      "post_id": 1,
+      "title": "제로슈거와 아스파탐",
+      "post_image": "[이미지url]",
+      "diff": 3,
+      "author": "척척학사",
+      "date": "2023-05-02",
+      "hashtag": [{"hashtag": "라이프"}, {"hashtag": "운동"}],
+      "Audio": 123,
+      "PostSec": [
+        {
+          "sec_id": 1,
+          "num": 1,
+          "title": null,
+          "content": "혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.",
+          "Lines": [
+            {
+              "line_id": 90,
+              "sentence": 2,
+              "content": "[밑줄 문장 내용]",
+              "is_my": "True",
+              "LineCom": [
+                {
+                  "linecom_id": 12
+                }
+              ],
+              "Question": [
+                {
+                  "que_id": 11
+                }
+              ],
+              "Emotion": [
+                {
+                  "emo_id": 21,
+                  "content": 2
+                },
+                {
+                  "emo_id": 22,
+                  "content": 3
+                }
+              ],
+              "IngVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  }
+                }
+              ],
+              "DoneVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "item1": "[투표항목1]",
+                  "item2": "[투표항목2]",
+                  "item3": "[투표항목3]",
+                  "start_date": "2023-05-01",
+                  "done_date": "2023-05-10",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  },
+                  "result": {
+                    "result1_10": 1,
+                    "result1_20": 0,
+                    "result1_30": 0,
+                    "result1_40": 1,
+                    "result1_50": 1,
+                    "result2_10": 9,
+                    "result2_20": 2,
+                    "result2_30": 0,
+                    "result2_40": 3,
+                    "result2_50": 4,
+                    "result3_10": 5,
+                    "result3_20": 3,
+                    "result3_30": 2,
+                    "result3_40": 1,
+                    "result3_50": 1
+                  }
+                }
+              ],
+              "Debate": [
+                {
+                  "debate_id": 2,
+                  "title": "[토론 주제]",
+                  "cond": 2,
+                  "debate_user": [
+                    {
+                      "id": 4,
+                      "profile": "[이미지url]",
+                      "nickname": "도라에몽"
+                    },
+                    {
+                      "id": 9,
+                      "profile": "[이미지url]",
+                      "nickname": "사과즙"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "sec_id": 2,
+          "num": 2,
+          "title": "아스파탐이 정확히 뭐야?",
+          "content": "요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.",
+          "Lines": [
+            {
+              "line_id": 90,
+              "sentence": 2,
+              "content": "[밑줄 문장 내용]",
+              "is_my": "True",
+              "LineCom": [
+                {
+                  "linecom_id": 12
+                }
+              ],
+              "Question": [
+                {
+                  "que_id": 11
+                }
+              ],
+              "Emotion": [
+                {
+                  "emo_id": 21,
+                  "content": 2
+                },
+                {
+                  "emo_id": 22,
+                  "content": 3
+                }
+              ],
+              "IngVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  }
+                }
+              ],
+              "DoneVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "item1": "[투표항목1]",
+                  "item2": "[투표항목2]",
+                  "item3": "[투표항목3]",
+                  "start_date": "2023-05-01",
+                  "done_date": "2023-05-10",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  },
+                  "result": {
+                    "result1_10": 1,
+                    "result1_20": 0,
+                    "result1_30": 0,
+                    "result1_40": 1,
+                    "result1_50": 1,
+                    "result2_10": 9,
+                    "result2_20": 2,
+                    "result2_30": 0,
+                    "result2_40": 3,
+                    "result2_50": 4,
+                    "result3_10": 5,
+                    "result3_20": 3,
+                    "result3_30": 2,
+                    "result3_40": 1,
+                    "result3_50": 1
+                  }
+                }
+              ],
+              "Debate": [
+                {
+                  "debate_id": 2,
+                  "title": "[토론 주제]",
+                  "cond": 2,
+                  "debate_user": [
+                    {
+                      "id": 4,
+                      "profile": "[이미지url]",
+                      "nickname": "도라에몽"
+                    },
+                    {
+                      "id": 9,
+                      "profile": "[이미지url]",
+                      "nickname": "사과즙"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "HanNum": 6,
+      "Han": {
+        "han_id": 43,
+        "content": "[한마디 내용]",
+        "do_like": false,
+        "like_num": 2,
+        "han_user": {
+          "id": 4,
+          "profile": "http://~[이미지url]",
+          "nickname": "도라에몽"
+        }
+      }
+    },
+    {
+      "post_id": 2,
+      "title": "제로슈거와 아스파탐",
+      "post_image": "[이미지url]",
+      "diff": 3,
+      "author": "척척학사",
+      "date": "2023-05-02",
+      "hashtag": [{"hashtag": "라이프"}, {"hashtag": "운동"}],
+      "Audio": 123,
+      "PostSec": [
+        {
+          "sec_id": 12,
+          "num": 1,
+          "title": "[섹션 소제목. null가능]",
+          "content": "[내용]",
+          "Lines": [
+            {
+              "line_id": 90,
+              "sentence": 2,
+              "content": "[밑줄 문장 내용]",
+              "is_my": "True",
+              "LineCom": [
+                {
+                  "linecom_id": 12
+                }
+              ],
+              "Question": [
+                {
+                  "que_id": 11
+                }
+              ],
+              "Emotion": [
+                {
+                  "emo_id": 21,
+                  "content": 2
+                },
+                {
+                  "emo_id": 22,
+                  "content": 3
+                }
+              ],
+              "IngVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  }
+                }
+              ],
+              "DoneVote": [
+                {
+                  "vote_id": 21,
+                  "title": "투표제목",
+                  "item1": "[투표항목1]",
+                  "item2": "[투표항목2]",
+                  "item3": "[투표항목3]",
+                  "start_date": "2023-05-01",
+                  "done_date": "2023-05-10",
+                  "vote_user": {
+                    "id": 4,
+                    "profile": "http://~[이미지url]",
+                    "nickname": "도라에몽"
+                  },
+                  "result": {
+                    "result1_10": 1,
+                    "result1_20": 0,
+                    "result1_30": 0,
+                    "result1_40": 1,
+                    "result1_50": 1,
+                    "result2_10": 9,
+                    "result2_20": 2,
+                    "result2_30": 0,
+                    "result2_40": 3,
+                    "result2_50": 4,
+                    "result3_10": 5,
+                    "result3_20": 3,
+                    "result3_30": 2,
+                    "result3_40": 1,
+                    "result3_50": 1
+                  }
+                }
+              ],
+              "Debate": [
+                {
+                  "debate_id": 2,
+                  "title": "[토론 주제]",
+                  "cond": 2,
+                  "debate_user": [
+                    {
+                      "id": 4,
+                      "profile": "[이미지url]",
+                      "nickname": "도라에몽"
+                    },
+                    {
+                      "id": 9,
+                      "profile": "[이미지url]",
+                      "nickname": "사과즙"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "HanNum": 6,
+      "Han": {
+        "han_id": 43,
+        "content": "[한마디 내용]",
+        "do_like": false,
+        "like_num": 2,
+        "han_user": {
+          "id": 4,
+          "profile": "http://~[이미지url]",
+          "nickname": "도라에몽"
+        }
+      }
+    }
+  ]
+}

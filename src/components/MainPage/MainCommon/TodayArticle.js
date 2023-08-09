@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 //components
-import Difficulty from '../../Common/Difficulty';
+import Difficulty from "../../Common/Difficulty";
 
 //img
-import article_background from '../../../images/article_background1.svg';
-import bookmark_on from '../../../images/bookmark_on.svg';
-import bookmark_off from '../../../images/bookmark-off.svg';
+import article_background from "../../../images/article_background1.svg";
+import bookmark_on from "../../../images/bookmark_on.svg";
+import bookmark_off from "../../../images/bookmark-off.svg";
 
-import {articleData} from '../../../data/_mock/articledata';
+import { articleData } from "../../../data/_mock/articledata";
 
-const TodayArticle = ({navigatorP}) => {
+const TodayArticle = ({ navigatorP }) => {
   return (
     <>
       {articleData[0].Random.map((article) => (
@@ -21,10 +21,10 @@ const TodayArticle = ({navigatorP}) => {
             <Title>{article.title}</Title>
             <div
               style={{
-                display: 'flex',
-                alignItems: 'baseline',
-                justifyContent: 'space-between',
-                width: '113px',
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                width: "113px",
               }}
             >
               <TagBox>
@@ -32,7 +32,7 @@ const TodayArticle = ({navigatorP}) => {
                   <Tag key={tagIndex}>#{tag.hashtag}</Tag>
                 ))}
               </TagBox>
-              <Difficulty size='small' difficulty='heavy'>
+              <Difficulty size="small" difficulty="light">
                 light
               </Difficulty>
             </div>
@@ -102,7 +102,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -118,11 +118,11 @@ const TagBox = styled.ul`
 const Tag = styled.li`
   display: inline-block;
   &:not(:last-child)::after {
-    content: ' • ';
+    content: " • ";
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
