@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-// import axios from 'axios';
+import axios from 'axios';
 
 import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
 import FloatingBar from './FloatingBar';
@@ -10,6 +10,7 @@ import comment from '../../images/sectionbar/commenticon.svg';
 import qna from '../../images/sectionbar/qnaicon.svg';
 
 const ArticleContent = ({isContentson}) => {
+  const BASE_URL = 'http://localhost:3001';
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
@@ -39,12 +40,8 @@ const ArticleContent = ({isContentson}) => {
   //QnA 모달 오픈/클로즈
   const [isQnAOpen, setIsQnAOpen] = useState(false);
 
-  const openQnACreateModal = (selectedSentence) => {
-    if (
-      highlights.some((highlight) => highlight.sentence === selectedSentence)
-    ) {
-      setIsQnAOpen(true);
-    }
+  const openQnACreateModal = () => {
+    setIsQnAOpen(true);
   };
   const closeQnACreateModal = () => {
     setIsQnAOpen(false);
@@ -53,25 +50,16 @@ const ArticleContent = ({isContentson}) => {
   //댓글 입력 박스 오픈/클로즈
   const [isInputOpen, setIsInputOpen] = useState(false);
 
-  const openInputBox = (selectedSentence) => {
-    if (
-      highlights.some((highlight) => highlight.sentence === selectedSentence)
-    ) {
-      setIsInputOpen(true);
-      console.log(isInputOpen);
-    }
+  const openInputBox = () => {
+    setIsInputOpen(true);
   };
   const closeInputBox = () => {
     setIsInputOpen(false);
   };
 
   //이모지 바 오픈/클로즈
-  const openEmojiBar = (selectedSentence) => {
-    if (
-      highlights.some((highlight) => highlight.sentence === selectedSentence)
-    ) {
-      setIsEmojiBarOpen(true);
-    }
+  const openEmojiBar = () => {
+    setIsEmojiBarOpen(true);
   };
   const closeEmojiBar = () => {
     setIsEmojiBarOpen(false);
@@ -82,16 +70,16 @@ const ArticleContent = ({isContentson}) => {
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
 
-  //클릭하면 글자 색 바뀌기
+  //클릭한 문장의 글자 색 바뀌기
   const highlightText = (sentence) => {
     setSelectedSentence((prevSelected) =>
       prevSelected === sentence ? null : sentence
     );
   };
 
-  //클릭한 문장 정보 저장
-  const saveTextInfo = (index, sentenceIndex, sentence) => {
-    const textInfo = {index, sentenceIndex, sentence};
+  //클릭한 문장 정보 저장 (섹션 id, 문장 index)
+  const saveTextInfo = (index, sentenceIndex) => {
+    const textInfo = {index, sentenceIndex};
     setSelectedIndex(textInfo);
   };
 
@@ -115,31 +103,6 @@ const ArticleContent = ({isContentson}) => {
     setHoveredIndex(null);
   };
 
-  //콘텐츠 존재할 때만 아이콘 띄우기
-  // const [data, setData] = useState([]);
-
-  // const mockData = [
-  //   {
-  //     id: 1,
-  //     content:
-  //       '요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요',
-  //     LineCom: '댓글',
-  //   },
-  //   {
-  //     id: 2,
-  //     content:
-  //       '요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요',
-  //     LineCom: '댓글',
-  //   },
-  // ];
-
-  //섹션의 높이값 추출하기
-  // const sectionRef = useRef(null);
-  // if (sectionRef.current) {
-  //   const sectionHeight = sectionRef.current.clientHeight;
-  //   console.log(sectionHeight)
-  // }
-
   //섹션 타이틀 가져오기
   // const getSectionTitle = () => {
   //   axios
@@ -153,16 +116,34 @@ const ArticleContent = ({isContentson}) => {
   // };
 
   //임시 데이터
-  const longTexts = [
-    {
-      id: 1,
-      content: `혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.`,
-    },
-    {
-      id: 2,
-      content: `요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.`,
-    },
-  ];
+  // const longTexts = [
+  //   {
+  //     id: 1,
+  //     content: `혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.`,
+  //   },
+  //   {
+  //     id: 2,
+  //     content: `요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.`,
+  //   },
+  // ];
+
+  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const [posts, setPosts] = useState([]);
+  const getPosts = () => {
+    axios
+      .get(`${BASE_URL}/data`)
+      .then((response) => {
+        setPosts(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
 
   //문장 index 확인용 콘솔 띄우는 함수
   const handleClick = (index, sentenceIndex) => {
@@ -173,81 +154,97 @@ const ArticleContent = ({isContentson}) => {
 
   return (
     <Wrapper>
-      {longTexts.map((longTexts, index) => {
-        const sentences = longTexts.content.split(/\. |\? /); // 문장 분리
-        return (
-          <>
-            <Section key={index} className='ebook-container'>
-              {/* {subtitle && <SectionTitle></SectionTitle>} */}
-              <SectionContent>
-                <TextContainer isContentson={isContentson}>
-                  {sentences.map((sentence, sentenceIndex) => {
-                    return (
-                      <>
-                        <span
-                          onClick={() => {
-                            handleClick(index, sentenceIndex);
-                            saveTextInfo(index, sentenceIndex, sentence);
-                            highlightText(sentence);
-                          }}
-                          style={{
-                            cursor: 'pointer',
-                            color:
-                              selectedSentence === sentence ||
-                              hoveredIndex === sentence
-                                ? '#A397FF'
-                                : 'white',
+      {posts.length > 0 &&
+        posts.map((item) => (
+          <Gap key={item.post_id}>
+            {item.post_id === 1 &&
+              item.PostSec.map((longTexts) => {
+                // const sentences = longTexts.content.split(/\. |\? /); // 문장 분리
+                const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
+                return (
+                  <>
+                    <Section key={longTexts.sec_id} className='ebook-container'>
+                      {/* {subtitle && <SectionTitle></SectionTitle>} */}
+                      <SectionContent>
+                        <TextContainer isContentson={isContentson}>
+                          {sentences.map((sentence, sentenceIndex) => {
+                            return (
+                              <>
+                                <span
+                                  onClick={() => {
+                                    handleClick(
+                                      longTexts.sec_id,
+                                      sentenceIndex
+                                    );
+                                    saveTextInfo(
+                                      longTexts.sec_id,
+                                      sentenceIndex
+                                    );
+                                    highlightText(sentence);
+                                  }}
+                                  style={{
+                                    cursor: 'pointer',
+                                    color:
+                                      selectedSentence === sentence ||
+                                      hoveredIndex === sentence
+                                        ? '#A397FF'
+                                        : 'white',
 
-                            backgroundColor: selectedSentence
-                              ? 'transparent'
-                              : highlights.some(
-                                  (highlight) =>
-                                    highlight.index === index &&
-                                    highlight.sentenceIndex === sentenceIndex
-                                )
-                              ? 'rgba(170, 158, 255, 0.35)'
-                              : 'transparent',
-                          }}
-                        >
-                          {sentence.trim()}
-                          {sentenceIndex < sentences.length - 1 ? '. ' : ''}
-                        </span>
-                      </>
-                    );
-                  })}
-                </TextContainer>
-                {isContentson && (
-                  <BarContainer>
-                    <SectionBar>
-                      {sentences.map((sentence, sentenceIndex) => {
-                        return (
-                          <Icon
-                            key={sentenceIndex}
-                            onMouseEnter={() => onHover(sentence)}
-                            onMouseLeave={offHover}
-                            onClick={handleOpenBottomSheet}
-                            style={{
-                              height: `${500 / sentences.length}%`,
-                            }}
-                          >
+                                    backgroundColor: selectedSentence
+                                      ? 'transparent'
+                                      : highlights.some(
+                                          (highlight) =>
+                                            highlight.index === longTexts.num &&
+                                            highlight.sentenceIndex ===
+                                              sentenceIndex
+                                        )
+                                      ? 'rgba(170, 158, 255, 0.35)'
+                                      : 'transparent',
+                                  }}
+                                >
+                                  {sentence}
+                                  {/* {sentenceIndex < sentences.length - 1 &&
+                                ((sentence.slice(-1) === '?' && '') ||
+                                  (sentence.slice(-1) !== '?' && '. '))} */}
+                                </span>
+                              </>
+                            );
+                          })}
+                        </TextContainer>
+                        {isContentson && (
+                          <BarContainer>
+                            <SectionBar>
+                              {sentences.map((sentence, sentenceIndex) => {
+                                return (
+                                  <Icon
+                                    key={sentenceIndex}
+                                    onMouseEnter={() => onHover(sentence)}
+                                    onMouseLeave={offHover}
+                                    onClick={handleOpenBottomSheet}
+                                    style={{
+                                      height: `${500 / sentences.length}%`,
+                                    }}
+                                  >
+                                    <div></div>
+                                    <img src={comment} alt='comment'></img>
+                                  </Icon>
+                                );
+                              })}
+                              {/* <Icon>
                             <div></div>
-                            <img src={comment} alt='comment'></img>
-                          </Icon>
-                        );
-                      })}
-                      {/* <Icon>
-                        <div></div>
-                        <img src={qna} alt='qna'></img>
-                      </Icon> */}
-                    </SectionBar>
-                  </BarContainer>
-                )}
-              </SectionContent>
-            </Section>
-            {isContentson && <ContentPopup></ContentPopup>}
-          </>
-        );
-      })}
+                            <img src={qna} alt='qna'></img>
+                          </Icon> */}
+                            </SectionBar>
+                          </BarContainer>
+                        )}
+                      </SectionContent>
+                    </Section>
+                    {isContentson && <ContentPopup></ContentPopup>}
+                  </>
+                );
+              })}
+          </Gap>
+        ))}
 
       <EditerFollow>이 포스트의 에디터 팔로우하기</EditerFollow>
       {selectedSentence && (
@@ -282,7 +279,6 @@ const ArticleContent = ({isContentson}) => {
           openEmojiBar={openEmojiBar}
           closeEmojiBar={closeEmojiBar}
           selectedSentence={selectedSentence}
-          selectedIndex={selectedIndex}
         ></HighlightingBottomSheet>
       )}
     </Wrapper>
@@ -295,7 +291,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 37.4px;
-  gap: 50px;
 
   color: white;
   font-family: 'Pretendard-Regular';
@@ -303,6 +298,12 @@ const Wrapper = styled.div`
   font-style: normal;
   font-weight: 300;
   line-height: 169.336%;
+`;
+
+const Gap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 `;
 
 const Section = styled.div`
@@ -367,7 +368,7 @@ const EditerFollow = styled.div`
   display: flex;
   width: fit-content;
   padding: 10px 35px;
-  margin: 20px 76px 40px 76px;
+  margin: 70px 76px 40px 76px;
 
   border-radius: 20px;
   background: #5a45f5;

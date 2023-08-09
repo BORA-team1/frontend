@@ -33,7 +33,12 @@ const BottomBar = ({handleBottomSheet, isContentson, handleContentsOn}) => {
         <span>투표만들기</span>
       </div>
       <div>
-        <img src={debate} alt='토론'></img>
+        <img
+          src={debate}
+          alt='토론'
+          id='debate'
+          onClick={handleBottomSheet}
+        ></img>
         <span>토론만들기</span>
       </div>
       <div>
