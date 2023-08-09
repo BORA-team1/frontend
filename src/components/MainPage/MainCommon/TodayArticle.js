@@ -1,44 +1,63 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
+
 //components
-import Difficulty from '../../Common/Difficulty';
+import Difficulty from "../../Common/Difficulty";
 
 //img
-import article_background from '../../../images/article_background1.svg';
-import bookmark_on from '../../../images/bookmark_on.svg';
-import bookmark_off from '../../../images/bookmark-off.svg';
+import article_background from "../../../images/article_background1.svg";
+import bookmark_on from "../../../images/bookmark_on.svg";
+import bookmark_off from "../../../images/bookmark-off.svg";
 
-import {articleData} from '../../../data/_mock/articledata';
+const TodayArticle = ({ navigatorP }) => {
+  const BASE_URL = "http://localhost:3002";
+  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  useEffect(() => {
+    getPosts();
+  }, []);
 
-const TodayArticle = ({navigatorP}) => {
+  const [posts, setPosts] = useState([]);
+  const getPosts = () => {
+    axios
+      .get(`${BASE_URL}/main`)
+      .then((response) => {
+        setPosts(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+      });
+  };
   return (
     <>
-      {articleData[0].Random.map((article) => (
-        <Box onClick={navigatorP} key={article.post_id}>
-          <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
-          <Picture src={article_background} />
-          <TitleBox>
-            <Title>{article.title}</Title>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'baseline',
-                justifyContent: 'space-between',
-                width: '113px',
-              }}
-            >
-              <TagBox>
-                {article.hashtag.map((tag, tagIndex) => (
-                  <Tag key={tagIndex}>#{tag.hashtag}</Tag>
-                ))}
-              </TagBox>
-              <Difficulty size='small' difficulty='heavy'>
-                light
-              </Difficulty>
-            </div>
-          </TitleBox>
-        </Box>
-      ))}
+      {posts &&
+        posts.Random?.map((article) => (
+          <Box key={article.post_id} onClick={navigatorP}>
+            <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
+            <Picture src={article_background} />
+            <TitleBox>
+              <Title>{article.title}</Title>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                  width: "113px",
+                }}
+              >
+                <TagBox>
+                  {article.hashtag.map((tag, tagIndex) => (
+                    <Tag key={tagIndex}>#{tag.hashtag}</Tag>
+                  ))}
+                </TagBox>
+                <Difficulty size="small" difficulty="light">
+                  light
+                </Difficulty>
+              </div>
+            </TitleBox>
+          </Box>
+        ))}
     </>
   );
 };
@@ -102,7 +121,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -118,11 +137,11 @@ const TagBox = styled.ul`
 const Tag = styled.li`
   display: inline-block;
   &:not(:last-child)::after {
-    content: ' • ';
+    content: " • ";
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;

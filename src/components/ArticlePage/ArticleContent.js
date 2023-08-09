@@ -1,26 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
 
-import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
-import FloatingBar from './FloatingBar';
-import ContentPopup from './ContentPopup';
+import HighlightingBottomSheet from "../BottomSheet/HighlightingBottomSheet";
+import FloatingBar from "./FloatingBar";
+import ContentPopup from "./ContentPopup";
 
-import comment from '../../images/sectionbar/commenticon.svg';
-import qna from '../../images/sectionbar/qnaicon.svg';
+import comment from "../../images/sectionbar/commenticon.svg";
+import qna from "../../images/sectionbar/qnaicon.svg";
 
-const ArticleContent = ({isContentson}) => {
-  const BASE_URL = 'http://localhost:3001';
+const ArticleContent = ({ isContentson }) => {
+  const BASE_URL = "http://localhost:3002";
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-  const [category, setCategory] = useState('A');
+  const [category, setCategory] = useState("A");
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [highlights, setHighlights] = useState([]);
-
-  // const [subtitle, setSubTitle] = useState('');
 
   //하이라이팅 바텀시트 오픈/클로즈
   const handleOpenBottomSheet = () => {
@@ -66,9 +64,9 @@ const ArticleContent = ({isContentson}) => {
   };
 
   //카테고리에 따른 리스트 띄우기
-  const showListA = () => setCategory('A');
-  const showListB = () => setCategory('B');
-  const showListC = () => setCategory('C');
+  const showListA = () => setCategory("A");
+  const showListB = () => setCategory("B");
+  const showListC = () => setCategory("C");
 
   //클릭한 문장의 글자 색 바뀌기
   const highlightText = (sentence) => {
@@ -79,7 +77,7 @@ const ArticleContent = ({isContentson}) => {
 
   //클릭한 문장 정보 저장 (섹션 id, 문장 index)
   const saveTextInfo = (index, sentenceIndex) => {
-    const textInfo = {index, sentenceIndex};
+    const textInfo = { index, sentenceIndex };
     setSelectedIndex(textInfo);
   };
 
@@ -103,30 +101,6 @@ const ArticleContent = ({isContentson}) => {
     setHoveredIndex(null);
   };
 
-  //섹션 타이틀 가져오기
-  // const getSectionTitle = () => {
-  //   axios
-  //     .get('URL')
-  //     .then((response) => {
-  //       setSubTitle(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error', error);
-  //     });
-  // };
-
-  //임시 데이터
-  // const longTexts = [
-  //   {
-  //     id: 1,
-  //     content: `혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.`,
-  //   },
-  //   {
-  //     id: 2,
-  //     content: `요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.`,
-  //   },
-  // ];
-
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();
@@ -141,7 +115,7 @@ const ArticleContent = ({isContentson}) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
+        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
       });
   };
 
@@ -159,12 +133,10 @@ const ArticleContent = ({isContentson}) => {
           <Gap key={item.post_id}>
             {item.post_id === 1 &&
               item.PostSec.map((longTexts) => {
-                // const sentences = longTexts.content.split(/\. |\? /); // 문장 분리
                 const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
                 return (
                   <>
-                    <Section key={longTexts.sec_id} className='ebook-container'>
-                      {/* {subtitle && <SectionTitle></SectionTitle>} */}
+                    <Section key={longTexts.sec_id} className="ebook-container">
                       <SectionContent>
                         <TextContainer isContentson={isContentson}>
                           {sentences.map((sentence, sentenceIndex) => {
@@ -183,29 +155,26 @@ const ArticleContent = ({isContentson}) => {
                                     highlightText(sentence);
                                   }}
                                   style={{
-                                    cursor: 'pointer',
+                                    cursor: "pointer",
                                     color:
                                       selectedSentence === sentence ||
                                       hoveredIndex === sentence
-                                        ? '#A397FF'
-                                        : 'white',
+                                        ? "#A397FF"
+                                        : "white",
 
                                     backgroundColor: selectedSentence
-                                      ? 'transparent'
+                                      ? "transparent"
                                       : highlights.some(
                                           (highlight) =>
                                             highlight.index === longTexts.num &&
                                             highlight.sentenceIndex ===
                                               sentenceIndex
                                         )
-                                      ? 'rgba(170, 158, 255, 0.35)'
-                                      : 'transparent',
+                                      ? "rgba(170, 158, 255, 0.35)"
+                                      : "transparent",
                                   }}
                                 >
                                   {sentence}
-                                  {/* {sentenceIndex < sentences.length - 1 &&
-                                ((sentence.slice(-1) === '?' && '') ||
-                                  (sentence.slice(-1) !== '?' && '. '))} */}
                                 </span>
                               </>
                             );
@@ -226,14 +195,10 @@ const ArticleContent = ({isContentson}) => {
                                     }}
                                   >
                                     <div></div>
-                                    <img src={comment} alt='comment'></img>
+                                    <img src={comment} alt="comment"></img>
                                   </Icon>
                                 );
                               })}
-                              {/* <Icon>
-                            <div></div>
-                            <img src={qna} alt='qna'></img>
-                          </Icon> */}
                             </SectionBar>
                           </BarContainer>
                         )}
@@ -293,7 +258,7 @@ const Wrapper = styled.div`
   margin-top: 37.4px;
 
   color: white;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -312,20 +277,13 @@ const Section = styled.div`
   margin-left: 20px;
 `;
 
-// const SectionTitle = styled.div`
-//   width: 345px;
-//   font-size: 19px;
-//   font-weight: 600;
-//   margin-bottom: 20px;
-// `;
-
 const SectionContent = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
 const TextContainer = styled.div`
-  width: ${(props) => (props.isContentson ? '330px' : '345px')};
+  width: ${(props) => (props.isContentson ? "330px" : "345px")};
 `;
 
 const BarContainer = styled.div`
