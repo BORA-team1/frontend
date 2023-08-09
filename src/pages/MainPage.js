@@ -1,29 +1,30 @@
-import React from 'react';
-import styled from 'styled-components';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 //components
-import TopBar from '../components/Common/TopBar';
-import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
-import DifficultyArticle from '../components/MainPage/MainCommon/DifficultyArticle';
-import DifficultyBar from '../components/MainPage/DifficultyBar';
-import InterestArticle from '../components/MainPage/MainCommon/InterestArticle';
+import TopBar from "../components/Common/TopBar";
+import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
+import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
+import DifficultyBar from "../components/MainPage/DifficultyBar";
+import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
 
 //images
-import listeningarticle_btn from '../images/ListeningArticleBtn.svg';
-import article_image from '../images/article_image.svg';
-import picked_sentence from '../images/PickedSentence.svg';
-import entire_btn from '../images/entireBtn.svg';
+import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
+import article_image from "../images/article_image.svg";
+import picked_sentence from "../images/PickedSentence.svg";
+import entire_btn from "../images/entireBtn.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const MainPage = () => {
-  const user = '지민';
+  const user = "지민";
+  const [selectDifficulty, setSelectDifficulty] = useState(1);
   const navigate = useNavigate();
   const navigatorP = () => {
-    navigate('/article/1');
+    navigate("/article/1");
   };
   const navigatorE = () => {
-    navigate('/entirepage');
+    navigate("/entirepage");
   };
   return (
     <Container>
@@ -39,7 +40,7 @@ const MainPage = () => {
         <ListingArticleBtn
           src={listeningarticle_btn}
           onClick={() => {
-            navigate('/guidebookpage');
+            navigate("/guidebookpage");
           }}
         />
         {/* 오늘의 아티클 부분 */}
@@ -53,32 +54,12 @@ const MainPage = () => {
         <DifficultyTitle>
           <span>난이도 선택</span>해서 부담없이 골라읽기
         </DifficultyTitle>
-        <DifficultyBar />
+        <DifficultyBar
+          selectDifficulty={selectDifficulty}
+          setSelectDifficulty={setSelectDifficulty}
+        />
         <DifficultyArticleList>
-          <DifficultyArticle
-            author="일상의기쁨"
-            VoteOk={false}
-            DebateOk={false}
-            QnAOk={true}
-          />
-          <DifficultyArticle
-            author='NewRules'
-            VoteOk={false}
-            DebateOk={true}
-            QnAOk={true}
-          />
-          <DifficultyArticle
-            author='K팝고인물'
-            VoteOk={true}
-            DebateOk={false}
-            QnAOk={true}
-          />
-          <DifficultyArticle
-            author='쉬운경제'
-            VoteOk={false}
-            DebateOk={false}
-            QnAOk={true}
-          />
+          <DifficultyArticle selectDifficulty={selectDifficulty} />
         </DifficultyArticleList>
         <EntireBtn src={entire_btn} onClick={navigatorE} />
 
@@ -154,7 +135,7 @@ const Scroll = styled.div`
 
 const FontStyle = styled.div`
   color: #fff;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
 `;
 

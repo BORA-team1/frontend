@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const AudioContent = (isAudioPlaying) => {
+const AudioContent = ({ isAudioPlaying }) => {
   // 임시 데이터
   const longTexts = [
     {
