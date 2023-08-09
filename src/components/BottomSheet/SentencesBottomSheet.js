@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import SentenceBox from './SentenceBox';
+import MySentenceBox from './MySentenceBox';
 import SentenceBoxEmoji from './SentenceBoxEmoji';
 import CommentBox from './CommentBox';
 import QnABox from './QnABox';
@@ -71,7 +72,7 @@ const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
         {category === 'A' && (
           <SentencesList>
             <Num>문장 1개</Num>
-            <SentenceBox></SentenceBox>
+            <MySentenceBox></MySentenceBox>
           </SentencesList>
         )}
         {category === 'B' && (

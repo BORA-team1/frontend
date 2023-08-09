@@ -8,9 +8,7 @@ const VoteBox = ({vote}) => {
 
   // 투표 처리 함수
   const handleVote = (index) => {
-    if (votedIndex === -1) {
-      setVotedIndex(index);
-    }
+    setVotedIndex(index);
   };
 
   return (
