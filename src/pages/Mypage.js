@@ -10,6 +10,13 @@ import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
 
 //images
 import vector from "../images/vector_btn.svg";
+//삭제하고 컴포넌트로 불러와야 하는 부분들
+import userprofile from "../images/willbedeleted/userprofile.svg";
+import userinfo from "../images/willbedeleted/userinfo.svg";
+import bookmarkedimg from "../images/willbedeleted/bookmarkedimg.svg";
+import followinggroup1 from "../images/willbedeleted/followinggroup1.svg";
+import followinggroup2 from "../images/willbedeleted/followinggroup2.svg";
+import savedpalylist from "../images/willbedeleted/savedpalylist.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const MyPage = () => {
@@ -29,24 +36,30 @@ const MyPage = () => {
       <Scroll>
         <>
           {/* 듣는 아티클 부분 */}
-          <UserProfile></UserProfile>
+          <UserProfile>
+            <Content1 src={userprofile} />
+            <Content2 src={userinfo} />
+          </UserProfile>
           <BookMarkList>
             <TitleBox>
               <Title>북마크</Title>
-              <BookMarkBtn src={vector} onClick={navigatorB} />
+              <Btn src={vector} onClick={navigatorB} />
             </TitleBox>
+            <Content3 src={bookmarkedimg} />
           </BookMarkList>
           <FollowingEditorList>
             <TitleBox>
               <Title>팔로우한 에디터</Title>
-              <BookMarkBtn src={vector} onClick={navigatorE} />
+              <Btn src={vector} onClick={navigatorE} />
             </TitleBox>
+            <Content4 src={followinggroup1} />
           </FollowingEditorList>
           <SavedPlayList>
             <TitleBox>
               <Title>저장한 재생목록</Title>
-              <BookMarkBtn src={vector} onClick={navigatorP} />
+              <Btn src={vector} onClick={navigatorP} />
             </TitleBox>
+            <Content3 src={savedpalylist} />
           </SavedPlayList>
         </>
       </Scroll>
@@ -103,6 +116,10 @@ const TitleBox = styled.div`
 const UserProfile = styled(DetailBox)`
   height: 44px;
   margin-top: 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const BookMarkList = styled(DetailBox)`
@@ -113,7 +130,7 @@ const Title = styled.div`
   font-family: "Pretendard-Regular";
 `;
 
-const BookMarkBtn = styled.img`
+const Btn = styled.img`
   width: 16px;
   height: 16px;
 `;
@@ -122,16 +139,29 @@ const FollowingEditorList = styled(DetailBox)`
   height: 81px;
 `;
 
-const EditorBtn = styled.img`
-  width: 16px;
-  height: 16px;
-`;
-
 const SavedPlayList = styled(DetailBox)`
   height: 151px;
 `;
 
-const PlayListBtn = styled.img`
-  width: 16px;
-  height: 16px;
+const Content1 = styled.img`
+  width: 50px;
+  height: 50px;
+`;
+
+const Content2 = styled.img`
+  margin-left: 6px;
+  width: 266px;
+  height: 36px;
+`;
+
+const Content3 = styled.img`
+  width: 200px;
+  height: 122px;
+  margin-top: 10px;
+`;
+
+const Content4 = styled.img`
+  width: 284px;
+  height: 53px;
+  margin-top: 10px;
 `;

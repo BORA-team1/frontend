@@ -9,6 +9,8 @@ import TopBar from "../components/Common/TopBar";
 //images
 import X from "../images/X.svg";
 
+import savedpalylist from "../images/willbedeleted/savedpalylist.svg";
+
 // props로 받아올 posts 구조 분해 할당
 const DetailPlaylistPage = () => {
   const navigate = useNavigate();
@@ -24,10 +26,9 @@ const DetailPlaylistPage = () => {
             <Del src={X} onClick={navigatorM} />
             <Title>저장한 재생목록</Title>
           </Box>
-          <div style={{ margin: "50px", fontFamily: "Pretendard-Regular" }}>
-            {" "}
-            재생목록 페이지입니다
-          </div>
+          <PlaylistList>
+            <PlaylistImg src={savedpalylist} />
+          </PlaylistList>
         </>
       </Scroll>
     </Container>
@@ -94,3 +95,11 @@ const Del = styled.img`
   height: 18px;
   margin: 20px;
 `;
+
+const PlaylistList = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+`;
+
+const PlaylistImg = styled.img``;

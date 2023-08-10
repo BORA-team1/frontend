@@ -8,6 +8,7 @@ import TopBar from "../components/Common/TopBar";
 
 //images
 import X from "../images/X.svg";
+import bookmarkedimg from "../images/willbedeleted/bookmarkedimg.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const DetailBookmarkPage = () => {
@@ -24,10 +25,9 @@ const DetailBookmarkPage = () => {
             <Del src={X} onClick={navigatorM} />
             <Title>북마크</Title>
           </Box>
-          <div style={{ margin: "50px", fontFamily: "Pretendard-Regular" }}>
-            {" "}
-            북마크 페이지입니다
-          </div>
+          <BookMarkList>
+            <BookmarkImg src={bookmarkedimg} />
+          </BookMarkList>
         </>
       </Scroll>
     </Container>
@@ -94,3 +94,11 @@ const Del = styled.img`
   height: 18px;
   margin: 20px;
 `;
+
+const BookMarkList = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+`;
+
+const BookmarkImg = styled.img``;

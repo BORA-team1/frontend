@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+//임시 Data
+import { postCover } from "../../../data/_mock/articledata";
+
 //img
 import articleimage from "../../../images/difficulty-article_image-1.svg";
 
@@ -13,7 +16,7 @@ import QnAicon_on from "../../../images/DifficultyArticle/QnAicon-on.svg";
 import QnAicon_off from "../../../images/DifficultyArticle/QnAicon-off.svg";
 
 const DifficultyArticle = ({ selectDifficulty }) => {
-  const BASE_URL = "http://localhost:3002";
+  const BASE_URL = "http://localhost:3001";
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();
@@ -31,13 +34,18 @@ const DifficultyArticle = ({ selectDifficulty }) => {
         console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
       });
   };
+
+  //이미지 각각 받아오기
+  const imageArrayL = postCover[1] || [];
+  const imageArrayM = postCover[2] || [];
+  const imageArrayH = postCover[3] || [];
   return (
     <>
       {posts &&
         selectDifficulty === 1 &&
         posts.PostLight?.map((article) => (
           <Box key={article.post_id}>
-            <ArticleImage src={articleimage} />
+            <ArticleImage src={imageArrayL[article.post_id - 11] || ""} />
             <TextContainer>
               <TagBox>
                 {article.hashtag.map((tag, tagIndex) => (
@@ -60,7 +68,7 @@ const DifficultyArticle = ({ selectDifficulty }) => {
         selectDifficulty === 2 &&
         posts.PostMed?.map((article) => (
           <Box key={article.post_id}>
-            <ArticleImage src={articleimage} />
+            <ArticleImage src={imageArrayM[article.post_id - 21] || ""} />
             <TextContainer>
               <TagBox>
                 {article.hashtag.map((tag, tagIndex) => (
@@ -83,7 +91,7 @@ const DifficultyArticle = ({ selectDifficulty }) => {
         selectDifficulty === 3 &&
         posts.PostHeavy?.map((article) => (
           <Box key={article.post_id}>
-            <ArticleImage src={articleimage} />
+            <ArticleImage src={imageArrayH[article.post_id - 31] || ""} />
             <TextContainer>
               <TagBox>
                 {article.hashtag.map((tag, tagIndex) => (

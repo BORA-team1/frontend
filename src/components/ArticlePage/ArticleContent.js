@@ -10,7 +10,7 @@ import comment from "../../images/sectionbar/commenticon.svg";
 import qna from "../../images/sectionbar/qnaicon.svg";
 
 const ArticleContent = ({ isContentson }) => {
-  const BASE_URL = "http://localhost:3002";
+  const BASE_URL = "http://localhost:3001";
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
@@ -286,6 +286,24 @@ const TextContainer = styled.div`
   width: ${(props) => (props.isContentson ? "330px" : "345px")};
 `;
 
+const HighlightedSpan = styled.span`
+  cursor: pointer;
+  color: ${(props) =>
+    props.selectedSentence === props.sentence ||
+    props.hoveredIndex === props.sentence
+      ? "#A397FF"
+      : "white"};
+  background-color: ${(props) =>
+    props.selectedSentence
+      ? "transparent"
+      : props.highlights.some(
+          (highlight) =>
+            highlight.index === props.longTexts.num &&
+            highlight.sentenceIndex === props.sentenceIndex
+        )
+      ? "rgba(170, 158, 255, 0.35)"
+      : "transparent"};
+`;
 const BarContainer = styled.div`
   width: 25px;
   height: auto;
