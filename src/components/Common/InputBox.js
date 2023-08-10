@@ -1,12 +1,24 @@
-import React from 'react';
-import styled from 'styled-components';
-import submiticon from '../../images/submiticon.svg';
+import React, { useState } from "react";
+import styled from "styled-components";
+import submiticon from "../../images/submiticon.svg";
 
-const InputBox = () => {
+const InputBox = ({ onInputChange }) => {
+  //토론페이지에서 사용될 때 필요한 코드 시작
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    onInputChange(inputValue);
+    setInputValue("");
+  };
+  //토론페이지에서 사용될 때 필요한 코드 끝
   return (
     <InputBoxContainer>
-      <Inputbox></Inputbox>
-      <img src={submiticon} alt='submiticon'></img>
+      <Inputbox value={inputValue} onChange={handleInputChange} />
+      <img src={submiticon} alt="submiticon" onClick={handleSubmit}></img>
     </InputBoxContainer>
   );
 };
@@ -37,7 +49,7 @@ const Inputbox = styled.input`
   padding-left: 10px;
 
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

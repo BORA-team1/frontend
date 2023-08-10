@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
-const AudioContent = ({ isAudioPlaying, audioRef }) => {
+const AudioContent = ({isAudioPlaying, audioRef}) => {
   // 데이터 받아오기
-  const BASE_URL = "http://localhost:3001";
+  const BASE_URL = 'http://localhost:3001';
 
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   const [posts, setPosts] = useState([]);
@@ -19,17 +19,17 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
       });
   };
 
   const [highlightedSentenceIndex, setHighlightedSentenceIndex] = useState(0);
   // const [isHighlightingStarted, setIsHighlightingStarted] = useState(false);
   const timeIntervals = [
-    { start: 0, end: 1, sectionId: 1, sentenceIndex: 0 },
-    { start: 1, end: 3, sectionId: 1, sentenceIndex: 1 },
-    { start: 3, end: 7, sectionId: 2, sentenceIndex: 0 },
-    { start: 7, end: 9, sectionId: 2, sentenceIndex: 1 },
+    {start: 0, end: 1, sectionId: 1, sentenceIndex: 0},
+    {start: 1, end: 3, sectionId: 1, sentenceIndex: 1},
+    {start: 3, end: 7, sectionId: 2, sentenceIndex: 0},
+    {start: 7, end: 9, sectionId: 2, sentenceIndex: 1},
     // ... 필요한 만큼 더 간격 정의
   ];
 
@@ -42,17 +42,18 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
 
         if (newIndex !== highlightedSentenceIndex) {
           setHighlightedSentenceIndex(newIndex);
+          console.log(newIndex);
         }
       }
     };
 
     if (audioRef.current) {
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
       }
     };
   }, [isAudioPlaying, audioRef, timeIntervals]);
@@ -78,7 +79,7 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
               item.PostSec.map((sec) => {
                 const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
                 return (
-                  <Section key={sec.sec_id} className="ebook-container">
+                  <Section key={sec.sec_id} className='ebook-container'>
                     <SectionContent>
                       <TextContainer>
                         {sentences.map((sentence, sentenceIndex) => (
@@ -116,7 +117,7 @@ const Wrapper = styled.div`
   gap: 50px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -146,7 +147,7 @@ const TextContainer = styled.div`
 
 const HighlightedSpan = styled.span`
   cursor: pointer;
-  color: ${(props) => (props.isHighlighted ? "#A397FF" : "white")};
+  color: ${(props) => (props.isHighlighted ? '#A397FF' : 'white')};
 `;
 
 const Button = styled.button`
