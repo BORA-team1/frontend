@@ -119,6 +119,7 @@ const DebateBottomSheet = ({handleCloseBottomSheet}) => {
             <CreateButton src={addBtn} onClick={openModal}></CreateButton>
             {isModalOpen && (
               <DebateCreateModal
+                closeModal={closeModal}
                 handleSubmit={handleSubmit}
                 debateTitle={debateTitle}
                 setDebateTitle={setDebateTitle}
@@ -149,7 +150,7 @@ const BottomSheetOverlay = styled.div`
   position: fixed;
   bottom: 0;
   width: 390px;
-  height: 844px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;

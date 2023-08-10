@@ -1,51 +1,71 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
+import QuoteBottomSheet from './QuoteBottomSheet';
 
 //img
 import more from '../../images/more.svg';
 
 const DebateCreateModal = ({
+  closeModal,
   handleSubmit,
   debateTitle,
   setDebateTitle,
   participants,
   handleParticipantChange,
 }) => {
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+
+  //인용 바텀시트 띄우기
+  const openBottomSheet = () => {
+    setBottomSheetOpen(true);
+  };
+  const closeBottomSheet = () => {
+    setBottomSheetOpen(false);
+  };
+
   return (
-    <>
-      <Wrapper>
-        <CreateButton onClick={handleSubmit}>등록</CreateButton>
-        <Container>
-          <Title>투표</Title>
-          <div
-            style={{
-              alignItems: 'flex-start',
-            }}
+    <Wrapper onClick={closeModal}>
+      <CreateButton
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSubmit();
+        }}
+      >
+        등록
+      </CreateButton>
+      <Container onClick={(e) => e.stopPropagation()}>
+        <Title>토론</Title>
+        <div
+          style={{
+            alignItems: 'flex-start',
+          }}
+        >
+          <Q>1. 토론 주제는 무엇인가요?</Q>
+          <Theme
+            value={debateTitle}
+            onChange={(e) => setDebateTitle(e.target.value)}
+            placeholder='주제를 입력해 주세요'
+          />
+          <Q>2. 토론에 참여할 인원을 정해주세요.</Q>
+          <TagBox
+            value={participants}
+            onChange={(e) => handleParticipantChange(parseInt(e.target.value))}
           >
-            <Q>1. 토론 주제는 무엇인가요?</Q>
-            <Theme
-              value={debateTitle}
-              onChange={(e) => setDebateTitle(e.target.value)}
-              placeholder='주제를 입력해 주세요'
-            />
-            <Q>2. 토론에 참여할 인원을 정해주세요.</Q>
-            <TagBox
-              value={participants}
-              onChange={(e) =>
-                handleParticipantChange(parseInt(e.target.value))
-              }
-            >
-              <Option value={4}>4명</Option>
-              <Option value={6}>6명</Option>
-              <Option value={8}>8명</Option>
-            </TagBox>
-          </div>
-          <Quoting>
-            인용하기<img src={more} alt='morereview'></img>
-          </Quoting>
-        </Container>
-      </Wrapper>
-    </>
+            <Option value={4}>4명</Option>
+            <Option value={6}>6명</Option>
+            <Option value={8}>8명</Option>
+          </TagBox>
+        </div>
+        <Quoting id='quote' onClick={openBottomSheet}>
+          인용하기<img src={more} alt='morereview'></img>
+        </Quoting>
+        {bottomSheetOpen && (
+          <QuoteBottomSheet
+            closeBottomSheet={closeBottomSheet}
+          ></QuoteBottomSheet>
+        )}
+      </Container>
+    </Wrapper>
   );
 };
 

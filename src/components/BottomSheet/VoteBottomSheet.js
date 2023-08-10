@@ -133,6 +133,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet}) => {
             <CreateButton src={addbutton} onClick={openModal}></CreateButton>
             {isModalOpen && (
               <VoteCreateModal
+                closeModal={closeModal}
                 handleSubmit={handleSubmit}
                 voteTitle={voteTitle}
                 setVoteTitle={setVoteTitle}

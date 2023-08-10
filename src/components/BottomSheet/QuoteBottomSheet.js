@@ -16,7 +16,7 @@ const QuoteBottomSheet = ({closeBottomSheet}) => {
 
         <List>
           <Num>문장 1개</Num>
-          <Quotation></Quotation>
+          <Quotation closeBottomSheet={closeBottomSheet}></Quotation>
         </List>
       </BottomSheetContainer>
     </BottomSheetOverlay>

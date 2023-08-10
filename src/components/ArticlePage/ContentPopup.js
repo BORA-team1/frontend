@@ -33,8 +33,8 @@ const ContentPopup = () => {
 export default ContentPopup;
 
 const Container = styled.div`
-  margin-top: -20px;
-  margin-bottom: -20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
   width: 390px;
   display: flex;
   flex-direction: column;

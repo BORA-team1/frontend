@@ -54,11 +54,7 @@ const HighlightingBottomSheet = ({
   };
 
   return (
-    <BottomSheetOverlay
-      onClick={() => {
-        onClose();
-      }}
-    >
+    <BottomSheetOverlay onClick={onClose}>
       <BottomSheetContainer
         onClick={(e) => e.stopPropagation()}
         expanded={expanded}

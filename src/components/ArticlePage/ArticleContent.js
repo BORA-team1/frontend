@@ -35,26 +35,6 @@ const ArticleContent = ({ isContentson }) => {
     setExpanded(false);
   };
 
-  //QnA 모달 오픈/클로즈
-  const [isQnAOpen, setIsQnAOpen] = useState(false);
-
-  const openQnACreateModal = () => {
-    setIsQnAOpen(true);
-  };
-  const closeQnACreateModal = () => {
-    setIsQnAOpen(false);
-  };
-
-  //댓글 입력 박스 오픈/클로즈
-  const [isInputOpen, setIsInputOpen] = useState(false);
-
-  const openInputBox = () => {
-    setIsInputOpen(true);
-  };
-  const closeInputBox = () => {
-    setIsInputOpen(false);
-  };
-
   //이모지 바 오픈/클로즈
   const openEmojiBar = () => {
     setIsEmojiBarOpen(true);
@@ -115,7 +95,10 @@ const ArticleContent = ({ isContentson }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+        console.error(
+          '세부포스트 내용을 불러오는 중 오류가 발생했습니다.',
+          error
+        );
       });
   };
 
@@ -136,7 +119,10 @@ const ArticleContent = ({ isContentson }) => {
                 const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
                 return (
                   <>
-                    <Section key={longTexts.sec_id} className="ebook-container">
+                    <Section key={longTexts.sec_id} className='ebook-container'>
+                      {longTexts.title && (
+                        <SectionTitle>{longTexts.title}</SectionTitle>
+                      )}
                       <SectionContent>
                         <TextContainer isContentson={isContentson}>
                           {sentences.map((sentence, sentenceIndex) => {
@@ -194,8 +180,8 @@ const ArticleContent = ({ isContentson }) => {
                                       height: `${500 / sentences.length}%`,
                                     }}
                                   >
-                                    <div></div>
-                                    <img src={comment} alt="comment"></img>
+                                    {/* <div></div> */}
+                                    <img src={comment} alt='comment'></img>
                                   </Icon>
                                 );
                               })}
@@ -204,7 +190,7 @@ const ArticleContent = ({ isContentson }) => {
                         )}
                       </SectionContent>
                     </Section>
-                    {isContentson && <ContentPopup></ContentPopup>}
+                    {/* {isContentson && <ContentPopup></ContentPopup>} */}
                   </>
                 );
               })}
@@ -221,12 +207,6 @@ const ArticleContent = ({ isContentson }) => {
           showListA={showListA}
           showListB={showListB}
           showListC={showListC}
-          isQnAOpen={isQnAOpen}
-          openQnACreateModal={openQnACreateModal}
-          closeQnACreateModal={closeQnACreateModal}
-          isInputOpen={isInputOpen}
-          openInputBox={openInputBox}
-          closeInputBox={closeInputBox}
           isEmojiBarOpen={isEmojiBarOpen}
           openEmojiBar={openEmojiBar}
           closeEmojiBar={closeEmojiBar}
@@ -268,13 +248,20 @@ const Wrapper = styled.div`
 const Gap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
 `;
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+`;
+
+const SectionTitle = styled.div`
+  width: 345px;
+  font-size: 19px;
+  font-weight: 600;
+  margin-top: 50px;
+  margin-bottom: 20px;
 `;
 
 const SectionContent = styled.div`

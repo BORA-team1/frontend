@@ -1,8 +1,11 @@
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 //img
 import usericon from '../../images/willbedeleted/UserIcon.svg';
 
 const DateBox = ({debate}) => {
+  const {id} = useParams();
+  const navigate = useNavigate();
   return (
     <Box>
       <Title>"{debate.title}"</Title>
@@ -18,7 +21,13 @@ const DateBox = ({debate}) => {
           <UserIcon src={usericon} />
           <People>모집중/{debate.participants}명</People>
         </TagBox>
-        <JoinBtn>참여하기</JoinBtn>
+        <JoinBtn
+          onClick={() => {
+            navigate(`/article/${id}/debate`);
+          }}
+        >
+          참여하기
+        </JoinBtn>
       </div>
     </Box>
   );
@@ -77,6 +86,7 @@ const JoinBtn = styled(Font)`
   padding: 7px 14px;
   border-radius: 20px;
   background: #fff;
+  cursor: pointer;
 
   color: var(--main-black, #1a1920);
   text-align: center;

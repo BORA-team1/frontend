@@ -27,8 +27,8 @@ const EmojiBar = ({
   };
 
   return (
-    <Wrapper>
-      <Container>
+    <Wrapper onClick={closeEmojiBar}>
+      <Container onClick={(e) => e.stopPropagation()}>
         <div>
           <img
             src={happy}

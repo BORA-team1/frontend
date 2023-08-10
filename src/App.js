@@ -41,7 +41,7 @@ function App() {
           ></Route>
           <Route path={"/searchingpage"} element={<SearchingPage />}></Route>
           {/* 세부 페이지 */}
-          <Route path="/article/:id" element={<ArticlePage />}></Route>
+          <Route path='/article/:id' element={<ArticlePage />}></Route>
           <Route
             path={"/article/:id/audio"}
             element={<AudiobookPage />}

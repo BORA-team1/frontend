@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 import heart from '../../images/heart.svg';
+import heartclick from '../../images/heartclick.svg';
 
 const CommentBox = ({commentCt, commentId, handleCommentDelete}) => {
+  const [clickIcon, setClickIcon] = useState(false);
+
+  const handleClickIcon = () => {
+    setClickIcon(!clickIcon);
+  };
+
   return (
     <Container>
       <ProfileContainer>
@@ -13,8 +20,27 @@ const CommentBox = ({commentCt, commentId, handleCommentDelete}) => {
         <Id>broaden_horizons</Id>
         <Content>{commentCt}</Content>
         <Plus>
-          <img src={heart} alt='heart'></img>
-          <div>좋아요</div>
+          {clickIcon ? (
+            <img
+              src={heartclick}
+              alt='heartclick'
+              onClick={handleClickIcon}
+            ></img>
+          ) : (
+            <img src={heart} alt='heart' onClick={handleClickIcon}></img>
+          )}
+          <div
+            style={{
+              color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+            }}
+          >
+            0
+          </div>
+          {clickIcon ? (
+            <div onClick={handleClickIcon}>좋아요 취소</div>
+          ) : (
+            <div onClick={handleClickIcon}>좋아요</div>
+          )}
           <span>·</span>
           <div>답글달기</div>
           {/* user가 누구인지에 따라 삭제 버튼 온오프 */}

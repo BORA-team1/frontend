@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import articlebackground from '../images/articlebackground.png';
 import closebutton from '../images/closebutton.svg';
 import more from '../images/more.svg';
 import info from '../images/info.svg';
 import InputBox from '../components/Common/InputBox';
+import DebateMessage from '../components/DebatePage/DebateMessage';
+import GroupSettingModal from '../components/DebatePage/GroupSettingModal';
 
 const DebatePage = () => {
+  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(true);
+
   return (
     <Wrapper>
       <BackgroundImg>
@@ -15,7 +21,13 @@ const DebatePage = () => {
       <GradientOverlay></GradientOverlay>
       <Header>
         <Top>
-          <CloseButton src={closebutton} alt='closebutton'></CloseButton>
+          <CloseButton
+            src={closebutton}
+            alt='closebutton'
+            onClick={() => {
+              navigate(-1);
+            }}
+          ></CloseButton>
           <Quoting>
             인용하기<img src={more} alt='morereview'></img>
           </Quoting>
@@ -43,8 +55,13 @@ const DebatePage = () => {
             후에 생성된 토론 종료 버튼을 참여자들이 모두 클릭하면 종료됩니다.
           </div>
         </Information>
+        <Chatting>
+          <MessageBox>
+            <DebateMessage></DebateMessage>
+          </MessageBox>
+        </Chatting>
         <InputBoxPosition>
-          <SelectedSentence>
+          {/* <SelectedSentence>
             <div>
               <span>인용하기</span>
               <div>
@@ -53,10 +70,11 @@ const DebatePage = () => {
               </div>
             </div>
             <img src={closebutton} alt='closebutton'></img>
-          </SelectedSentence>
+          </SelectedSentence> */}
           <InputBox></InputBox>
         </InputBoxPosition>
       </Container>
+      {isModalOpen && <GroupSettingModal setModalOpen={setModalOpen} />}
     </Wrapper>
   );
 };
@@ -72,6 +90,7 @@ const Wrapper = styled.div`
   font-family: 'Pretendard-Regular';
   font-style: normal;
   color: #fff;
+  margin: 0px auto;
 `;
 
 const BackgroundImg = styled.div`
@@ -92,7 +111,6 @@ const BackgroundImg = styled.div`
 const GradientOverlay = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
   width: 390px;
   height: 270px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
@@ -119,6 +137,7 @@ const Top = styled.div`
 const CloseButton = styled.img`
   width: 29px;
   height: 29px;
+  cursor: pointer;
 `;
 
 const Quoting = styled.div`
@@ -240,12 +259,33 @@ const Information = styled.div`
   }
 `;
 
+const Chatting = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 21px;
+  width: 360px;
+  height: 100%;
+  white-space: nowrap;
+
+  //내 메시지 보여주려고 임시로 지정함.
+  //나중에 내 메시지인지 상대방 메시지인지 구분해서 포지션 정하기
+  align-items: flex-end;
+`;
+
+const MessageBox = styled.div`
+  width: 235px;
+  padding: 15px 12px;
+  border-radius: 15px;
+  background: var(--main-purple, #5a45f5);
+`;
+
 const InputBoxPosition = styled.div`
   width: 390px;
   padding: 21px 20px;
   box-sizing: border-box;
   border-top: 1px solid #353646;
-  position: absolute;
+  background: var(--background, #161524);
+  position: fixed;
   bottom: 0;
 `;
 

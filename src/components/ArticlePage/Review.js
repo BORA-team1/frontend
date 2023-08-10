@@ -1,55 +1,94 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import Reply from '../BottomSheet/Reply';
 import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
 import thumbsupclick from '../../images/thumbsupclick.svg';
+import ReplyForm from '../BottomSheet/ReplyForm';
 
-const Review = ({review, handleDelete, reviewId}) => {
+const Review = ({
+  replies,
+  reviewContent,
+  reviewId,
+  author,
+  handleDelete,
+  onReply,
+}) => {
+  //추천해요/추천취소
   const [clickIcon, setClickIcon] = useState(false);
-
   const handleClickIcon = () => {
     setClickIcon(!clickIcon);
   };
 
-  return (
-    <Container>
-      <ProfileContainer>
-        <img src={profile} alt='profileimg'></img>
-      </ProfileContainer>
-      <ContentContainer>
-        <Id>zimmmni</Id>
-        <Content>{review}</Content>
-        <Plus>
-          {clickIcon ? (
-            <img
-              src={thumbsupclick}
-              alt='thumbsup'
-              onClick={handleClickIcon}
-            ></img>
-          ) : (
-            <img src={thumbsup} alt='thumbsup' onClick={handleClickIcon}></img>
-          )}
+  //답글 등록
+  const [replyText, setReplyText] = useState('');
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
-          <div
-            style={{
-              color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
-            }}
-          >
-            6
-          </div>
-          <span>·</span>
-          {clickIcon ? (
-            <div onClick={handleClickIcon}>추천 취소</div>
-          ) : (
-            <div onClick={handleClickIcon}>추천해요</div>
-          )}
-          <span>·</span>
-          <div>답글달기</div>
-          <span>·</span>
-          <div onClick={() => handleDelete(reviewId)}>삭제</div>
-        </Plus>
-      </ContentContainer>
-    </Container>
+  const handleReply = (event) => {
+    if (event.key === 'Enter' && event.shiftKey === false) {
+      event.preventDefault();
+
+      onReply(reviewId, replyText, author);
+      setReplyText('');
+      setShowReplyForm(false);
+    }
+  };
+
+  return (
+    <>
+      <Container>
+        <ProfileContainer>
+          <img src={profile} alt='profileimg'></img>
+        </ProfileContainer>
+        <ContentContainer>
+          <Id>{author}</Id>
+          <Content>{reviewContent}</Content>
+          <Plus>
+            {clickIcon ? (
+              <img
+                src={thumbsupclick}
+                alt='thumbsup'
+                onClick={handleClickIcon}
+              ></img>
+            ) : (
+              <img
+                src={thumbsup}
+                alt='thumbsup'
+                onClick={handleClickIcon}
+              ></img>
+            )}
+
+            <div
+              style={{
+                color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              0
+            </div>
+            <span>·</span>
+            {clickIcon ? (
+              <div onClick={handleClickIcon}>추천 취소</div>
+            ) : (
+              <div onClick={handleClickIcon}>추천해요</div>
+            )}
+            <span>·</span>
+            <div onClick={() => setShowReplyForm(!showReplyForm)}>답글달기</div>
+            <span>·</span>
+            <div onClick={() => handleDelete(reviewId)}>삭제</div>
+          </Plus>
+        </ContentContainer>
+      </Container>
+      {replies &&
+        replies.map((reply) => <Reply key={reply.id} reply={reply}></Reply>)}
+      {showReplyForm && (
+        <ReplyForm
+          replyText={replyText}
+          setReplyText={setReplyText}
+          handleReply={handleReply}
+          mentionedUser={author}
+        ></ReplyForm>
+      )}
+    </>
   );
 };
 

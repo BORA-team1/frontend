@@ -17,23 +17,25 @@ const QnACreateModal = ({
 
   const handleSubmit = () => {
     setQuestions([...questions, question]);
+    console.log(question);
     console.log(questions);
     setQuestion('');
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={closeQnACreateModal}>
       <CreateButton
-        onClick={() => {
+        onClick={(e) => {
           closeQnACreateModal();
           handleOpenBottomSheet();
           showListB();
           handleSubmit();
+          e.stopPropagation();
         }}
       >
         등록
       </CreateButton>
-      <Container>
+      <Container onClick={(e) => e.stopPropagation()}>
         <Title>Q&A</Title>
         <TextInput>
           <textarea
