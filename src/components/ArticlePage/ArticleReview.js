@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import more from '../../images/more.svg';
-import Review from './Review';
+import Review from '../BottomSheet/Review';
 import submiticon from '../../images/submiticon.svg';
 
 const ArticleReview = ({handleBottomSheet}) => {

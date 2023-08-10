@@ -1,18 +1,79 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+// import axios from 'axios';
 import styled, {keyframes} from 'styled-components';
-import Review from '../ArticlePage/Review';
+import Review from './Review';
 import submiticon from '../../images/submiticon.svg';
 
 const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
-  //한마디 등록
-  const [review, setReview] = useState('');
-  const [reviews, setReviews] = useState([]);
+  // const BASE_URL = 'http://localhost:3001';
+  // const [render, setRender] = useState(0);
 
+  // 페이지 로드 시 저장된 댓글 목록을 불러옵니다.
+  // useEffect(() => {
+  //   loadReviews();
+  // }, [render]);
+
+  // const [hanData, setHanData] = useState(null);
+  // const loadReviews = () => {
+  //   axios
+  //     .get(`${BASE_URL}/data`)
+  //     .then((response) => {
+  //       const hanContent = response.data.Han;
+  //       setHanData(hanContent);
+  //     })
+  //     .catch((error) => {
+  //       console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', error);
+  //     });
+  // };
+
+  //한마디 등록
+  // const [review, setReview] = useState('');
+  // const [reviews, setReviews] = useState([]);
+
+  // const handleReviewsSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (review.trim() === '') return null;
+  //   axios
+  //     .post(`${BASE_URL}/data`, {content: review})
+  //     .then((response) => {
+  //       setRender(render + 1);
+  //       const newReview = response.data.Han.content;
+  //       setReviews([...reviews, newReview]);
+  //       setReview('');
+  //       console.log(reviews);
+  //     })
+  //     .catch((error) => {
+  //       console.error('한마디 저장 중 오류가 발생했습니다.', error);
+  //     });
+  // };
+
+  //한마디 삭제
+  // const handleDelete = (id) => {
+  //   const updatedReviews = reviews.filter((review) => review.id !== id);
+  //   setReviews(updatedReviews);
+  // };
+
+  const [review, setReview] = useState('');
+  const [reviews, setReviews] = useState([
+    {
+      id: 1,
+      content: '첫 번째 댓글입니다.',
+      author: '사용자 A',
+      replies: [
+        {id: 1, content: '대댓글 1', author: '사용자 C', mention: '사용자 A'},
+        {id: 2, content: '대댓글 2', author: '사용자 D', mention: '사용자 A'},
+      ],
+    },
+    {id: 2, content: '두 번째 댓글입니다.', author: '사용자 B', replies: []},
+  ]);
+
+  //한마디 등록
   const handleReviewsSubmit = () => {
     if (review.trim() === '') return null;
     const newReview = {
       id: reviews.length + 1,
       content: review,
+      author: 'zimmmni',
     };
     setReviews([...reviews, newReview]);
     setReview('');
@@ -22,6 +83,31 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
   //한마디 삭제
   const handleDelete = (id) => {
     const updatedReviews = reviews.filter((review) => review.id !== id);
+    setReviews(updatedReviews);
+  };
+
+  //답글 등록
+  const addReply = (reviewId, replyText, mentionedUser) => {
+    const updatedReviews = reviews.map((review) => {
+      if (review.id === reviewId) {
+        const newReply = {
+          content: replyText,
+          author: 'zimmmni', // 현재 로그인한 사용자
+          mention: mentionedUser,
+          id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
+        };
+
+        const updatedReplies = review.replies
+          ? [...review.replies, newReply]
+          : [newReply];
+
+        return {
+          ...review,
+          replies: updatedReplies,
+        };
+      }
+      return review;
+    });
     setReviews(updatedReviews);
   };
 
@@ -39,14 +125,25 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
         </BottomSheetHeader>
 
         <ReviewContatiner>
-          <ReviewsTop>한마디 {reviews.length}개</ReviewsTop>
+          <ReviewsTop>
+            {reviews && reviews.length > 0 ? (
+              <div>한마디 {reviews.length}개</div>
+            ) : (
+              <div>한마디가 없습니다.</div>
+            )}
+          </ReviewsTop>
           <List>
             {reviews.map((review) => (
               <Review
                 key={review.id}
-                review={review.content}
+                replies={review.replies}
+                reviewContent={review.content}
                 reviewId={review.id}
+                author={review.author}
                 handleDelete={handleDelete}
+                onReply={(reviewid, replyText, mentionedUser) =>
+                  addReply(reviewid, replyText, mentionedUser)
+                }
               ></Review>
             ))}
           </List>

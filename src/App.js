@@ -16,7 +16,7 @@ import ArticlePage from './pages/ArticlePage';
 import AudiobookPage from './pages/AudiobookPage';
 import DebatePage from './pages/DebatePage';
 import AllContentsPage from './pages/AllContentsPage';
-import ArticleContent from './components/ArticlePage/ArticleContent copy';
+import PostViewer from './components/BottomSheet/PostViewer';
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
           <Route path={'/searchingpage'} element={<SearchingPage />}></Route>
           {/* 세부 페이지 */}
           <Route path='/article/:id' element={<ArticlePage />}></Route>
-          <Route path={'/article/:id/1'} element={<ArticleContent />}></Route>
+          <Route path='/test/:id' element={<PostViewer />}></Route>
           <Route
             path={'/article/:id/audio'}
             element={<AudiobookPage />}

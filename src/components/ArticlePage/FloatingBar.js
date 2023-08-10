@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import './FloatingBar.css';
 import QnACreateModal from './QnACreateModal';
@@ -12,38 +12,37 @@ const FloatingBar = ({
   showListA,
   showListB,
   showListC,
-  isQnAOpen,
-  openQnACreateModal,
-  closeQnACreateModal,
-  isInputOpen,
-  openInputBox,
-  closeInputBox,
   isEmojiBarOpen,
   openEmojiBar,
   closeEmojiBar,
 }) => {
+  //QnA 모달 오픈/클로즈
+  const [isQnAOpen, setIsQnAOpen] = useState(false);
+
+  const openQnACreateModal = () => {
+    setIsQnAOpen(true);
+  };
+  const closeQnACreateModal = () => {
+    setIsQnAOpen(false);
+  };
+
+  //댓글 입력 박스 오픈/클로즈
+  const [isInputOpen, setIsInputOpen] = useState(false);
+
+  const openInputBox = () => {
+    setIsInputOpen(true);
+  };
+  const closeInputBox = () => {
+    setIsInputOpen(false);
+  };
+
   return (
     <Wrapper>
       <Container>
         <div className='circle1' onClick={addToHighlights}></div>
-        <div
-          className='circle2'
-          onClick={() => {
-            openQnACreateModal();
-          }}
-        ></div>
-        <div
-          className='circle3'
-          onClick={() => {
-            openInputBox();
-          }}
-        ></div>
-        <div
-          className='circle4'
-          onClick={() => {
-            openEmojiBar();
-          }}
-        ></div>
+        <div className='circle2' onClick={openQnACreateModal}></div>
+        <div className='circle3' onClick={openInputBox}></div>
+        <div className='circle4' onClick={openEmojiBar}></div>
       </Container>
       {isQnAOpen && (
         <QnACreateModal

@@ -6,8 +6,8 @@ const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
   //댓글 저장하는 로직 추가하기
 
   return (
-    <Wrapper>
-      <InputBoxContainer>
+    <Wrapper onClick={closeInputBox}>
+      <InputBoxContainer onClick={(e) => e.stopPropagation()}>
         <Inputbox></Inputbox>
         <img
           onClick={() => {

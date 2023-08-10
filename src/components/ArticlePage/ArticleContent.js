@@ -20,8 +20,6 @@ const ArticleContent = ({isContentson}) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [highlights, setHighlights] = useState([]);
 
-  // const [subtitle, setSubTitle] = useState('');
-
   //하이라이팅 바텀시트 오픈/클로즈
   const handleOpenBottomSheet = () => {
     if (hoveredIndex) {
@@ -35,26 +33,6 @@ const ArticleContent = ({isContentson}) => {
     }
     setBottomSheetOpen(false);
     setExpanded(false);
-  };
-
-  //QnA 모달 오픈/클로즈
-  const [isQnAOpen, setIsQnAOpen] = useState(false);
-
-  const openQnACreateModal = () => {
-    setIsQnAOpen(true);
-  };
-  const closeQnACreateModal = () => {
-    setIsQnAOpen(false);
-  };
-
-  //댓글 입력 박스 오픈/클로즈
-  const [isInputOpen, setIsInputOpen] = useState(false);
-
-  const openInputBox = () => {
-    setIsInputOpen(true);
-  };
-  const closeInputBox = () => {
-    setIsInputOpen(false);
   };
 
   //이모지 바 오픈/클로즈
@@ -103,30 +81,6 @@ const ArticleContent = ({isContentson}) => {
     setHoveredIndex(null);
   };
 
-  //섹션 타이틀 가져오기
-  // const getSectionTitle = () => {
-  //   axios
-  //     .get('URL')
-  //     .then((response) => {
-  //       setSubTitle(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error', error);
-  //     });
-  // };
-
-  //임시 데이터
-  // const longTexts = [
-  //   {
-  //     id: 1,
-  //     content: `혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.`,
-  //   },
-  //   {
-  //     id: 2,
-  //     content: `요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.`,
-  //   },
-  // ];
-
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();
@@ -141,7 +95,10 @@ const ArticleContent = ({isContentson}) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
+        console.error(
+          '세부포스트 내용을 불러오는 중 오류가 발생했습니다.',
+          error
+        );
       });
   };
 
@@ -159,12 +116,13 @@ const ArticleContent = ({isContentson}) => {
           <Gap key={item.post_id}>
             {item.post_id === 1 &&
               item.PostSec.map((longTexts) => {
-                // const sentences = longTexts.content.split(/\. |\? /); // 문장 분리
                 const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
                 return (
                   <>
                     <Section key={longTexts.sec_id} className='ebook-container'>
-                      {/* {subtitle && <SectionTitle></SectionTitle>} */}
+                      {longTexts.title && (
+                        <SectionTitle>{longTexts.title}</SectionTitle>
+                      )}
                       <SectionContent>
                         <TextContainer isContentson={isContentson}>
                           {sentences.map((sentence, sentenceIndex) => {
@@ -203,9 +161,6 @@ const ArticleContent = ({isContentson}) => {
                                   }}
                                 >
                                   {sentence}
-                                  {/* {sentenceIndex < sentences.length - 1 &&
-                                ((sentence.slice(-1) === '?' && '') ||
-                                  (sentence.slice(-1) !== '?' && '. '))} */}
                                 </span>
                               </>
                             );
@@ -225,7 +180,7 @@ const ArticleContent = ({isContentson}) => {
                                       height: `${500 / sentences.length}%`,
                                     }}
                                   >
-                                    <div></div>
+                                    {/* <div></div> */}
                                     <img src={comment} alt='comment'></img>
                                   </Icon>
                                 );
@@ -239,7 +194,7 @@ const ArticleContent = ({isContentson}) => {
                         )}
                       </SectionContent>
                     </Section>
-                    {isContentson && <ContentPopup></ContentPopup>}
+                    {/* {isContentson && <ContentPopup></ContentPopup>} */}
                   </>
                 );
               })}
@@ -256,12 +211,6 @@ const ArticleContent = ({isContentson}) => {
           showListA={showListA}
           showListB={showListB}
           showListC={showListC}
-          isQnAOpen={isQnAOpen}
-          openQnACreateModal={openQnACreateModal}
-          closeQnACreateModal={closeQnACreateModal}
-          isInputOpen={isInputOpen}
-          openInputBox={openInputBox}
-          closeInputBox={closeInputBox}
           isEmojiBarOpen={isEmojiBarOpen}
           openEmojiBar={openEmojiBar}
           closeEmojiBar={closeEmojiBar}
@@ -303,7 +252,6 @@ const Wrapper = styled.div`
 const Gap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
 `;
 
 const Section = styled.div`
@@ -312,12 +260,13 @@ const Section = styled.div`
   margin-left: 20px;
 `;
 
-// const SectionTitle = styled.div`
-//   width: 345px;
-//   font-size: 19px;
-//   font-weight: 600;
-//   margin-bottom: 20px;
-// `;
+const SectionTitle = styled.div`
+  width: 345px;
+  font-size: 19px;
+  font-weight: 600;
+  margin-top: 50px;
+  margin-bottom: 20px;
+`;
 
 const SectionContent = styled.div`
   display: flex;

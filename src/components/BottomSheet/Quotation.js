@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Quotation = () => {
+const Quotation = ({closeBottomSheet}) => {
   return (
     <Container>
       <Sentence>
@@ -9,7 +9,7 @@ const Quotation = () => {
         음료 안 마시는 게 낫나?’ 고민한 사람 있나요? ”
       </Sentence>
       <SelectButton>
-        <span>선택</span>
+        <span onClick={closeBottomSheet}>선택</span>
       </SelectButton>
     </Container>
   );

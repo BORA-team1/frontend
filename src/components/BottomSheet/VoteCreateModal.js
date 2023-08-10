@@ -4,6 +4,7 @@ import more from '../../images/more.svg';
 import QuoteBottomSheet from './QuoteBottomSheet';
 
 const VoteCreateModal = ({
+  closeModal,
   handleSubmit,
   voteTitle,
   setVoteTitle,
@@ -27,9 +28,16 @@ const VoteCreateModal = ({
   };
 
   return (
-    <Wrapper>
-      <CreateButton onClick={handleSubmit}>등록</CreateButton>
-      <Container>
+    <Wrapper onClick={closeModal}>
+      <CreateButton
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSubmit();
+        }}
+      >
+        등록
+      </CreateButton>
+      <Container onClick={(e) => e.stopPropagation()}>
         <Title>투표</Title>
         <TextInput>
           <textarea
@@ -51,17 +59,9 @@ const VoteCreateModal = ({
               placeholder='항목을 입력해 주세요.'
             ></input>
           ))}
-          {/* <input
-            key={index}
-            value={option}
-            onChange={(e) => handleOptionChange(index, e.target.value)}
-            placeholder='항목을 입력해 주세요.'
-          ></input>
-          <input placeholder='항목을 입력해 주세요.'></input>
-          <input placeholder='항목을 입력해 주세요.'></input> */}
         </ListInput>
         <Quoting id='quote' onClick={openBottomSheet}>
-          인용하기<img src={more} alt='morereview'></img>
+          인용하기<img src={more} alt='인용하기'></img>
         </Quoting>
         {bottomSheetOpen && (
           <QuoteBottomSheet
