@@ -1,74 +1,108 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
-const AudioContent = () => {
-  // 임시 데이터
-  const longTexts = [
-    {
-      id: 1,
-      content: `혹시 요즘 아스파탐 논란 보고 ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요?? 아스파탐 진짜 위험한 건지, 시원하게 하나씩 팩트체크 해볼게요.`,
-    },
-    {
-      id: 2,
-      content: `요새 설탕 뺀 제로슈거 음료, 저칼로리 과자 같은 거 진짜 많잖아요. 이때 설탕 대신 넣는 인공 감미료 중 하나예요. 설탕보다 200배 단맛을 내는데 값도 싸고 칼로리도 거의 없어 인기가 많았어요. 우리나라를 포함해 전 세계 200여 개 나라에서 승인받아 사용돼 왔고요. 그런데 얼마 전, ‘세계보건기구 아래 있는 국제암연구소가 아스파탐을 발암 가능 물질로 분류할 것’이라는 언론 보도가 나왔어요.`,
-    },
-  ];
+const AudioContent = ({ isAudioPlaying, audioRef }) => {
+  // 데이터 받아오기
+  const BASE_URL = "http://localhost:3001";
+
+  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    getPosts();
+  }, []);
+  const getPosts = () => {
+    axios
+      .get(`${BASE_URL}/data`)
+      .then((response) => {
+        setPosts(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+      });
+  };
 
   const [highlightedSentenceIndex, setHighlightedSentenceIndex] = useState(0);
-  const [isHighlightingStarted, setIsHighlightingStarted] = useState(false);
+  // const [isHighlightingStarted, setIsHighlightingStarted] = useState(false);
+  const timeIntervals = [
+    { start: 0, end: 1, sectionId: 1, sentenceIndex: 0 },
+    { start: 1, end: 3, sectionId: 1, sentenceIndex: 1 },
+    { start: 3, end: 7, sectionId: 2, sentenceIndex: 0 },
+    { start: 7, end: 9, sectionId: 2, sentenceIndex: 1 },
+    // ... 필요한 만큼 더 간격 정의
+  ];
 
+  // 오디오 재생 시간에 따라 문장 하이라이팅 업데이트
   useEffect(() => {
-    let timer;
+    const handleTimeUpdate = () => {
+      if (isAudioPlaying) {
+        const currentTime = getCurrentAudioTime();
+        const newIndex = calculateIndexFromTime(currentTime, timeIntervals);
 
-    if (isHighlightingStarted) {
-      const sentences = longTexts.flatMap((longText) =>
-        longText.content.split(/\. |\? /)
-      );
+        if (newIndex !== highlightedSentenceIndex) {
+          setHighlightedSentenceIndex(newIndex);
+        }
+      }
+    };
 
-      timer = setInterval(() => {
-        setHighlightedSentenceIndex((prevIndex) =>
-          prevIndex === sentences.length - 1 ? 0 : prevIndex + 1
-        );
-      }, 3000);
+    if (audioRef.current) {
+      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     }
 
     return () => {
-      clearInterval(timer);
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+      }
     };
-  }, [isHighlightingStarted, highlightedSentenceIndex, longTexts]);
+  }, [isAudioPlaying, audioRef, timeIntervals]);
 
-  const handleStartButtonClick = () => {
-    setIsHighlightingStarted((prevValue) => !prevValue);
+  const getCurrentAudioTime = () => {
+    return audioRef.current ? audioRef.current.currentTime : 0;
+  };
+
+  const calculateIndexFromTime = (currentTime, timeIntervals) => {
+    const matchingInterval = timeIntervals.find(
+      (interval) => currentTime >= interval.start && currentTime < interval.end
+    );
+
+    return matchingInterval ? matchingInterval.sentenceIndex : 0;
   };
 
   return (
     <Wrapper>
-      {longTexts.map((longText, index) => {
-        const sentences = longText.content.split(/\. |\? /);
-
-        return (
-          <Section key={index} className="ebook-container">
-            <SectionContent>
-              <TextContainer>
-                {sentences.map((sentence, sentenceIndex) => (
-                  <HighlightedSpan
-                    isHighlighted={sentenceIndex === highlightedSentenceIndex}
-                    key={sentenceIndex}
-                  >
-                    {sentence.trim()}
-                    {sentenceIndex < sentences.length - 1 &&
-                      ((sentence.slice(-1) === "?" && " ") ||
-                        (sentence.slice(-1) !== "?" && ". "))}
-                  </HighlightedSpan>
-                ))}
-              </TextContainer>
-            </SectionContent>
-          </Section>
-        );
-      })}
-      <Button onClick={handleStartButtonClick}>
-        {isHighlightingStarted ? "중지" : "시작"}
-      </Button>
+      {posts.length > 0 &&
+        posts.map((item) => (
+          <Gap key={item.post_id}>
+            {item.post_id === 1 &&
+              item.PostSec.map((sec) => {
+                const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
+                return (
+                  <Section key={sec.sec_id} className="ebook-container">
+                    <SectionContent>
+                      <TextContainer>
+                        {sentences.map((sentence, sentenceIndex) => (
+                          <HighlightedSpan
+                            key={sentenceIndex}
+                            isHighlighted={
+                              sec.sec_id ===
+                                timeIntervals[highlightedSentenceIndex]
+                                  .sectionId &&
+                              sentenceIndex ===
+                                timeIntervals[highlightedSentenceIndex]
+                                  .sentenceIndex
+                            }
+                          >
+                            {sentence}
+                          </HighlightedSpan>
+                        ))}
+                      </TextContainer>
+                    </SectionContent>
+                  </Section>
+                );
+              })}
+          </Gap>
+        ))}
     </Wrapper>
   );
 };
@@ -87,6 +121,12 @@ const Wrapper = styled.div`
   font-style: normal;
   font-weight: 300;
   line-height: 169.336%;
+`;
+
+const Gap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 `;
 
 const Section = styled.div`

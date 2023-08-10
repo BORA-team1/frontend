@@ -1,5 +1,5 @@
 //
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,11 +14,10 @@ import X from "../images/X.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
+  const audioRef = useRef(null);
   const navigate = useNavigate();
   const path = window.location.pathname;
-  const navigatorM = () => {
-    navigate("/mypage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
-  };
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   return (
     <>
@@ -27,11 +26,18 @@ const AudiobookPage = () => {
         <Scroll>
           <>
             <Box>
-              <AudioContent />
+              <AudioContent
+                isAudioPlaying={isAudioPlaying}
+                audioRef={audioRef}
+              />
             </Box>
           </>
         </Scroll>
-        <PlayingBar />
+        <PlayingBar
+          isAudioPlaying={isAudioPlaying}
+          setIsAudioPlaying={setIsAudioPlaying}
+          audioRef={audioRef}
+        />
       </Container>
     </>
   );

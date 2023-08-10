@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 // import {SheetContext} from '../contexts/SheetContext';
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import StatusBar from '../components/ArticlePage/StatusBar';
-import ArticleHeader from '../components/ArticlePage/ArticleHeader.';
-import ArticleContent from '../components/ArticlePage/ArticleContent';
-import ArticleReview from '../components/ArticlePage/ArticleReview';
-import BottomBar from '../components/ArticlePage/BottomBar';
+import StatusBar from "../components/ArticlePage/StatusBar";
+import ArticleHeader from "../components/ArticlePage/ArticleHeader.";
+import ArticleContent from "../components/ArticlePage/ArticleContent";
+import ArticleReview from "../components/ArticlePage/ArticleReview";
+import BottomBar from "../components/ArticlePage/BottomBar";
 
-import ReviewsBottomSheet from '../components/BottomSheet/ReviewsBottomSheet';
-import VoteBottomSheet from '../components/BottomSheet/VoteBottomSheet';
-import SentencesBottomSheet from '../components/BottomSheet/SentencesBottomSheet';
-import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
+import ReviewsBottomSheet from "../components/BottomSheet/ReviewsBottomSheet";
+import VoteBottomSheet from "../components/BottomSheet/VoteBottomSheet";
+import SentencesBottomSheet from "../components/BottomSheet/SentencesBottomSheet";
+import DebateBottomSheet from "../components/BottomSheet/DebateBottomSheet";
 
 const ArticlePage = () => {
-  const [isContentson, setContentson] = useState('true');
+  const [isContentson, setContentson] = useState("true");
 
   //콘텐츠 켜짐/꺼짐
   const handleContentsOn = () => {

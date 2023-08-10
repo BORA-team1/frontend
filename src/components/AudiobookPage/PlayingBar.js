@@ -1,24 +1,24 @@
-import React, {useState, useRef} from 'react';
-import styled from 'styled-components';
-import AudioPlayer from 'react-audio-player';
+import React, { useState, useRef } from "react";
+import styled from "styled-components";
+import AudioPlayer from "react-audio-player";
 
 //components
-import WarningModal from '../AudiobookPage/WarningModal';
-import PlaylistBottomSheet from '../AudiobookPage/PlaylistBottomSheet';
+import WarningModal from "../AudiobookPage/WarningModal";
+import PlaylistBottomSheet from "../AudiobookPage/PlaylistBottomSheet";
 
 //img
-import playlisticon from '../../images/Audiobook/playlisticon.svg';
-import beforesecond from '../../images/Audiobook/beforesecond.svg';
-import start from '../../images/Audiobook/start.svg';
-import stop from '../../images/Audiobook/stop.svg';
-import aftersecond from '../../images/Audiobook/aftersecond.svg';
-import bookmarkicon_on from '../../images/Audiobook/bookmarkicon_on.svg';
-import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
+import playlisticon from "../../images/Audiobook/playlisticon.svg";
+import beforesecond from "../../images/Audiobook/beforesecond.svg";
+import start from "../../images/Audiobook/start.svg";
+import stop from "../../images/Audiobook/stop.svg";
+import aftersecond from "../../images/Audiobook/aftersecond.svg";
+import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
+import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
 
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
-import example from '../../audio/example.mp3';
+import example from "../../audio/example.mp3";
 
-const PlayingBar = () => {
+const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
   //bookmark
   const [bookmark, setBookmark] = useState(false);
   const reBookmark = () => {
@@ -59,7 +59,6 @@ const PlayingBar = () => {
   };
 
   //오디오 재생 관련 파일
-  const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlayPause = () => {
@@ -70,6 +69,7 @@ const PlayingBar = () => {
         audioRef.current.play(); // 재생
       }
       setIsPlaying(!isPlaying); // 상태 토글
+      setIsAudioPlaying(!isAudioPlaying); // isAudioPlaying 상태 변경
     }
   };
 

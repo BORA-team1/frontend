@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
 
-import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
-import FloatingBar from './FloatingBar';
-import ContentPopup from './ContentPopup';
+import HighlightingBottomSheet from "../BottomSheet/HighlightingBottomSheet";
+import FloatingBar from "./FloatingBar";
+import ContentPopup from "./ContentPopup";
 
-import comment from '../../images/sectionbar/commenticon.svg';
-import qna from '../../images/sectionbar/qnaicon.svg';
+import comment from "../../images/sectionbar/commenticon.svg";
+import qna from "../../images/sectionbar/qnaicon.svg";
 
-const ArticleContent = ({isContentson}) => {
-  const BASE_URL = 'http://localhost:3001';
+const ArticleContent = ({ isContentson }) => {
+  const BASE_URL = "http://localhost:3001";
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-  const [category, setCategory] = useState('A');
+  const [category, setCategory] = useState("A");
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -44,9 +44,9 @@ const ArticleContent = ({isContentson}) => {
   };
 
   //카테고리에 따른 리스트 띄우기
-  const showListA = () => setCategory('A');
-  const showListB = () => setCategory('B');
-  const showListC = () => setCategory('C');
+  const showListA = () => setCategory("A");
+  const showListB = () => setCategory("B");
+  const showListC = () => setCategory("C");
 
   //클릭한 문장의 글자 색 바뀌기
   const highlightText = (sentence) => {
@@ -57,7 +57,7 @@ const ArticleContent = ({isContentson}) => {
 
   //클릭한 문장 정보 저장 (섹션 id, 문장 index)
   const saveTextInfo = (index, sentenceIndex) => {
-    const textInfo = {index, sentenceIndex};
+    const textInfo = { index, sentenceIndex };
     setSelectedIndex(textInfo);
   };
 
@@ -141,23 +141,23 @@ const ArticleContent = ({isContentson}) => {
                                     highlightText(sentence);
                                   }}
                                   style={{
-                                    cursor: 'pointer',
+                                    cursor: "pointer",
                                     color:
                                       selectedSentence === sentence ||
                                       hoveredIndex === sentence
-                                        ? '#A397FF'
-                                        : 'white',
+                                        ? "#A397FF"
+                                        : "white",
 
                                     backgroundColor: selectedSentence
-                                      ? 'transparent'
+                                      ? "transparent"
                                       : highlights.some(
                                           (highlight) =>
                                             highlight.index === longTexts.num &&
                                             highlight.sentenceIndex ===
                                               sentenceIndex
                                         )
-                                      ? 'rgba(170, 158, 255, 0.35)'
-                                      : 'transparent',
+                                      ? "rgba(170, 158, 255, 0.35)"
+                                      : "transparent",
                                   }}
                                 >
                                   {sentence}
@@ -185,10 +185,6 @@ const ArticleContent = ({isContentson}) => {
                                   </Icon>
                                 );
                               })}
-                              {/* <Icon>
-                            <div></div>
-                            <img src={qna} alt='qna'></img>
-                          </Icon> */}
                             </SectionBar>
                           </BarContainer>
                         )}
@@ -242,7 +238,7 @@ const Wrapper = styled.div`
   margin-top: 37.4px;
 
   color: white;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -274,9 +270,27 @@ const SectionContent = styled.div`
 `;
 
 const TextContainer = styled.div`
-  width: ${(props) => (props.isContentson ? '330px' : '345px')};
+  width: ${(props) => (props.isContentson ? "330px" : "345px")};
 `;
 
+const HighlightedSpan = styled.span`
+  cursor: pointer;
+  color: ${(props) =>
+    props.selectedSentence === props.sentence ||
+    props.hoveredIndex === props.sentence
+      ? "#A397FF"
+      : "white"};
+  background-color: ${(props) =>
+    props.selectedSentence
+      ? "transparent"
+      : props.highlights.some(
+          (highlight) =>
+            highlight.index === props.longTexts.num &&
+            highlight.sentenceIndex === props.sentenceIndex
+        )
+      ? "rgba(170, 158, 255, 0.35)"
+      : "transparent"};
+`;
 const BarContainer = styled.div`
   width: 25px;
   height: auto;
