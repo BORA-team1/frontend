@@ -9,6 +9,9 @@ import TopBar from "../components/Common/TopBar";
 //images
 import X from "../images/X.svg";
 
+import followinggroup1 from "../images/willbedeleted/followinggroup1.svg";
+import followinggroup2 from "../images/willbedeleted/followinggroup2.svg";
+
 // props로 받아올 posts 구조 분해 할당
 const DetailEditorPage = () => {
   const navigate = useNavigate();
@@ -25,9 +28,10 @@ const DetailEditorPage = () => {
             <Del src={X} onClick={navigatorM} />
             <Title>팔로우한 에디터</Title>
           </Box>
-          <div style={{ margin: "50px", fontFamily: "Pretendard-Regular" }}>
-            에디터 페이지입니다
-          </div>
+          <EditorList>
+            <EditorImg1 src={followinggroup1} />
+            <EditorImg2 src={followinggroup2} />
+          </EditorList>
         </>
       </Scroll>
     </Container>
@@ -92,4 +96,24 @@ const Del = styled.img`
   width: 18px;
   height: 18px;
   margin: 20px;
+`;
+
+const EditorList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+`;
+
+const EditorImg1 = styled.img`
+  width: 304px;
+  height: 53px;
+`;
+
+const EditorImg2 = styled.img`
+  width: 92px;
+  height: 53px;
+
+  margin-top: 25px;
 `;

@@ -10,7 +10,7 @@ import comment from "../../images/sectionbar/commenticon.svg";
 import qna from "../../images/sectionbar/qnaicon.svg";
 
 const ArticleContent = ({ isContentson }) => {
-  const BASE_URL = "http://localhost:3002";
+  const BASE_URL = "http://localhost:3001";
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);

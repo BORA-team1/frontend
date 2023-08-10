@@ -14,7 +14,7 @@ import bookmark_on from "../../../images/bookmark_on.svg";
 import bookmark_off from "../../../images/bookmark-off.svg";
 
 const TodayArticle = ({ navigatorP }) => {
-  const BASE_URL = "http://localhost:3002";
+  const BASE_URL = "http://localhost:3001";
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();

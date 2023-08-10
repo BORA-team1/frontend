@@ -1,5 +1,5 @@
 //
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,6 +14,7 @@ import X from "../images/X.svg";
 
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
+  const audioRef = useRef(null);
   const navigate = useNavigate();
   const path = window.location.pathname;
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -25,13 +26,17 @@ const AudiobookPage = () => {
         <Scroll>
           <>
             <Box>
-              <AudioContent isAudioPlaying={isAudioPlaying} />
+              <AudioContent
+                isAudioPlaying={isAudioPlaying}
+                audioRef={audioRef}
+              />
             </Box>
           </>
         </Scroll>
         <PlayingBar
           isAudioPlaying={isAudioPlaying}
           setIsAudioPlaying={setIsAudioPlaying}
+          audioRef={audioRef}
         />
       </Container>
     </>

@@ -16,7 +16,7 @@ import QnAicon_on from "../../../images/DifficultyArticle/QnAicon-on.svg";
 import QnAicon_off from "../../../images/DifficultyArticle/QnAicon-off.svg";
 
 const DifficultyArticle = ({ selectDifficulty }) => {
-  const BASE_URL = "http://localhost:3002";
+  const BASE_URL = "http://localhost:3001";
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();
