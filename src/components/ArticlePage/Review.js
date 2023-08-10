@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import Reply from './Reply';
+import Reply from '../BottomSheet/Reply';
 import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
 import thumbsupclick from '../../images/thumbsupclick.svg';
-import ReplyForm from './ReplyForm';
+import ReplyForm from '../BottomSheet/ReplyForm';
 
 const Review = ({
   replies,

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 // import axios from 'axios';
 import styled, {keyframes} from 'styled-components';
-import Review from './Review';
+import Review from '../ArticlePage/Review';
 import submiticon from '../../images/submiticon.svg';
 
 const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
