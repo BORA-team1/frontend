@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 //pages
+import Loginpage from "./pages/Loginpage";
+import SignupPage from "./pages/SignupPage";
+
 import MainPage from "./pages/MainPage";
 import GuidebookPage from "./pages/GuidebookPage";
 import EntirePage from "./pages/EntirePage";
@@ -22,6 +25,9 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path={"/login"} element={<Loginpage />}></Route>
+          <Route path={"/signup"} element={<SignupPage />}></Route>
+
           <Route path={"/"} element={<MainPage />}></Route>
           <Route path={"/guidebookpage"} element={<GuidebookPage />}></Route>
           <Route path={"/entirepage"} element={<EntirePage />}></Route>
@@ -41,7 +47,7 @@ function App() {
           ></Route>
           <Route path={"/searchingpage"} element={<SearchingPage />}></Route>
           {/* 세부 페이지 */}
-          <Route path='/article/:id' element={<ArticlePage />}></Route>
+          <Route path="/article/:id" element={<ArticlePage />}></Route>
           <Route
             path={"/article/:id/audio"}
             element={<AudiobookPage />}
