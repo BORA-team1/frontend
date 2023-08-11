@@ -74,4 +74,5 @@ const Content = styled.textarea`
   font-weight: 500;
   line-height: 125%;
   background: none;
+  resize: none;
 `;

@@ -1,25 +1,24 @@
-import React, { useState } from "react";
-// import {SheetContext} from '../contexts/SheetContext';
-import styled from "styled-components";
+import React, {useState} from 'react';
+import {SheetContext} from '../contexts/SheetContext';
+import styled from 'styled-components';
 
-import StatusBar from "../components/ArticlePage/StatusBar";
-import ArticleHeader from "../components/ArticlePage/ArticleHeader.";
-import ArticleContent from "../components/ArticlePage/ArticleContent";
-import ArticleReview from "../components/ArticlePage/ArticleReview";
-import BottomBar from "../components/ArticlePage/BottomBar";
+import StatusBar from '../components/ArticlePage/StatusBar';
+import ArticleHeader from '../components/ArticlePage/ArticleHeader.';
+import ArticleContent from '../components/ArticlePage/ArticleContent';
+import ArticleReview from '../components/ArticlePage/ArticleReview';
+import BottomBar from '../components/ArticlePage/BottomBar';
 
-import ReviewsBottomSheet from "../components/BottomSheet/ReviewsBottomSheet";
-import VoteBottomSheet from "../components/BottomSheet/VoteBottomSheet";
-import SentencesBottomSheet from "../components/BottomSheet/SentencesBottomSheet";
-import DebateBottomSheet from "../components/BottomSheet/DebateBottomSheet";
+import ReviewsBottomSheet from '../components/BottomSheet/ReviewsBottomSheet';
+import VoteBottomSheet from '../components/BottomSheet/VoteBottomSheet';
+import SentencesBottomSheet from '../components/BottomSheet/SentencesBottomSheet';
+import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
 
 const ArticlePage = () => {
-  const [isContentson, setContentson] = useState("true");
+  const [isContentsOn, setContentsOn] = useState(true);
 
   //콘텐츠 켜짐/꺼짐
   const handleContentsOn = () => {
-    setContentson(!isContentson);
-    console.log(isContentson);
+    setContentsOn(!isContentsOn);
   };
 
   const [bottomSheetOpen, setBottomSheetOpen] = useState(null);
@@ -47,20 +46,20 @@ const ArticlePage = () => {
   };
 
   return (
-    // <SheetContext.Provider value={handleBottomSheet}>
-    <Wrapper>
-      <StatusBar></StatusBar>
-      <ArticleHeader></ArticleHeader>
-      <ArticleContent isContentson={isContentson}></ArticleContent>
-      <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
-      <BottomBar
-        isContentson={isContentson}
-        handleContentsOn={handleContentsOn}
-        handleBottomSheet={handleBottomSheet}
-      ></BottomBar>
-      {bottomSheetOpen && <div>{selectBottomSheet[bottomSheetOpen]}</div>}
-    </Wrapper>
-    // </SheetContext.Provider>
+    <SheetContext.Provider value={bottomSheetOpen}>
+      <Wrapper>
+        <StatusBar></StatusBar>
+        <ArticleHeader></ArticleHeader>
+        <ArticleContent isContentsOn={isContentsOn}></ArticleContent>
+        <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
+        <BottomBar
+          isContentsOn={isContentsOn}
+          handleContentsOn={handleContentsOn}
+          handleBottomSheet={handleBottomSheet}
+        ></BottomBar>
+        {bottomSheetOpen && <div>{selectBottomSheet[bottomSheetOpen]}</div>}
+      </Wrapper>
+    </SheetContext.Provider>
   );
 };
 
@@ -71,4 +70,5 @@ const Wrapper = styled.div`
   margin: 0px auto;
   width: 390px;
   height: 100%;
+  min-height: 844px;
 `;

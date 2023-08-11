@@ -7,7 +7,7 @@ import debate from '../../images/debate.svg';
 import contentOn from '../../images/contentOn.svg';
 import contentOff from '../../images/contentOff.svg';
 
-const BottomBar = ({handleBottomSheet, isContentson, handleContentsOn}) => {
+const BottomBar = ({handleBottomSheet, isContentsOn, handleContentsOn}) => {
   return (
     <BottomBarContainer>
       <div>
@@ -42,7 +42,7 @@ const BottomBar = ({handleBottomSheet, isContentson, handleContentsOn}) => {
         <span>토론만들기</span>
       </div>
       <div>
-        {isContentson ? (
+        {isContentsOn ? (
           <>
             <img
               src={contentOn}

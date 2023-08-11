@@ -17,33 +17,9 @@ const HighlightingBottomSheet = ({
   openEmojiBar,
   selectedSentence,
 }) => {
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([]);
-
-  //댓글 저장
-  const handleCommentSubmit = () => {
-    if (comment.trim() === '') return null;
-    const newComment = {
-      id: comments.length + 1,
-      content: comment,
-    };
-    setComments([...comments, newComment]);
-    console.log(comments);
-    setComment('');
-  };
-
-  //댓글 삭제
-  const handleCommentDelete = (commentId) => {
-    const updatedComments = comments.filter(
-      (comment) => comment.id !== commentId
-    );
-    setComments(updatedComments);
-    console.log(comments);
-  };
-
   //바텀시트 확장하기
   const openExpandSpace = () => {
-    setExpanded(true);
+    setExpanded('open');
   };
 
   //카테고리 이동 시 흰색 바 이동
@@ -58,8 +34,9 @@ const HighlightingBottomSheet = ({
       <BottomSheetContainer
         onClick={(e) => e.stopPropagation()}
         expanded={expanded}
+        style={{height: expanded === 'open' ? '780px' : '532px'}}
       >
-        <BottomSheetHeader>
+        <BottomSheetHeader onMouseDown={openExpandSpace}>
           <HeaderText>
             <CloseBottomSheet
               onClick={() => {
@@ -100,32 +77,13 @@ const HighlightingBottomSheet = ({
           <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
-        {category === 'A' && (
-          <>
-            <ExpandSpace onClick={openExpandSpace}>
-              <CommentsList
-                comments={comments}
-                handleCommentDelete={handleCommentDelete}
-              ></CommentsList>
-            </ExpandSpace>
-            <InputBoxPosition>
-              <Inputbox
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              ></Inputbox>
-              <img
-                onClick={handleCommentSubmit}
-                src={submiticon}
-                alt='submiticon'
-              ></img>
-            </InputBoxPosition>
-          </>
-        )}
+        {category === 'A' && <CommentsList></CommentsList>}
         {category === 'B' && (
           <>
-            <ExpandSpace onClick={openExpandSpace}>
-              <QnAList expanded={expanded}></QnAList>
-            </ExpandSpace>
+            <QnAList
+              expanded={expanded}
+              openExpandSpace={openExpandSpace}
+            ></QnAList>
             <InputBoxPosition>
               <Inputbox
               // value={review}
@@ -174,7 +132,6 @@ const BottomSheetOverlay = styled.div`
 
 const BottomSheetContainer = styled.div`
   width: 100%;
-  height: ${(props) => (props.expanded ? '780px' : '532px')};
   background-color: #fff;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -278,7 +235,6 @@ const InputBoxPosition = styled.div`
   box-sizing: border-box;
   border-top: 1px solid #353646;
   position: absolute;
-  bottom: 0;
   bottom: 0;
   display: flex;
   flex-direction: row;

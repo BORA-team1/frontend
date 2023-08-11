@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
-import HighlightingBottomSheet from "../BottomSheet/HighlightingBottomSheet";
-import FloatingBar from "./FloatingBar";
-import ContentPopup from "./ContentPopup";
+import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
+import FloatingBar from './FloatingBar';
+import ContentPopup from './ContentPopup';
 
-import comment from "../../images/sectionbar/commenticon.svg";
-import qna from "../../images/sectionbar/qnaicon.svg";
+import comment from '../../images/sectionbar/commenticon.svg';
+import qna from '../../images/sectionbar/qnaicon.svg';
 
-const ArticleContent = ({ isContentson }) => {
-  const BASE_URL = "http://localhost:3001";
+const ArticleContent = ({isContentsOn}) => {
+  const BASE_URL = 'http://localhost:3001/';
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState('close');
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-  const [category, setCategory] = useState("A");
+  const [category, setCategory] = useState('A');
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -22,9 +22,6 @@ const ArticleContent = ({ isContentson }) => {
 
   //하이라이팅 바텀시트 오픈/클로즈
   const handleOpenBottomSheet = () => {
-    if (hoveredIndex) {
-      setSelectedSentence(hoveredIndex);
-    }
     setBottomSheetOpen(true);
   };
   const handleCloseBottomSheet = () => {
@@ -32,7 +29,7 @@ const ArticleContent = ({ isContentson }) => {
       setSelectedSentence(null);
     }
     setBottomSheetOpen(false);
-    setExpanded(false);
+    setExpanded('close');
   };
 
   //이모지 바 오픈/클로즈
@@ -44,9 +41,9 @@ const ArticleContent = ({ isContentson }) => {
   };
 
   //카테고리에 따른 리스트 띄우기
-  const showListA = () => setCategory("A");
-  const showListB = () => setCategory("B");
-  const showListC = () => setCategory("C");
+  const showListA = () => setCategory('A');
+  const showListB = () => setCategory('B');
+  const showListC = () => setCategory('C');
 
   //클릭한 문장의 글자 색 바뀌기
   const highlightText = (sentence) => {
@@ -56,8 +53,8 @@ const ArticleContent = ({ isContentson }) => {
   };
 
   //클릭한 문장 정보 저장 (섹션 id, 문장 index)
-  const saveTextInfo = (index, sentenceIndex) => {
-    const textInfo = { index, sentenceIndex };
+  const saveTextInfo = (index, sentenceIndex, sentence) => {
+    const textInfo = {index, sentenceIndex, sentence};
     setSelectedIndex(textInfo);
   };
 
@@ -85,11 +82,11 @@ const ArticleContent = ({ isContentson }) => {
   useEffect(() => {
     getPosts();
   }, []);
-
+  const postPk = 1; // 원하는 포스트의 ID를 설정
   const [posts, setPosts] = useState([]);
   const getPosts = () => {
     axios
-      .get(`${BASE_URL}/data`)
+      .get(`${BASE_URL}data`)
       .then((response) => {
         setPosts(response.data);
         console.log(response.data);
@@ -104,10 +101,11 @@ const ArticleContent = ({ isContentson }) => {
 
   //문장 index 확인용 콘솔 띄우는 함수
   const handleClick = (index, sentenceIndex) => {
-    console.log(
-      `클릭된 문장의 인덱스: 섹션 ${index + 1}, 문장 ${sentenceIndex + 1}`
-    );
+    console.log(`클릭된 문장의 인덱스: 섹션 ${index}, 문장 ${sentenceIndex}`);
   };
+
+  let cumulativeSentenceIndex = 0;
+  let cumulativeIconIndex = 0;
 
   return (
     <Wrapper>
@@ -115,69 +113,147 @@ const ArticleContent = ({ isContentson }) => {
         posts.map((item) => (
           <Gap key={item.post_id}>
             {item.post_id === 1 &&
-              item.PostSec.map((longTexts) => {
-                const sentences = longTexts.content.split(/(?<=[?.](?=\s|'))/);
+              item.PostSec.map((section) => {
+                const paragraphs = section.content
+                  .split('·')
+                  .filter((paragraph) => paragraph.trim() !== '');
+
+                const sentencesIcon = paragraphs
+                  .map((paragraph) => paragraph.split(/(?<=[?.·](?=\s|'))/))
+                  .reduce((acc, val) => {
+                    const flattened = val.filter(
+                      (sentence) => sentence.trim() !== ''
+                    );
+                    return acc.concat(flattened);
+                  }, []);
+
                 return (
                   <>
-                    <Section key={longTexts.sec_id} className='ebook-container'>
-                      {longTexts.title && (
-                        <SectionTitle>{longTexts.title}</SectionTitle>
+                    <Section key={section.num} className='ebook-container'>
+                      {section.title && (
+                        <SectionTitle>{section.title}</SectionTitle>
                       )}
                       <SectionContent>
-                        <TextContainer isContentson={isContentson}>
-                          {sentences.map((sentence, sentenceIndex) => {
-                            return (
-                              <>
-                                <span
-                                  onClick={() => {
-                                    handleClick(
-                                      longTexts.sec_id,
-                                      sentenceIndex
-                                    );
-                                    saveTextInfo(
-                                      longTexts.sec_id,
-                                      sentenceIndex
-                                    );
-                                    highlightText(sentence);
-                                  }}
-                                  style={{
-                                    cursor: "pointer",
-                                    color:
-                                      selectedSentence === sentence ||
-                                      hoveredIndex === sentence
-                                        ? "#A397FF"
-                                        : "white",
+                        <div style={{width: isContentsOn ? '330px' : '345px'}}>
+                          {paragraphs.map((paragraph, paragraphIndex) => {
+                            const sentences =
+                              paragraph.split(/(?<=[?.](?=\s|'))/);
 
-                                    backgroundColor: selectedSentence
-                                      ? "transparent"
-                                      : highlights.some(
-                                          (highlight) =>
-                                            highlight.index === longTexts.num &&
-                                            highlight.sentenceIndex ===
-                                              sentenceIndex
-                                        )
-                                      ? "rgba(170, 158, 255, 0.35)"
-                                      : "transparent",
-                                  }}
-                                >
-                                  {sentence}
-                                </span>
-                              </>
+                            return (
+                              <div key={`${section.num}-${paragraphIndex}`}>
+                                {paragraphIndex > 0 ? (
+                                  <li>
+                                    {sentences.map(
+                                      (sentence, sentenceIndex) => {
+                                        const currentSentenceIndex =
+                                          cumulativeSentenceIndex++;
+                                        return (
+                                          <span
+                                            key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
+                                            onClick={() => {
+                                              handleClick(
+                                                section.num,
+                                                currentSentenceIndex
+                                              );
+                                              saveTextInfo(
+                                                section.num,
+                                                currentSentenceIndex,
+                                                sentence
+                                              );
+                                              highlightText(sentence);
+                                            }}
+                                            style={{
+                                              cursor: 'pointer',
+                                              color:
+                                                selectedSentence === sentence ||
+                                                hoveredIndex === sentence
+                                                  ? '#A397FF'
+                                                  : 'white',
+
+                                              backgroundColor: selectedSentence
+                                                ? 'transparent'
+                                                : highlights.some(
+                                                    (highlight) =>
+                                                      highlight.sentenceIndex ===
+                                                      currentSentenceIndex
+                                                  )
+                                                ? 'rgba(170, 158, 255, 0.35)'
+                                                : 'transparent',
+                                            }}
+                                          >
+                                            {sentence}
+                                          </span>
+                                        );
+                                      }
+                                    )}
+                                  </li>
+                                ) : (
+                                  sentences.map((sentence, sentenceIndex) => {
+                                    const currentSentenceIndex =
+                                      cumulativeSentenceIndex++;
+                                    return (
+                                      <span
+                                        key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
+                                        onClick={() => {
+                                          handleClick(
+                                            section.num,
+                                            currentSentenceIndex
+                                          );
+                                          saveTextInfo(
+                                            section.num,
+                                            currentSentenceIndex,
+                                            sentence
+                                          );
+                                          highlightText(sentence);
+                                        }}
+                                        style={{
+                                          cursor: 'pointer',
+                                          color:
+                                            selectedSentence === sentence ||
+                                            hoveredIndex === sentence
+                                              ? '#A397FF'
+                                              : 'white',
+
+                                          backgroundColor: selectedSentence
+                                            ? 'transparent'
+                                            : highlights.some(
+                                                (highlight) =>
+                                                  highlight.sentenceIndex ===
+                                                  currentSentenceIndex
+                                              )
+                                            ? 'rgba(170, 158, 255, 0.35)'
+                                            : 'transparent',
+                                        }}
+                                      >
+                                        {sentence}
+                                      </span>
+                                    );
+                                  })
+                                )}
+                              </div>
                             );
                           })}
-                        </TextContainer>
-                        {isContentson && (
+                        </div>
+                        {isContentsOn && (
                           <BarContainer>
                             <SectionBar>
-                              {sentences.map((sentence, sentenceIndex) => {
+                              {sentencesIcon.map((sentence, sentenceIndex) => {
+                                const currentIconIndex = cumulativeIconIndex++;
                                 return (
                                   <Icon
                                     key={sentenceIndex}
                                     onMouseEnter={() => onHover(sentence)}
                                     onMouseLeave={offHover}
-                                    onClick={handleOpenBottomSheet}
+                                    onClick={() => {
+                                      handleClick(
+                                        section.sec_id,
+                                        currentIconIndex
+                                      );
+                                      setSelectedSentence(sentence);
+                                      handleOpenBottomSheet();
+                                    }}
                                     style={{
-                                      height: `${500 / sentences.length}%`,
+                                      height: `${500 / sentencesIcon.length}%`,
                                     }}
                                   >
                                     {/* <div></div> */}
@@ -190,7 +266,7 @@ const ArticleContent = ({ isContentson }) => {
                         )}
                       </SectionContent>
                     </Section>
-                    {/* {isContentson && <ContentPopup></ContentPopup>} */}
+                    {/* {isContentsOn && <ContentPopup></ContentPopup>} */}
                   </>
                 );
               })}
@@ -238,7 +314,7 @@ const Wrapper = styled.div`
   margin-top: 37.4px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -269,28 +345,6 @@ const SectionContent = styled.div`
   flex-direction: row;
 `;
 
-const TextContainer = styled.div`
-  width: ${(props) => (props.isContentson ? "330px" : "345px")};
-`;
-
-const HighlightedSpan = styled.span`
-  cursor: pointer;
-  color: ${(props) =>
-    props.selectedSentence === props.sentence ||
-    props.hoveredIndex === props.sentence
-      ? "#A397FF"
-      : "white"};
-  background-color: ${(props) =>
-    props.selectedSentence
-      ? "transparent"
-      : props.highlights.some(
-          (highlight) =>
-            highlight.index === props.longTexts.num &&
-            highlight.sentenceIndex === props.sentenceIndex
-        )
-      ? "rgba(170, 158, 255, 0.35)"
-      : "transparent"};
-`;
 const BarContainer = styled.div`
   width: 25px;
   height: auto;

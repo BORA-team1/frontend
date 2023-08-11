@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import QnABox from './QnABox';
 // import axios from 'axios';
 
-const QnAList = ({expanded}) => {
+const QnAList = ({expanded, openExpandSpace}) => {
   return (
     <Container>
       <Num>질문 1개</Num>
-      {expanded ? (
+      {expanded === 'open' ? (
         <List expanded={expanded}>
           <QnAContainer>
             <QnABox></QnABox>
@@ -21,7 +21,7 @@ const QnAList = ({expanded}) => {
         </List>
       ) : (
         <List expanded={expanded}>
-          <QnAContainer>
+          <QnAContainer onClick={openExpandSpace}>
             <QnABox></QnABox>
           </QnAContainer>
           <Box1></Box1>
@@ -38,6 +38,8 @@ const Container = styled.div`
   width: 390px;
   display: flex;
   flex-direction: column;
+  margin-top: 192px;
+  margin-bottom: 90px;
 `;
 
 const Num = styled.div`

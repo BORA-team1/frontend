@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
+import {SheetContext} from '../../contexts/SheetContext';
 import styled from 'styled-components';
 import Reply from '../BottomSheet/Reply';
 import profile from '../../images/profile.svg';
@@ -12,7 +13,8 @@ const Review = ({
   reviewId,
   author,
   handleDelete,
-  onReply,
+  addReply,
+  setMention,
 }) => {
   //추천해요/추천취소
   const [clickIcon, setClickIcon] = useState(false);
@@ -28,9 +30,18 @@ const Review = ({
     if (event.key === 'Enter' && event.shiftKey === false) {
       event.preventDefault();
 
-      onReply(reviewId, replyText, author);
+      addReply(reviewId, replyText, author);
       setReplyText('');
       setShowReplyForm(false);
+    }
+  };
+
+  const bottomSheetOpen = useContext(SheetContext);
+  //답글 입력창 관리
+  const handleButtonClick = (author) => {
+    if (bottomSheetOpen) {
+      setShowReplyForm(!showReplyForm);
+      setMention(author);
     }
   };
 
@@ -72,14 +83,22 @@ const Review = ({
               <div onClick={handleClickIcon}>추천해요</div>
             )}
             <span>·</span>
-            <div onClick={() => setShowReplyForm(!showReplyForm)}>답글달기</div>
+            <div onClick={() => handleButtonClick(author)}>답글달기</div>
             <span>·</span>
             <div onClick={() => handleDelete(reviewId)}>삭제</div>
           </Plus>
         </ContentContainer>
       </Container>
       {replies &&
-        replies.map((reply) => <Reply key={reply.id} reply={reply}></Reply>)}
+        replies.map((reply) => (
+          <Reply
+            key={reply.id}
+            reply={reply}
+            showReplyForm={showReplyForm}
+            setShowReplyForm={setShowReplyForm}
+            setMention={setMention}
+          ></Reply>
+        ))}
       {showReplyForm && (
         <ReplyForm
           replyText={replyText}

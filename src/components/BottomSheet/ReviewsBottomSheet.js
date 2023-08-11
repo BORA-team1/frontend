@@ -56,7 +56,7 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
   const [review, setReview] = useState('');
   const [reviews, setReviews] = useState([
     {
-      id: 1,
+      id: 0,
       content: '첫 번째 댓글입니다.',
       author: '사용자 A',
       replies: [
@@ -64,7 +64,7 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
         {id: 2, content: '대댓글 2', author: '사용자 D', mention: '사용자 A'},
       ],
     },
-    {id: 2, content: '두 번째 댓글입니다.', author: '사용자 B', replies: []},
+    {id: 1, content: '두 번째 댓글입니다.', author: '사용자 B', replies: []},
   ]);
 
   //한마디 등록
@@ -87,12 +87,12 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
   };
 
   //답글 등록
-  const addReply = (reviewId, replyText, mentionedUser) => {
+  const addReply = (reviewId, replyText) => {
     const updatedReviews = reviews.map((review) => {
       if (review.id === reviewId) {
         const newReply = {
           content: replyText,
-          author: 'zimmmni', // 현재 로그인한 사용자
+          author: 'zimmmni', // 현재 로그인한 사용자 닉네임 넣기
           mention: mentionedUser,
           id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
         };
@@ -109,6 +109,12 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
       return review;
     });
     setReviews(updatedReviews);
+  };
+
+  //언급할 사용자 설정
+  const [mentionedUser, setMentionedUser] = useState('');
+  const setMention = (author) => {
+    setMentionedUser(author);
   };
 
   return (
@@ -141,9 +147,8 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
                 reviewId={review.id}
                 author={review.author}
                 handleDelete={handleDelete}
-                onReply={(reviewid, replyText, mentionedUser) =>
-                  addReply(reviewid, replyText, mentionedUser)
-                }
+                addReply={addReply}
+                setMention={setMention}
               ></Review>
             ))}
           </List>
