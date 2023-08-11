@@ -37,7 +37,7 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
     { start: 6, end: 9, sectionId: 3 },
     { start: 9, end: 12, sectionId: 4 },
     { start: 12, end: 16, sectionId: 5 },
-    { start: 16, end: 20, sectionId: 6 },
+    { start: 16, end: 35, sectionId: 6 },
     // ... 필요한 만큼 더 간격 정의
   ];
 
@@ -80,6 +80,8 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
     return matchingInterval ? matchingInterval.sectionId - 1 : 0;
   };
 
+  //스크롤 관련 함수
+
   return (
     <Wrapper>
       {sections.length > 0 &&
@@ -87,7 +89,10 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
           const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
           return (
             <Gap key={sec.sec_id}>
-              <Section className="ebook-container">
+              <Section
+                id={`section-${sectionIndex}`}
+                className="ebook-container"
+              >
                 <SectionContent>
                   <TextContainer>
                     {sentences.map((sentence, sentenceIndex) => (

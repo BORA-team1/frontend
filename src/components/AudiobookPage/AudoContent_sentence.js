@@ -3,14 +3,13 @@ import styled from "styled-components";
 import axios from "axios";
 
 const AudioContent = ({ isAudioPlaying, audioRef }) => {
-  // 데이터 받아오기
   const BASE_URL = "http://localhost:3001";
 
-  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     getPosts();
   }, []);
+
   const getPosts = () => {
     axios
       .get(`${BASE_URL}/data`)
@@ -24,16 +23,12 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
   };
 
   const [highlightedSentenceIndex, setHighlightedSentenceIndex] = useState(0);
-  // const [isHighlightingStarted, setIsHighlightingStarted] = useState(false);
   const timeIntervals = [
-    { start: 0, end: 1, sectionId: 1, sentenceIndex: 0 },
-    { start: 1, end: 3, sectionId: 1, sentenceIndex: 1 },
-    { start: 3, end: 7, sectionId: 2, sentenceIndex: 0 },
-    { start: 7, end: 9, sectionId: 2, sentenceIndex: 1 },
-    // ... 필요한 만큼 더 간격 정의
+    { start: 0, end: 3, sectionId: 1, sentenceIndex: 0 },
+    { start: 3, end: 6, sectionId: 1, sentenceIndex: 1 },
+    // ... 다른 간격 정의
   ];
 
-  // 오디오 재생 시간에 따라 문장 하이라이팅 업데이트
   useEffect(() => {
     const handleTimeUpdate = () => {
       if (isAudioPlaying) {
@@ -63,11 +58,32 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
   };
 
   const calculateIndexFromTime = (currentTime, timeIntervals) => {
-    const matchingInterval = timeIntervals.find(
-      (interval) => currentTime >= interval.start && currentTime < interval.end
-    );
+    let totalElapsedTime = 0;
 
-    return matchingInterval ? matchingInterval.sentenceIndex : 0;
+    for (const interval of timeIntervals) {
+      totalElapsedTime += interval.end - interval.start;
+      if (totalElapsedTime > currentTime) {
+        const sentenceOffset = getSentenceOffset(interval, timeIntervals);
+        return sentenceOffset + interval.sentenceIndex;
+      }
+    }
+
+    return 0;
+  };
+
+  const getSentenceOffset = (targetInterval, timeIntervals) => {
+    let count = 0;
+    let found = false;
+
+    for (const interval of timeIntervals) {
+      if (interval === targetInterval) {
+        found = true;
+        break;
+      }
+      count += interval.sentenceIndex === 0 ? 0 : interval.end - interval.start;
+    }
+
+    return found ? count : 0;
   };
 
   return (
