@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
-import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
-import DifficultyBar from "../components/MainPage/DifficultyBar";
-import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
+import TopBar from '../components/Common/TopBar';
+import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
+import DifficultyArticle from '../components/MainPage/MainCommon/DifficultyArticle';
+import DifficultyBar from '../components/MainPage/DifficultyBar';
+import InterestArticle from '../components/MainPage/MainCommon/InterestArticle';
 
 //images
-import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
-import article_image from "../images/article_image.svg";
-import picked_sentence from "../images/PickedSentence.svg";
-import entire_btn from "../images/entireBtn.svg";
+import listeningarticle_btn from '../images/ListeningArticleBtn.svg';
+import article_image from '../images/article_image.svg';
+import picked_sentence from '../images/PickedSentence.svg';
+import entire_btn from '../images/entireBtn.svg';
 
 // props로 받아올 posts 구조 분해 할당
 const MainPage = () => {
-  const user = "지민";
+  const user = '지민';
   const [selectDifficulty, setSelectDifficulty] = useState(1);
   const navigate = useNavigate();
   const navigatorP = () => {
-    navigate("/article/1");
+    navigate('/article/1');
   };
   const navigatorE = () => {
-    navigate("/entirepage");
+    navigate('/entirepage');
   };
   return (
     <Container>
@@ -40,7 +40,7 @@ const MainPage = () => {
         <ListingArticleBtn
           src={listeningarticle_btn}
           onClick={() => {
-            navigate("/guidebookpage");
+            navigate('/guidebookpage');
           }}
         />
         {/* 오늘의 아티클 부분 */}
@@ -66,15 +66,15 @@ const MainPage = () => {
         {/*연령대 아티클 부분 */}
         <OtherAgeGroupArticle>
           <AgeGroupTitle>
-            우리 부모님 <span style={{ height: "460px" }}>#40대</span>가
-            관심있는 아티클 엿보기
+            우리 부모님 <span style={{height: '460px'}}>#40대</span>가 관심있는
+            아티클 엿보기
           </AgeGroupTitle>
           <PickedArticle>
             <ArticleImage src={article_image} />
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
               <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
@@ -135,7 +135,7 @@ const Scroll = styled.div`
 
 const FontStyle = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -266,7 +266,7 @@ const PickedSentence = styled.img`
 
 const PickedAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard";
+  font-family: 'Pretendard';
   font-size: 10px;
   font-style: normal;
   font-weight: 500;

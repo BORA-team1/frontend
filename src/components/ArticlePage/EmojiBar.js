@@ -17,8 +17,6 @@ const EmojiBar = ({
   const handleEmojiSelect = (number) => {
     console.log(number);
     setSelectedEmoji(number);
-    //저장 후 이모지 바를 바로 닫아버려서 콘솔에 null만 뜸
-    console.log(selectedEmoji);
     closeEmojiBar();
     if (!isBottomSheetOpen) {
       handleOpenBottomSheet();

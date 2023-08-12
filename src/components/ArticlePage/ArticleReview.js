@@ -14,6 +14,7 @@ const ArticleReview = ({handleBottomSheet}) => {
     const newReview = {
       id: reviews.length + 1,
       content: review,
+      author: 'zimmmni',
     };
     setReviews([...reviews, newReview]);
     setReview('');
@@ -25,9 +26,6 @@ const ArticleReview = ({handleBottomSheet}) => {
     const updatedReviews = reviews.filter((review) => review.id !== id);
     setReviews(updatedReviews);
   };
-
-  //마지막(최신) 한마디 추출
-  const lastReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
 
   return (
     <>
@@ -42,8 +40,9 @@ const ArticleReview = ({handleBottomSheet}) => {
         <ReviewContainer>
           {reviews.length > 0 && (
             <Review
-              reviewId={lastReview.id}
-              review={lastReview.content}
+              reviewId={reviews[reviews.length - 1].id}
+              reviewContent={reviews[reviews.length - 1].content}
+              author={reviews[reviews.length - 1].author}
               handleDelete={handleDelete}
             ></Review>
           )}

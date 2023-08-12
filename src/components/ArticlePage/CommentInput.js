@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import submiticon from '../../images/submiticon.svg';
 
 const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
-  //댓글 저장하는 로직 추가하기
+  //플로팅 바에서 import
+  //댓글 저장
+  const [comment, setComment] = useState('');
 
   return (
     <Wrapper onClick={closeInputBox}>
       <InputBoxContainer onClick={(e) => e.stopPropagation()}>
-        <Inputbox></Inputbox>
+        <Inputbox
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        ></Inputbox>
         <img
           onClick={() => {
             closeInputBox();

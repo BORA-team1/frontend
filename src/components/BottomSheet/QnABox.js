@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 
-const QnABox = () => {
+const QnABox = ({comment}) => {
   return (
     <Container>
       <ProfileContainer>
@@ -10,15 +10,19 @@ const QnABox = () => {
       </ProfileContainer>
       <ContentContainer>
         <Id>broaden_horizons</Id>
-        <Content>
-          그럼 제로슈거 음료에는 다 아스파탐이 들어가는 건가요? 다른 성분의
-          대체당은 아스파탐만큼 보편적이지 않은 것인지 궁금합니다!
-        </Content>
-        <Plus>
-          <div>답변 0개</div>
-          <span>·</span>
-          <div>삭제</div>
-        </Plus>
+        <Content>{comment.content}</Content>
+        {comment.que_id && (
+          <Plus>
+            <div>답변 {comment.answers.length}개</div>
+            {/* 이 질문이 내 질문이고 답변이 달리지 않았을 때만 삭제 허용 */}
+            {comment.is_my && comment.answers.length === 0 && (
+              <>
+                <span>·</span>
+                <div>삭제</div>
+              </>
+            )}
+          </Plus>
+        )}
       </ContentContainer>
     </Container>
   );

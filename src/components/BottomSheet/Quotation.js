@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Quotation = ({closeBottomSheet}) => {
+const Quotation = ({lineContent, closeBottomSheet}) => {
   return (
     <Container>
-      <Sentence>
-        “ 혹시 요즘 아스파탐 논란 보고혹시 요즘 아스파탐 논란 보고 ‘제로슈거
-        음료 안 마시는 게 낫나?’ 고민한 사람 있나요? ”
-      </Sentence>
+      <Sentence>“ {lineContent} ”</Sentence>
       <SelectButton>
         <span onClick={closeBottomSheet}>선택</span>
       </SelectButton>

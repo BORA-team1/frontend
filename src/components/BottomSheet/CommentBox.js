@@ -1,54 +1,120 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import Reply from '../BottomSheet/Reply';
 import profile from '../../images/profile.svg';
 import heart from '../../images/heart.svg';
 import heartclick from '../../images/heartclick.svg';
+import submiticon from '../../images/submiticon.svg';
 
-const CommentBox = ({commentCt, commentId, handleCommentDelete}) => {
+const CommentBox = ({
+  commentContent,
+  commentId,
+  author,
+  replies,
+  handleCommentDelete,
+  addReply,
+  mentionedUser,
+  setMention,
+}) => {
+  //좋아요/좋아요취소
   const [clickIcon, setClickIcon] = useState(false);
-
   const handleClickIcon = () => {
     setClickIcon(!clickIcon);
   };
 
+  //답글 등록
+  const [replyText, setReplyText] = useState('');
+  const [showReplyForm, setShowReplyForm] = useState(false);
+
+  const handleReply = (event) => {
+    if (event.key === 'Enter' && event.shiftKey === false) {
+      event.preventDefault();
+
+      addReply(commentId, replyText, author);
+      setReplyText('');
+      setShowReplyForm(false);
+    }
+  };
+
+  const handleReplyClick = () => {
+    addReply(commentId, replyText, author);
+    setReplyText('');
+    setShowReplyForm(false);
+  };
+
+  //답글 입력창 관리
+  const handleButtonClick = (author) => {
+    setShowReplyForm(!showReplyForm);
+    setMention(author);
+  };
+
   return (
-    <Container>
-      <ProfileContainer>
-        <img src={profile} alt='profileimg'></img>
-      </ProfileContainer>
-      <ContentContainer>
-        <Id>broaden_horizons</Id>
-        <Content>{commentCt}</Content>
-        <Plus>
-          {clickIcon ? (
+    <>
+      <Container>
+        <ProfileContainer>
+          <img src={profile} alt='profileimg'></img>
+        </ProfileContainer>
+        <ContentContainer>
+          <Id>{author}</Id>
+          <Content>{commentContent}</Content>
+          <Plus>
+            {clickIcon ? (
+              <img
+                src={heartclick}
+                alt='heartclick'
+                onClick={handleClickIcon}
+              ></img>
+            ) : (
+              <img src={heart} alt='heart' onClick={handleClickIcon}></img>
+            )}
+            <div
+              style={{
+                color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              0
+            </div>
+            {clickIcon ? (
+              <div onClick={handleClickIcon}>좋아요 취소</div>
+            ) : (
+              <div onClick={handleClickIcon}>좋아요</div>
+            )}
+            <span>·</span>
+            <div onClick={() => handleButtonClick(author)}>답글달기</div>
+            {/* user가 누구인지에 따라 삭제 버튼 온오프 */}
+            <span>·</span>
+            <div onClick={() => handleCommentDelete(commentId)}>삭제</div>
+          </Plus>
+        </ContentContainer>
+      </Container>
+      {replies &&
+        replies.map((reply) => (
+          <Reply
+            key={reply.id}
+            reply={reply}
+            showReplyForm={showReplyForm}
+            setShowReplyForm={setShowReplyForm}
+            setMention={setMention}
+          ></Reply>
+        ))}
+      {showReplyForm && (
+        <>
+          <Mention>{mentionedUser} 님에게 답글</Mention>
+          <InputBoxPosition>
+            <Inputbox
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              onKeyDown={(e) => handleReply(e, author)}
+            ></Inputbox>
             <img
-              src={heartclick}
-              alt='heartclick'
-              onClick={handleClickIcon}
+              onClick={() => handleReplyClick(author)}
+              src={submiticon}
+              alt='submiticon'
             ></img>
-          ) : (
-            <img src={heart} alt='heart' onClick={handleClickIcon}></img>
-          )}
-          <div
-            style={{
-              color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
-            }}
-          >
-            0
-          </div>
-          {clickIcon ? (
-            <div onClick={handleClickIcon}>좋아요 취소</div>
-          ) : (
-            <div onClick={handleClickIcon}>좋아요</div>
-          )}
-          <span>·</span>
-          <div>답글달기</div>
-          {/* user가 누구인지에 따라 삭제 버튼 온오프 */}
-          <span>·</span>
-          <div onClick={() => handleCommentDelete(commentId)}>삭제</div>
-        </Plus>
-      </ContentContainer>
-    </Container>
+          </InputBoxPosition>
+        </>
+      )}
+    </>
   );
 };
 
@@ -116,4 +182,66 @@ const Plus = styled.div`
   div {
     cursor: pointer;
   }
+`;
+
+const InputBoxPosition = styled.div`
+  z-index: 2;
+  width: 350px;
+  padding: 21px 0px;
+  box-sizing: border-box;
+  border-top: 1px solid #353646;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+const Mention = styled.div`
+  position: absolute;
+  bottom: 83px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 350px;
+  padding: 0px 20px;
+  height: 32px;
+  background: #242237;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const Inputbox = styled.input`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  padding-left: 10px;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;

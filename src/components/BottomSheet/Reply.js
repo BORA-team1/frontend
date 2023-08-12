@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 
-const Reply = ({reply}) => {
+const Reply = ({reply, showReplyForm, setShowReplyForm, setMention}) => {
   return (
     <>
       <Container>
@@ -16,7 +16,14 @@ const Reply = ({reply}) => {
             {reply.content}
           </Content>
           <Plus>
-            <div>답글달기</div>
+            <div
+              onClick={() => {
+                setShowReplyForm(!showReplyForm);
+                setMention(reply.author);
+              }}
+            >
+              답글달기
+            </div>
             <span>·</span>
             <div>삭제</div>
           </Plus>

@@ -6,7 +6,6 @@ import more from '../../images/more.svg';
 
 const ContentPopup = () => {
   const [isOpen, setOpen] = useState('true');
-
   const handlePopup = () => {
     setOpen(!isOpen);
   };
