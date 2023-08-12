@@ -6,8 +6,8 @@ import styled from "styled-components";
 //components
 import AudiobookTitleBox from "../components/AudiobookPage/AudiobookTitleBox";
 import PlayingBar from "../components/AudiobookPage/PlayingBar";
-import SentenceSplit from "../components/Common/SentenceSplit";
 import AudioContent from "../components/AudiobookPage/AudioContent";
+import AudoContent_sentence from "../components/AudiobookPage/AudoContent_sentence";
 
 //images
 import X from "../images/X.svg";
