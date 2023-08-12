@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-const AudioContent = ({isAudioPlaying, audioRef}) => {
-  // 데이터 받아오기
-  const BASE_URL = 'http://localhost:3001';
+const AudioContent = ({ isAudioPlaying, audioRef }) => {
+  const BASE_URL = "http://localhost:3001";
 
-  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     getPosts();
   }, []);
+
   const getPosts = () => {
     axios
       .get(`${BASE_URL}/data`)
@@ -23,26 +22,38 @@ const AudioContent = ({isAudioPlaying, audioRef}) => {
       });
   };
 
-  const [highlightedSentenceIndex, setHighlightedSentenceIndex] = useState(0);
-  // const [isHighlightingStarted, setIsHighlightingStarted] = useState(false);
+  const [highlightedSectionIndex, setHighlightedSectionIndex] = useState(0);
+
+  const sections = posts.reduce((acc, item) => {
+    if (item.post_id === 1) {
+      acc.push(...item.PostSec);
+    }
+    return acc;
+  }, []);
+
   const timeIntervals = [
-    {start: 0, end: 1, sectionId: 1, sentenceIndex: 0},
-    {start: 1, end: 3, sectionId: 1, sentenceIndex: 1},
-    {start: 3, end: 7, sectionId: 2, sentenceIndex: 0},
-    {start: 7, end: 9, sectionId: 2, sentenceIndex: 1},
+    { start: 0, end: 3, sectionId: 1 },
+    { start: 3, end: 6, sectionId: 2 },
+    { start: 6, end: 9, sectionId: 3 },
+    { start: 9, end: 12, sectionId: 4 },
+    { start: 12, end: 16, sectionId: 5 },
+    { start: 16, end: 35, sectionId: 6 },
+
     // ... 필요한 만큼 더 간격 정의
   ];
 
-  // 오디오 재생 시간에 따라 문장 하이라이팅 업데이트
   useEffect(() => {
     const handleTimeUpdate = () => {
       if (isAudioPlaying) {
         const currentTime = getCurrentAudioTime();
-        const newIndex = calculateIndexFromTime(currentTime, timeIntervals);
+        const newSectionIndex = calculateSectionIndexFromTime(
+          currentTime,
+          timeIntervals
+        );
 
-        if (newIndex !== highlightedSentenceIndex) {
-          setHighlightedSentenceIndex(newIndex);
-          console.log(newIndex);
+        if (newSectionIndex !== highlightedSectionIndex) {
+          setHighlightedSectionIndex(newSectionIndex);
+          console.log(newSectionIndex);
         }
       }
     };
@@ -62,48 +73,43 @@ const AudioContent = ({isAudioPlaying, audioRef}) => {
     return audioRef.current ? audioRef.current.currentTime : 0;
   };
 
-  const calculateIndexFromTime = (currentTime, timeIntervals) => {
+  const calculateSectionIndexFromTime = (currentTime, timeIntervals) => {
     const matchingInterval = timeIntervals.find(
-      (interval) => currentTime >= interval.start && currentTime < interval.end
+      (interval) => currentTime >= interval.start && currentTime <= interval.end
     );
 
-    return matchingInterval ? matchingInterval.sentenceIndex : 0;
+    return matchingInterval ? matchingInterval.sectionId - 1 : 0;
   };
+
+  //스크롤 관련 함수
 
   return (
     <Wrapper>
-      {posts.length > 0 &&
-        posts.map((item) => (
-          <Gap key={item.post_id}>
-            {item.post_id === 1 &&
-              item.PostSec.map((sec) => {
-                const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
-                return (
-                  <Section key={sec.sec_id} className='ebook-container'>
-                    <SectionContent>
-                      <TextContainer>
-                        {sentences.map((sentence, sentenceIndex) => (
-                          <HighlightedSpan
-                            key={sentenceIndex}
-                            isHighlighted={
-                              sec.sec_id ===
-                                timeIntervals[highlightedSentenceIndex]
-                                  .sectionId &&
-                              sentenceIndex ===
-                                timeIntervals[highlightedSentenceIndex]
-                                  .sentenceIndex
-                            }
-                          >
-                            {sentence}
-                          </HighlightedSpan>
-                        ))}
-                      </TextContainer>
-                    </SectionContent>
-                  </Section>
-                );
-              })}
-          </Gap>
-        ))}
+      {sections.length > 0 &&
+        sections.map((sec, sectionIndex) => {
+          const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
+          return (
+            <Gap key={sec.sec_id}>
+              <Section
+                id={`section-${sectionIndex}`}
+                className="ebook-container"
+              >
+                <SectionContent>
+                  <TextContainer>
+                    {sentences.map((sentence, sentenceIndex) => (
+                      <HighlightedSpan
+                        key={sentenceIndex}
+                        isHighlighted={sectionIndex === highlightedSectionIndex}
+                      >
+                        {sentence}
+                      </HighlightedSpan>
+                    ))}
+                  </TextContainer>
+                </SectionContent>
+              </Section>
+            </Gap>
+          );
+        })}
     </Wrapper>
   );
 };

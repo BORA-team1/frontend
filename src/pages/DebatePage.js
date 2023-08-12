@@ -1,35 +1,61 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import styled from 'styled-components';
-import articlebackground from '../images/articlebackground.png';
-import closebutton from '../images/closebutton.svg';
-import more from '../images/more.svg';
-import info from '../images/info.svg';
-import InputBox from '../components/Common/InputBox';
-import DebateMessage from '../components/DebatePage/DebateMessage';
-import GroupSettingModal from '../components/DebatePage/GroupSettingModal';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+//img
+import articlebackground from "../images/articlebackground.png";
+import closebutton from "../images/closebutton.svg";
+import more from "../images/more.svg";
+import info from "../images/info.svg";
+//component
+import InputBox from "../components/Common/InputBox";
+import DebateMessage from "../components/DebatePage/DebateMessage";
+import GroupSettingModal from "../components/DebatePage/GroupSettingModal";
+import DebateEnd from "../components/DebatePage/DebateEnd";
 
 const DebatePage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(true);
 
+  //입력값 관련 코드
+  const [showDebateEnd, setShowDebateEnd] = useState(false);
+  const [debateText, setDebateText] = useState("");
+  const [submissions, setSubmissions] = useState([]);
+
+  //--//날짜 관련
+  const [time, setTime] = useState("00:00");
+  const currentTime = () => {
+    const date = new Date();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    setTime(`${hours}:${minutes}`);
+  };
+
+  const handleInputChange = (inputValue) => {
+    if (inputValue.trim() === "#토론종료") {
+      setShowDebateEnd(true);
+    } else {
+      setDebateText(inputValue); //input text 설정
+      setSubmissions([...submissions, inputValue]);
+    }
+    currentTime();
+  };
   return (
     <Wrapper>
       <BackgroundImg>
-        <img src={articlebackground} alt='포스트 배경 이미지'></img>
+        <img src={articlebackground} alt="포스트 배경 이미지"></img>
       </BackgroundImg>
       <GradientOverlay></GradientOverlay>
       <Header>
         <Top>
           <CloseButton
             src={closebutton}
-            alt='closebutton'
+            alt="closebutton"
             onClick={() => {
               navigate(-1);
             }}
           ></CloseButton>
           <Quoting>
-            인용하기<img src={more} alt='morereview'></img>
+            인용하기<img src={more} alt="morereview"></img>
           </Quoting>
         </Top>
         <Mid>
@@ -48,7 +74,7 @@ const DebatePage = () => {
         </HeaderText>
         <HR></HR>
         <Information>
-          <img src={info} alt='info'></img>
+          <img src={info} alt="info"></img>
           <div>
             토론 종료는 채팅창에 <span>‘#토론종료’</span> 라고 입력해 주세요.
             <br></br>
@@ -56,9 +82,18 @@ const DebatePage = () => {
           </div>
         </Information>
         <Chatting>
-          <MessageBox>
-            <DebateMessage></DebateMessage>
-          </MessageBox>
+          {submissions.map((message, index) => (
+            <MessageBox>
+              <DebateMessage
+                key={index}
+                user="도라에몽"
+                text={message}
+                time={time}
+              />
+            </MessageBox>
+          ))}
+
+          {showDebateEnd && <DebateEnd />}
         </Chatting>
         <InputBoxPosition>
           {/* <SelectedSentence>
@@ -71,7 +106,7 @@ const DebatePage = () => {
             </div>
             <img src={closebutton} alt='closebutton'></img>
           </SelectedSentence> */}
-          <InputBox></InputBox>
+          <InputBox onInputChange={handleInputChange} />
         </InputBoxPosition>
       </Container>
       {isModalOpen && <GroupSettingModal setModalOpen={setModalOpen} />}
@@ -87,7 +122,7 @@ const Wrapper = styled.div`
   height: 844px;
   display: flex;
   flex-direction: column;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
   color: #fff;
   margin: 0px auto;
@@ -264,8 +299,13 @@ const Chatting = styled.div`
   flex-direction: column;
   margin-top: 21px;
   width: 360px;
-  height: 100%;
+  height: 450px;
   white-space: nowrap;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   //내 메시지 보여주려고 임시로 지정함.
   //나중에 내 메시지인지 상대방 메시지인지 구분해서 포지션 정하기
@@ -273,10 +313,9 @@ const Chatting = styled.div`
 `;
 
 const MessageBox = styled.div`
-  width: 235px;
-  padding: 15px 12px;
   border-radius: 15px;
   background: var(--main-purple, #5a45f5);
+  margin-top: 15px;
 `;
 
 const InputBoxPosition = styled.div`
@@ -316,4 +355,11 @@ const SelectedSentence = styled.div`
     width: 18px;
     height: 18px;
   }
+`;
+
+const DebateEndContainer = styled.div`
+  position: absolute;
+  bottom: 285;
+  right: 15;
+  text-align: center;
 `;
