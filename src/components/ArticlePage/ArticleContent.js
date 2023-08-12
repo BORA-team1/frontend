@@ -8,6 +8,7 @@ import ContentPopup from './ContentPopup';
 
 import comment from '../../images/sectionbar/commenticon.svg';
 import qna from '../../images/sectionbar/qnaicon.svg';
+import happy from '../../images/emoji/happy.svg';
 
 const ArticleContent = ({isContentsOn}) => {
   const BASE_URL = 'http://localhost:3001/';
@@ -78,11 +79,11 @@ const ArticleContent = ({isContentsOn}) => {
     setHoveredIndex(null);
   };
 
-  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  // 페이지 로드 시 저장된 글 목록을 불러오기
   useEffect(() => {
     getPosts();
   }, []);
-  const postPk = 1; // 원하는 포스트의 ID를 설정
+  const postPk = 1; // 원하는 포스트의 ID 설정
   const [posts, setPosts] = useState([]);
   const getPosts = () => {
     axios
@@ -141,95 +142,47 @@ const ArticleContent = ({isContentsOn}) => {
 
                             return (
                               <div key={`${section.num}-${paragraphIndex}`}>
-                                {paragraphIndex > 0 ? (
-                                  <li>
-                                    {sentences.map(
-                                      (sentence, sentenceIndex) => {
-                                        const currentSentenceIndex =
-                                          cumulativeSentenceIndex++;
-                                        return (
-                                          <span
-                                            key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
-                                            onClick={() => {
-                                              handleClick(
-                                                section.num,
-                                                currentSentenceIndex
-                                              );
-                                              saveTextInfo(
-                                                section.num,
-                                                currentSentenceIndex,
-                                                sentence
-                                              );
-                                              highlightText(sentence);
-                                            }}
-                                            style={{
-                                              cursor: 'pointer',
-                                              color:
-                                                selectedSentence === sentence ||
-                                                hoveredIndex === sentence
-                                                  ? '#A397FF'
-                                                  : 'white',
-
-                                              backgroundColor: selectedSentence
-                                                ? 'transparent'
-                                                : highlights.some(
-                                                    (highlight) =>
-                                                      highlight.sentenceIndex ===
-                                                      currentSentenceIndex
-                                                  )
-                                                ? 'rgba(170, 158, 255, 0.35)'
-                                                : 'transparent',
-                                            }}
-                                          >
-                                            {sentence}
-                                          </span>
+                                {sentences.map((sentence, sentenceIndex) => {
+                                  const currentSentenceIndex =
+                                    cumulativeSentenceIndex++;
+                                  return (
+                                    <span
+                                      key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
+                                      onClick={() => {
+                                        handleClick(
+                                          section.num,
+                                          currentSentenceIndex
                                         );
-                                      }
-                                    )}
-                                  </li>
-                                ) : (
-                                  sentences.map((sentence, sentenceIndex) => {
-                                    const currentSentenceIndex =
-                                      cumulativeSentenceIndex++;
-                                    return (
-                                      <span
-                                        key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
-                                        onClick={() => {
-                                          handleClick(
-                                            section.num,
-                                            currentSentenceIndex
-                                          );
-                                          saveTextInfo(
-                                            section.num,
-                                            currentSentenceIndex,
-                                            sentence
-                                          );
-                                          highlightText(sentence);
-                                        }}
-                                        style={{
-                                          cursor: 'pointer',
-                                          color:
-                                            selectedSentence === sentence ||
-                                            hoveredIndex === sentence
-                                              ? '#A397FF'
-                                              : 'white',
+                                        saveTextInfo(
+                                          section.num,
+                                          currentSentenceIndex,
+                                          sentence
+                                        );
+                                        highlightText(sentence);
+                                      }}
+                                      style={{
+                                        cursor: 'pointer',
+                                        color:
+                                          selectedSentence === sentence ||
+                                          hoveredIndex === sentence
+                                            ? '#A397FF'
+                                            : 'white',
 
-                                          backgroundColor: selectedSentence
-                                            ? 'transparent'
-                                            : highlights.some(
-                                                (highlight) =>
-                                                  highlight.sentenceIndex ===
-                                                  currentSentenceIndex
-                                              )
-                                            ? 'rgba(170, 158, 255, 0.35)'
-                                            : 'transparent',
-                                        }}
-                                      >
-                                        {sentence}
-                                      </span>
-                                    );
-                                  })
-                                )}
+                                        backgroundColor: selectedSentence
+                                          ? 'transparent'
+                                          : highlights.some(
+                                              (highlight) =>
+                                                highlight.sentenceIndex ===
+                                                currentSentenceIndex
+                                            )
+                                          ? 'rgba(170, 158, 255, 0.35)'
+                                          : 'transparent',
+                                      }}
+                                    >
+                                      {sentence}
+                                    </span>
+                                  );
+                                })}
                               </div>
                             );
                           })}
@@ -258,6 +211,8 @@ const ArticleContent = ({isContentsOn}) => {
                                   >
                                     {/* <div></div> */}
                                     <img src={comment} alt='comment'></img>
+                                    {/* <img src={qna} alt='qna'></img>
+                                    <img src={happy} alt='happy'></img> */}
                                   </Icon>
                                 );
                               })}
@@ -378,6 +333,11 @@ const Icon = styled.div`
     border-radius: 50%;
     top: -1px;
     right: -1px;
+  }
+
+  img {
+    width: 14x;
+    height: 14px;
   }
 `;
 

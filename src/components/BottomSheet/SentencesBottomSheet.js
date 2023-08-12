@@ -1,17 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled, {keyframes} from 'styled-components';
 import SentenceBox from './SentenceBox';
 import MySentenceBox from './MySentenceBox';
 import SentenceBoxEmoji from './SentenceBoxEmoji';
 import CommentBox from './CommentBox';
 import QnABox from './QnABox';
+import axios from 'axios';
 
 const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
+  const BASE_URL = 'http://localhost:3001/';
   const [category, setCategory] = useState('A');
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
   const showListD = () => setCategory('D');
+
+  //밑줄 Get
+  const [lines, setLines] = useState([]);
+  useEffect(() => {
+    const getLines = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}line`);
+        setLines(response.data.Lines);
+      } catch (error) {
+        console.error('밑줄을 불러오는 중 오류가 발생했습니다.', error);
+      }
+    };
+
+    getLines();
+  }, []);
 
   const barPosition = {
     A: '0',
@@ -71,8 +88,13 @@ const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
         {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
         {category === 'A' && (
           <SentencesList>
-            <Num>문장 1개</Num>
-            <MySentenceBox></MySentenceBox>
+            <Num>문장 {lines.length}개</Num>
+            {lines.map((line) => (
+              <MySentenceBox
+                key={line.line_id}
+                lineContent={line.content}
+              ></MySentenceBox>
+            ))}
           </SentencesList>
         )}
         {category === 'B' && (
@@ -88,9 +110,8 @@ const SentencesBottomSheet = ({handleCloseBottomSheet}) => {
           <SentencesList>
             <Num>질문 1개</Num>
             <SentenceBox></SentenceBox>
-            <QnAContainer>
-              <QnABox></QnABox>
-            </QnAContainer>
+            <QContainer>{/* <QnABox></QnABox> */}</QContainer>
+            <AContainer>{/* <QnABox></QnABox> */}</AContainer>
           </SentencesList>
         )}
         {category === 'D' && (
@@ -238,10 +259,16 @@ const CommentBoxContainer = styled.div`
   background: #1e1c2e;
 `;
 
-const QnAContainer = styled.div`
+const QContainer = styled.div`
   padding: 20px 62px;
   border-bottom: 1px solid #353646;
   background: #1e1c2e;
+`;
+
+const AContainer = styled.div`
+  padding: 20px 62px;
+  border-bottom: 1px solid #353646;
+  background: #5a45f5;
 `;
 
 const HR = styled.div`

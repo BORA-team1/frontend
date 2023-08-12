@@ -5,7 +5,8 @@ import Reply from '../BottomSheet/Reply';
 import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
 import thumbsupclick from '../../images/thumbsupclick.svg';
-import ReplyForm from '../BottomSheet/ReplyForm';
+import submiticon from '../../images/submiticon.svg';
+// import ReplyForm from '../BottomSheet/ReplyForm';
 
 const Review = ({
   replies,
@@ -14,6 +15,7 @@ const Review = ({
   author,
   handleDelete,
   addReply,
+  mentionedUser,
   setMention,
 }) => {
   //추천해요/추천취소
@@ -34,6 +36,12 @@ const Review = ({
       setReplyText('');
       setShowReplyForm(false);
     }
+  };
+
+  const handleReplyClick = () => {
+    addReply(reviewId, replyText, author);
+    setReplyText('');
+    setShowReplyForm(false);
   };
 
   const bottomSheetOpen = useContext(SheetContext);
@@ -100,12 +108,24 @@ const Review = ({
           ></Reply>
         ))}
       {showReplyForm && (
-        <ReplyForm
-          replyText={replyText}
-          setReplyText={setReplyText}
-          handleReply={handleReply}
-          mentionedUser={author}
-        ></ReplyForm>
+        <>
+          <Mention>{mentionedUser} 님에게 답글</Mention>
+          <InputBoxPosition>
+            <Inputbox>
+              <div>@{mentionedUser}</div>
+              <input
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                onKeyDown={(e) => handleReply(e, author)}
+              ></input>
+            </Inputbox>
+            <img
+              onClick={() => handleReplyClick(author)}
+              src={submiticon}
+              alt='submiticon'
+            ></img>
+          </InputBoxPosition>
+        </>
       )}
     </>
   );
@@ -176,5 +196,87 @@ const Plus = styled.div`
 
   div {
     cursor: pointer;
+  }
+`;
+
+const InputBoxPosition = styled.div`
+  z-index: 2;
+  width: 350px;
+  height: 83px;
+  padding: 21px 0px;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+const Mention = styled.div`
+  position: absolute;
+  bottom: 83px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 350px;
+  padding: 0px 20px;
+  height: 32px;
+  background: #242237;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const Inputbox = styled.div`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  display: flex;
+  align-items: center;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+
+  div {
+    padding-left: 10px;
+    width: auto;
+    color: #a397ff;
+  }
+
+  input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    flex: 1;
+    padding-left: 10px;
+    color: white;
+
+    font-family: 'Pretendard-Regular';
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
   }
 `;

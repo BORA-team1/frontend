@@ -148,6 +148,7 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
                 author={review.author}
                 handleDelete={handleDelete}
                 addReply={addReply}
+                mentionedUser={mentionedUser}
                 setMention={setMention}
               ></Review>
             ))}
@@ -157,6 +158,7 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
           <Inputbox
             value={review}
             onChange={(e) => setReview(e.target.value)}
+            placeholder='나의 한마디를 남겨 보세요.'
           ></Inputbox>
           <img
             onClick={handleReviewsSubmit}
@@ -297,14 +299,20 @@ const Inputbox = styled.input`
   width: 309px;
   height: 35px;
   border-radius: 20px;
+  border: none;
+  outline: none;
   box-shadow: 0 0 0 1px #fff inset;
   background-color: #161524;
   padding-left: 10px;
 
-  color: rgba(255, 255, 255, 0.6);
+  color: white;
   font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
 `;

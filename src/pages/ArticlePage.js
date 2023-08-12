@@ -14,24 +14,21 @@ import SentencesBottomSheet from '../components/BottomSheet/SentencesBottomSheet
 import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
 
 const ArticlePage = () => {
-  const [isContentsOn, setContentsOn] = useState(true);
-
   //콘텐츠 켜짐/꺼짐
+  const [isContentsOn, setContentsOn] = useState(true);
   const handleContentsOn = () => {
     setContentsOn(!isContentsOn);
   };
 
+  //바텀시트 관리
   const [bottomSheetOpen, setBottomSheetOpen] = useState(null);
 
   const handleBottomSheet = (e) => {
     setBottomSheetOpen(e.target.id);
-    console.log(e.target.id);
   };
-
   const handleCloseBottomSheet = () => {
     setBottomSheetOpen(null);
   };
-
   const selectBottomSheet = {
     sentences: (
       <SentencesBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />

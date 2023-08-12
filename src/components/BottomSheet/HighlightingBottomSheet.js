@@ -36,11 +36,12 @@ const HighlightingBottomSheet = ({
         expanded={expanded}
         style={{height: expanded === 'open' ? '780px' : '532px'}}
       >
-        <BottomSheetHeader onMouseDown={openExpandSpace}>
-          <HeaderText>
+        <BottomSheetHeader>
+          <HeaderText onClick={openExpandSpace}>
             <CloseBottomSheet
-              onClick={() => {
+              onClick={(e) => {
                 onClose();
+                e.stopPropagation();
               }}
             >
               닫기
@@ -79,23 +80,10 @@ const HighlightingBottomSheet = ({
 
         {category === 'A' && <CommentsList></CommentsList>}
         {category === 'B' && (
-          <>
-            <QnAList
-              expanded={expanded}
-              openExpandSpace={openExpandSpace}
-            ></QnAList>
-            <InputBoxPosition>
-              <Inputbox
-              // value={review}
-              // onChange={(e) => setReview(e.target.value)}
-              ></Inputbox>
-              <img
-                // onClick={handleSubmit}
-                src={submiticon}
-                alt='submiticon'
-              ></img>
-            </InputBoxPosition>
-          </>
+          <QnAList
+            expanded={expanded}
+            openExpandSpace={openExpandSpace}
+          ></QnAList>
         )}
         {category === 'C' && (
           <EmojiListContainer>
@@ -229,47 +217,47 @@ const HR = styled.div`
   background: #353646;
 `;
 
-const InputBoxPosition = styled.div`
-  width: 390px;
-  padding: 21px 20px;
-  box-sizing: border-box;
-  border-top: 1px solid #353646;
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: #161524;
-  gap: 6px;
+// const InputBoxPosition = styled.div`
+//   width: 390px;
+//   padding: 21px 20px;
+//   box-sizing: border-box;
+//   border-top: 1px solid #353646;
+//   position: absolute;
+//   bottom: 0;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: #161524;
+//   gap: 6px;
 
-  img {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-  }
-`;
+//   img {
+//     width: 35px;
+//     height: 35px;
+//     cursor: pointer;
+//   }
+// `;
 
-const Inputbox = styled.input`
-  width: 309px;
-  height: 35px;
-  border-radius: 20px;
-  box-shadow: 0 0 0 1px #fff inset;
-  background-color: #161524;
-  padding-left: 10px;
+// const Inputbox = styled.input`
+//   width: 309px;
+//   height: 35px;
+//   border-radius: 20px;
+//   box-shadow: 0 0 0 1px #fff inset;
+//   background-color: #161524;
+//   padding-left: 10px;
 
-  color: rgba(255, 255, 255, 0.6);
-  font-family: 'Pretendard-Regular';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-`;
+//   color: rgba(255, 255, 255, 0.6);
+//   font-family: 'Pretendard-Regular';
+//   font-size: 12px;
+//   font-style: normal;
+//   font-weight: 500;
+//   line-height: normal;
+// `;
 
-const ExpandSpace = styled.div`
-  margin-top: 192px;
-  margin-bottom: 90px;
-`;
+// const ExpandSpace = styled.div`
+//   margin-top: 192px;
+//   margin-bottom: 90px;
+// `;
 
 const EmojiListContainer = styled.div`
   margin-top: 192px;

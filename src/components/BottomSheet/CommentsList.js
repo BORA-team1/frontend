@@ -93,6 +93,7 @@ const CommentsList = () => {
             replies={comment.replies}
             handleCommentDelete={handleCommentDelete}
             addReply={addReply}
+            mentionedUser={mentionedUser}
             setMention={setMention}
           ></CommentBox>
         ))}

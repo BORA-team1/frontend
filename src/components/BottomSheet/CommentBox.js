@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import Reply from '../BottomSheet/Reply';
-import ReplyForm from '../BottomSheet/ReplyForm';
 import profile from '../../images/profile.svg';
 import heart from '../../images/heart.svg';
 import heartclick from '../../images/heartclick.svg';
+import submiticon from '../../images/submiticon.svg';
 
 const CommentBox = ({
   commentContent,
@@ -13,6 +13,7 @@ const CommentBox = ({
   replies,
   handleCommentDelete,
   addReply,
+  mentionedUser,
   setMention,
 }) => {
   //좋아요/좋아요취소
@@ -33,6 +34,12 @@ const CommentBox = ({
       setReplyText('');
       setShowReplyForm(false);
     }
+  };
+
+  const handleReplyClick = () => {
+    addReply(commentId, replyText, author);
+    setReplyText('');
+    setShowReplyForm(false);
   };
 
   //답글 입력창 관리
@@ -91,12 +98,21 @@ const CommentBox = ({
           ></Reply>
         ))}
       {showReplyForm && (
-        <ReplyForm
-          replyText={replyText}
-          setReplyText={setReplyText}
-          handleReply={handleReply}
-          mentionedUser={author}
-        ></ReplyForm>
+        <>
+          <Mention>{mentionedUser} 님에게 답글</Mention>
+          <InputBoxPosition>
+            <Inputbox
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              onKeyDown={(e) => handleReply(e, author)}
+            ></Inputbox>
+            <img
+              onClick={() => handleReplyClick(author)}
+              src={submiticon}
+              alt='submiticon'
+            ></img>
+          </InputBoxPosition>
+        </>
       )}
     </>
   );
@@ -166,4 +182,66 @@ const Plus = styled.div`
   div {
     cursor: pointer;
   }
+`;
+
+const InputBoxPosition = styled.div`
+  z-index: 2;
+  width: 350px;
+  padding: 21px 0px;
+  box-sizing: border-box;
+  border-top: 1px solid #353646;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+const Mention = styled.div`
+  position: absolute;
+  bottom: 83px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 350px;
+  padding: 0px 20px;
+  height: 32px;
+  background: #242237;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const Inputbox = styled.input`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  padding-left: 10px;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;

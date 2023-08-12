@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import Difficulty from "../../Common/Difficulty";
+import Difficulty from '../../Common/Difficulty';
 
 //임시 Data
-import { postCover } from "../../../data/_mock/articledata";
+import {postCover} from '../../../data/_mock/articledata';
 
 //img
-import article_background from "../../../images/post/post1.svg";
-import bookmark_on from "../../../images/bookmark_on.svg";
-import bookmark_off from "../../../images/bookmark-off.svg";
+import article_background from '../../../images/post/post1.svg';
+import bookmark_on from '../../../images/bookmark_on.svg';
+import bookmark_off from '../../../images/bookmark-off.svg';
 
-const TodayArticle = ({ navigatorP }) => {
-  const BASE_URL = "http://localhost:3001";
+const TodayArticle = ({navigatorP}) => {
+  const BASE_URL = 'http://localhost:3001';
   // 페이지 로드 시 저장된 글 목록을 불러옵니다.
   useEffect(() => {
     getPosts();
@@ -29,7 +29,7 @@ const TodayArticle = ({ navigatorP }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
       });
   };
   return (
@@ -38,11 +38,11 @@ const TodayArticle = ({ navigatorP }) => {
         posts.Random?.map((article) => {
           let difficulty;
           if (article.diff === 1) {
-            difficulty = "light";
+            difficulty = 'light';
           } else if (article.diff === 2) {
-            difficulty = "medium";
+            difficulty = 'medium';
           } else if (article.diff === 3) {
-            difficulty = "heavy";
+            difficulty = 'heavy';
           }
 
           const imageArray = postCover[0] || []; // post_id 기반 이미지 배열 받아오기
@@ -51,16 +51,16 @@ const TodayArticle = ({ navigatorP }) => {
             <Box key={article.post_id} onClick={navigatorP}>
               <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
 
-              <Picture src={imageArray[article.post_id - 1] || ""} />
+              <Picture src={imageArray[article.post_id - 1] || ''} />
 
               <TitleBox>
                 <Title>{article.title}</Title>
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                    width: "113px",
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    width: '113px',
                   }}
                 >
                   <TagBox>
@@ -68,7 +68,7 @@ const TodayArticle = ({ navigatorP }) => {
                       <Tag key={tagIndex}>#{tag.hashtag}</Tag>
                     ))}
                   </TagBox>
-                  <Difficulty size="small" difficulty={difficulty}>
+                  <Difficulty size='small' difficulty={difficulty}>
                     {difficulty}
                   </Difficulty>
                 </div>
@@ -139,7 +139,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -155,11 +155,11 @@ const TagBox = styled.ul`
 const Tag = styled.li`
   display: inline-block;
   &:not(:last-child)::after {
-    content: " • ";
+    content: ' • ';
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
