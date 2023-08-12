@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 const AudioContent = ({ isAudioPlaying, audioRef }) => {
   const BASE_URL = "http://localhost:3001";
@@ -18,7 +18,7 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
+        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
       });
   };
 
@@ -38,6 +38,7 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
     { start: 9, end: 12, sectionId: 4 },
     { start: 12, end: 16, sectionId: 5 },
     { start: 16, end: 35, sectionId: 6 },
+
     // ... 필요한 만큼 더 간격 정의
   ];
 
@@ -58,12 +59,12 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
     };
 
     if (audioRef.current) {
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
       }
     };
   }, [isAudioPlaying, audioRef, timeIntervals]);
@@ -122,7 +123,7 @@ const Wrapper = styled.div`
   gap: 50px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -152,7 +153,7 @@ const TextContainer = styled.div`
 
 const HighlightedSpan = styled.span`
   cursor: pointer;
-  color: ${(props) => (props.isHighlighted ? "#A397FF" : "white")};
+  color: ${(props) => (props.isHighlighted ? '#A397FF' : 'white')};
 `;
 
 const Button = styled.button`
