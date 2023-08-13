@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 //components
 import TopBar from '../components/Common/TopBar';
@@ -8,24 +9,42 @@ import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
 import DifficultyArticle from '../components/MainPage/MainCommon/DifficultyArticle';
 import DifficultyBar from '../components/MainPage/DifficultyBar';
 import InterestArticle from '../components/MainPage/MainCommon/InterestArticle';
+import HotArticle from '../components/MainPage/HotArticle';
 
 //images
 import listeningarticle_btn from '../images/ListeningArticleBtn.svg';
-import article_image from '../images/article_image.svg';
-import picked_sentence from '../images/PickedSentence.svg';
 import entire_btn from '../images/entireBtn.svg';
 
-// props로 받아올 posts 구조 분해 할당
+//context
+import {useAuth} from '../contexts/AuthContext';
+
 const MainPage = () => {
-  const user = '지민';
   const [selectDifficulty, setSelectDifficulty] = useState(1);
   const navigate = useNavigate();
-  const navigatorP = () => {
-    navigate('/article/1');
+
+  //GET: 메인페이지 데이터
+  const {authToken, BASE_URL, nickname} = useAuth();
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  const [posts, setPosts] = useState([]);
+  const getPosts = () => {
+    axios
+      .get(`${BASE_URL}post/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setPosts(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error('보는 홈화면을 불러오는 중 오류가 발생했습니다.', error);
+      });
   };
-  const navigatorE = () => {
-    navigate('/entirepage');
-  };
+
   return (
     <Container>
       <TopBar />
@@ -43,13 +62,21 @@ const MainPage = () => {
             navigate('/guidebookpage');
           }}
         />
+
         {/* 오늘의 아티클 부분 */}
-        <TodayTitle>{user} 님을 위한 오늘의 아티클 🔮</TodayTitle>
+        <TodayTitle>{nickname} 님을 위한 오늘의 아티클 🔮</TodayTitle>
         <TodayArticleListContainer>
           <TodayArticleList>
-            <TodayArticle navigatorP={navigatorP}></TodayArticle>
+            {posts.Random &&
+              posts.Random.map((article) => (
+                <TodayArticle
+                  key={article.post_id}
+                  article={article}
+                ></TodayArticle>
+              ))}
           </TodayArticleList>
         </TodayArticleListContainer>
+
         {/* 난이도 아티클 부분 */}
         <DifficultyTitle>
           <span>난이도 선택</span>해서 부담없이 골라읽기
@@ -61,41 +88,51 @@ const MainPage = () => {
         <DifficultyArticleList>
           <DifficultyArticle selectDifficulty={selectDifficulty} />
         </DifficultyArticleList>
-        <EntireBtn src={entire_btn} onClick={navigatorE} />
+        <EntireBtn
+          src={entire_btn}
+          onClick={() => {
+            navigate('/entirepage');
+          }}
+        />
 
         {/*연령대 아티클 부분 */}
-        <OtherAgeGroupArticle>
-          <AgeGroupTitle>
-            우리 부모님 <span style={{height: '460px'}}>#40대</span>가 관심있는
-            아티클 엿보기
-          </AgeGroupTitle>
-          <PickedArticle>
-            <ArticleImage src={article_image} />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
-              <PickedSentence src={picked_sentence} />
-              <PickedAuthor>by. 내일은선생님</PickedAuthor>
-            </div>
-          </PickedArticle>
-        </OtherAgeGroupArticle>
+        {posts.HotLine && (
+          <OtherAgeGroupArticle>
+            <AgeGroupTitle>
+              우리 부모님
+              <span style={{height: '460px'}}>
+                {' '}
+                #{posts.HotLine.hot_age}0대
+              </span>
+              가 관심있는 아티클 엿보기
+            </AgeGroupTitle>
+            <PickedArticle>
+              <HotArticle article={posts.HotPost} />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
+                <PickedSentence>" {posts.HotLine.content} "</PickedSentence>
+                <PickedAuthor>by. {posts.HotLine.author}</PickedAuthor>
+              </div>
+            </PickedArticle>
+          </OtherAgeGroupArticle>
+        )}
+
         {/* 관심사 아티클 부분 */}
-        <>
-          <InterestTitle>
-            <span>재생목록</span>으로 <span>라디오 아티클</span> 들어보기
-          </InterestTitle>
-          <InterestArticleList>
-            <InterestArticle />
-            <InterestArticle />
-            <InterestArticle />
-            <InterestArticle />
-            <InterestArticle />
-          </InterestArticleList>
-        </>
+
+        <InterestTitle>
+          <span>재생목록</span>으로 <span>라디오 아티클</span> 들어보기
+        </InterestTitle>
+        <InterestArticleList>
+          {posts.PlayList &&
+            posts.PlayList.map((playlist) => (
+              <InterestArticle key={playlist.playlist_id} playlist={playlist} />
+            ))}
+        </InterestArticleList>
       </Scroll>
     </Container>
   );
@@ -224,13 +261,14 @@ const OtherAgeGroupArticle = styled.div`
   width: 390px;
   height: 272px;
 
-  margin: 40px 0px;
+  margin: 50px 0px;
+  padding-left: 20px;
 
   background-color: #242237;
 `;
 
 const AgeGroupTitle = styled(FontStyle)`
-  padding: 25px 0px 30px 20px;
+  padding: 25px 0px 30px 0px;
 
   font-size: 16px;
   font-weight: 500;
@@ -244,31 +282,32 @@ const AgeGroupTitle = styled(FontStyle)`
   }
 `;
 
+const PickedArticle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
+`;
+
 const Intro = styled(FontStyle)`
   font-size: 10px;
   font-weight: 700;
   line-height: 154%;
 `;
 
-const PickedArticle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const ArticleImage = styled.img`
-  padding: 0px 20px;
-`;
-
-const PickedSentence = styled.img`
+const PickedSentence = styled.div`
   padding: 10px 0px 20px;
+  font-family: 'Jeju Myeongjo', serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 154%;
 `;
 
 const PickedAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard';
   font-size: 10px;
-  font-style: normal;
   font-weight: 500;
   line-height: 154%;
 `;
@@ -276,6 +315,7 @@ const PickedAuthor = styled.div`
 //취향 아티클 부분
 
 const InterestTitle = styled(FontStyle)`
+  margin-top: 44px;
   margin-left: 20px;
 
   font-size: 16px;

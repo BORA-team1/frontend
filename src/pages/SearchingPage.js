@@ -1,32 +1,63 @@
-import React from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
+import TopBar from '../components/Common/TopBar';
+import DifficultyBox from '../components/MainPage/MainCommon/DifficultyBox';
 
 //images
-import app_explaination from "../images/app_explain.svg";
-import picked_keyword from "../images/picked_keyword.svg";
-import serching_btn from "../images/TopBar/serching_btn.svg";
+import app_explaination from '../images/app_explain.svg';
+import picked_keyword from '../images/picked_keyword.svg';
+import serching_btn from '../images/TopBar/serching_btn.svg';
 
-// props로 받아올 posts 구조 분해 할당
+//context
+import {useAuth} from '../contexts/AuthContext';
+
 const SearchingPage = () => {
-  const user = "지민";
+  const [searchKeyword, setSearchKeyword] = useState();
+  const [isSearchOn, setSearchOn] = useState(false);
+
+  // GET: 검색 결과
+  const {authToken, BASE_URL} = useAuth();
+  const [posts, setPosts] = useState([]);
+  const getResult = () => {
+    if (searchKeyword) {
+      axios
+        .get(`${BASE_URL}post/search/?keyword=${searchKeyword}/`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then((response) => {
+          setSearchOn(true);
+          setPosts(response.data.data.Post);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('검색 결과를 불러오는 중 오류가 발생했습니다.', error);
+        });
+    }
+  };
+
   return (
     <Container>
       <TopBar />
       <Scroll>
         <>
-          {/* 듣는 아티클 부분 */}
           <SearchingBox>
-            <SearchingBar placeholder="검색어를 입력하세요" />
-            <SearchingIcon src={serching_btn} />
+            <SearchingBar
+              placeholder='검색어를 입력하세요'
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
+            <SearchingIcon onClick={getResult} src={serching_btn} />
           </SearchingBox>
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <PickedKeyword src={picked_keyword}></PickedKeyword>
@@ -37,7 +68,19 @@ const SearchingPage = () => {
               <Keyword>#세계</Keyword>
             </KeywordsList>
           </div>
-          <Explaination src={app_explaination} />
+
+          {!isSearchOn && <Explaination src={app_explaination} />}
+
+          {posts ? (
+            posts.map((article, index) => (
+              <>
+                <ResultNum>검색 결과 </ResultNum>
+                <DifficultyBox key={index} article={article} />{' '}
+              </>
+            ))
+          ) : (
+            <ResultNum>검색 결과가 없습니다. </ResultNum>
+          )}
         </>
       </Scroll>
     </Container>
@@ -53,25 +96,27 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
 
-  position: relative;
-  max-width: 390px;
-  max-height: 844px;
+  width: 390px;
+  height: 844px;
   margin: 0px auto;
 
   background-color: #161524;
   color: #fff;
-`;
-
-const Scroll = styled.div`
-  overflow-y: scroll;
-  height: 730px;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 
   &::-webkit-scrollbar {
     display: none;
   }
+`;
 
-  position: relative;
-  z-index: 0;
+const Scroll = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 390px;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  gap: 20px;
 `;
 
 //검색 바 부분
@@ -85,7 +130,6 @@ const SearchingBox = styled.div`
   width: 350px;
   height: 43px;
   flex-shrink: 0;
-  margin: 20px;
 
   border-radius: 20px;
   background: var(--card-color, #2b2c3f);
@@ -93,9 +137,10 @@ const SearchingBox = styled.div`
 
 const SearchingBar = styled.input`
   width: 290px;
+  padding-left: 10px;
 
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -103,8 +148,6 @@ const SearchingBar = styled.input`
   background-color: transparent;
   border-color: transparent;
   outline: none;
-
-  margin-left: 12px;
 
   .input::placeholder {
     color: rgba(255, 255, 255, 0.5);
@@ -123,15 +166,11 @@ const SearchingIcon = styled.img`
 const PickedKeyword = styled.img`
   width: 54px;
   height: 16px;
-
-  margin-left: 20px;
 `;
 
 const KeywordsList = styled.div`
   display: flex;
   flex-direction: row;
-
-  margin-left: 20px;
 `;
 
 const Keyword = styled.div`
@@ -147,14 +186,20 @@ const Keyword = styled.div`
 
   color: var(--sub-purple, #a397ff);
   text-align: center;
-  font-family: "Pretendard-Regular";
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
 `;
 
+const ResultNum = styled.div`
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 133.5%; /* 16.02px */
+  letter-spacing: -0.24px;
+`;
+
 const Explaination = styled.img`
-  margin-top: 20px;
-  margin-left: 20px;
+  width: 280px;
+  height: 75px;
 `;

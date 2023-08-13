@@ -1,33 +1,76 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
+//images
 import profile from '../../images/profile.svg';
+import submiticon from '../../images/submiticon.svg';
 
-const QnABox = ({comment}) => {
+const QnABox = ({comment, addReply}) => {
+  //답글 등록
+  const [replyText, setReplyText] = useState('');
+  const [showReplyForm, setShowReplyForm] = useState(false);
+
+  const handleReply = (event) => {
+    if (event.key === 'Enter' && event.shiftKey === false) {
+      event.preventDefault();
+
+      addReply(comment.que_id, replyText);
+      setReplyText('');
+      setShowReplyForm(false);
+    }
+  };
+
+  const handleReplyClick = () => {
+    addReply(comment.que_id, replyText);
+    setReplyText('');
+    setShowReplyForm(false);
+  };
+
   return (
-    <Container>
-      <ProfileContainer>
-        <img src={profile} alt='profileimg'></img>
-      </ProfileContainer>
-      <ContentContainer>
-        <Id>broaden_horizons</Id>
-        <Content>{comment.content}</Content>
-        {comment.que_id && (
-          <Plus>
-            <div>답변 {comment.answers.length}개</div>
-            {/* 이 질문이 내 질문이고 답변이 달리지 않았을 때만 삭제 허용 */}
-            {comment.is_my && comment.answers.length === 0 && (
-              <>
-                <span>·</span>
-                <div>삭제</div>
-              </>
-            )}
-          </Plus>
-        )}
-      </ContentContainer>
-    </Container>
+    <>
+      <Container>
+        <ProfileContainer>
+          <img src={profile} alt='profileimg'></img>
+        </ProfileContainer>
+        <ContentContainer>
+          <Id>broaden_horizons</Id>
+          <Content>{comment.content}</Content>
+          {comment.que_id && (
+            <Plus>
+              <div onClick={() => setShowReplyForm(!showReplyForm)}>
+                답변 {comment.answers.length}개
+              </div>
+              {/* 이 질문이 내 질문이고 답변이 달리지 않았을 때만 삭제 허용 */}
+              {comment.is_my && comment.answers.length === 0 && (
+                <>
+                  <span>·</span>
+                  <div>삭제</div>
+                </>
+              )}
+            </Plus>
+          )}
+        </ContentContainer>
+      </Container>
+      {showReplyForm && (
+        <>
+          <Mention>질문에 답변달기</Mention>
+          <InputBoxPosition>
+            <Inputbox
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              onKeyDown={(e) => handleReply(e)}
+              placeholder='질문에 답변해 보세요.'
+            ></Inputbox>
+            <img
+              onClick={() => handleReplyClick()}
+              src={submiticon}
+              alt='submiticon'
+            ></img>
+          </InputBoxPosition>
+        </>
+      )}
+    </>
   );
 };
-
 export default QnABox;
 
 const Container = styled.div`
@@ -90,5 +133,67 @@ const Plus = styled.div`
 
   div {
     cursor: pointer;
+  }
+`;
+
+const InputBoxPosition = styled.div`
+  z-index: 2;
+  width: 390px;
+  height: 83px;
+  padding: 21px 20px;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #161524;
+  gap: 6px;
+
+  img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+`;
+
+const Mention = styled.div`
+  position: absolute;
+  bottom: 83px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 350px;
+  padding: 0px 20px;
+  height: 32px;
+  background: #242237;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const Inputbox = styled.input`
+  width: 309px;
+  height: 35px;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px #fff inset;
+  background-color: #161524;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+
+  color: white;
+  font-family: 'Pretendard-Regular';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
   }
 `;

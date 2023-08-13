@@ -1,3 +1,4 @@
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 //img
@@ -9,9 +10,13 @@ import QnAicon_on from '../../../images/DifficultyArticle/QnAicon-on.svg';
 import QnAicon_off from '../../../images/DifficultyArticle/QnAicon-off.svg';
 
 const DifficultyArticle = ({article}) => {
+  const navigate = useNavigate();
   return (
     <>
-      <Box key={article.post_id}>
+      <Box
+        key={article.post_id}
+        onClick={() => navigate(`/article/${article.post_id}`)}
+      >
         <ArticleImage src={article.post_image} />
         <TextContainer>
           <TagBox>

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
+//components
 import QnABox from './QnABox';
+//images
 import submiticon from '../../images/submiticon.svg';
 // import axios from 'axios';
 
@@ -52,6 +54,30 @@ const QnAList = ({expanded, openExpandSpace}) => {
     }));
   };
 
+  //답변 등록
+  const addReply = (commentId, replyText) => {
+    const updatedComments = comments.map((comment) => {
+      if (comment.que_id === commentId) {
+        const newReply = {
+          content: replyText,
+          author: 'zimmmni', // 현재 로그인한 사용자 닉네임 넣기
+          id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
+        };
+
+        const updatedReplies = comment.answers
+          ? [...comment.answers, newReply]
+          : [newReply];
+
+        return {
+          ...comment,
+          answers: updatedReplies,
+        };
+      }
+      return comment;
+    });
+    setComments(updatedComments);
+  };
+
   return (
     <Container>
       <Num>질문 {comments.length}개</Num>
@@ -64,7 +90,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
           {comments.map((comment, id) => (
             <QnAContainer>
               <QContainer key={id}>
-                <QnABox comment={comment}></QnABox>
+                <QnABox comment={comment} addReply={addReply}></QnABox>
               </QContainer>
               <>
                 {comment.answers.length > 0 && (
@@ -117,7 +143,11 @@ const QnAList = ({expanded, openExpandSpace}) => {
           ))}
         </List>
       ) : (
-        <List expanded={expanded}>
+        <List
+          style={{
+            gap: expanded === 'open' ? '25px' : '0px',
+          }}
+        >
           {comments.length > 0 && (
             <QContainer onClick={openExpandSpace}>
               <QnABox comment={comments[comments.length - 1]}></QnABox>
@@ -137,6 +167,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
         <Inputbox
           value={comment}
           onChange={(e) => setComment(e.target.value)}
+          placeholder='밑줄 친 문장을 읽고 궁금한 점을 질문해 보세요.'
         ></Inputbox>
         <img
           onClick={handleCommentSubmit}
@@ -265,10 +296,14 @@ const Inputbox = styled.input`
   background-color: #161524;
   padding-left: 10px;
 
-  color: rgba(255, 255, 255, 0.6);
+  color: white;
   font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
 `;

@@ -1,17 +1,47 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
-import VoteNow from "../components/ArticlePage/VoteNow";
-import DebateNow from "../components/ArticlePage/DebateNow";
-import QBox from "../components/AllContentPage/QBox";
-import ABox from "../components/AllContentPage/ABox";
-import qnaconnect from "../images/qnaconnect.svg";
-import CommentBox from "../components/BottomSheet/CommentBox";
-import EmojiList from "../components/BottomSheet/EmojiList";
+import VoteNow from '../components/ArticlePage/VoteNow';
+import DebateNow from '../components/ArticlePage/DebateNow';
+import QBox from '../components/AllContentPage/QBox';
+import ABox from '../components/AllContentPage/ABox';
+import qnaconnect from '../images/qnaconnect.svg';
+import CommentBox from '../components/BottomSheet/CommentBox';
+import EmojiList from '../components/BottomSheet/EmojiList';
 
 const AllContentsPage = () => {
   const navigate = useNavigate();
+
+  const [selectedSection, setSelectedSection] = useState(1);
+
+  const handleSectionClick = (sectionId) => {
+    setSelectedSection(sectionId);
+  };
+
+  const sections = [
+    {
+      sec_id: 1,
+      'Lines': [
+        {
+          'line_id': 90,
+          'sentence': 2,
+          'content': '[밑줄 문장 내용]',
+        },
+      ],
+    },
+    {
+      sec_id: 2,
+      'Lines': [
+        {
+          'line_id': 90,
+          'sentence': 2,
+          'content': '[밑줄 문장 내용]',
+        },
+      ],
+    },
+  ];
+
   return (
     <Wrapper>
       <ArticleTitle>
@@ -25,11 +55,30 @@ const AllContentsPage = () => {
         사교육비 대책과 수능 킬러 문항
       </ArticleTitle>
       <SectionBar>
-        <div>섹션 1</div>
+        {sections.map((section, index) => (
+          <div
+            key={index}
+            onClick={() => handleSectionClick(section.sec_id)}
+            style={{
+              color:
+                selectedSection === section.sec_id
+                  ? '#A397FF'
+                  : ' rgba(255, 255, 255, 0.6)',
+              borderColor:
+                selectedSection === section.sec_id
+                  ? '#A397FF'
+                  : ' rgba(255, 255, 255, 0.6)',
+            }}
+          >
+            섹션 {index + 1}
+          </div>
+        ))}
       </SectionBar>
+
+      {/* 섹션 map으로 돌리기 */}
       <Section>
-        <div>섹션 1</div>
-        <AllContent>
+        <SectionNum>섹션 {selectedSection}</SectionNum>
+        <div>
           <Sentence>
             “ 얼마 전부터 대학수학능력시험(수능)에서 ‘킬러 문항’ 없앤다 만다 말
             많았잖아요. ”
@@ -58,7 +107,7 @@ const AllContentsPage = () => {
             <Category>감정표현</Category>
             <EmojiList></EmojiList>
           </Content>
-        </AllContent>
+        </div>
         <HR></HR>
       </Section>
     </Wrapper>
@@ -73,7 +122,7 @@ const Wrapper = styled.div`
   background: var(--background, #161524);
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
   padding-bottom: 33.32px;
   margin: 0px auto;
@@ -108,6 +157,7 @@ const SectionBar = styled.div`
   align-items: center;
   padding: 15px 0 15px 20px;
   gap: 7px;
+  border: 1px solid #353646;
 
   div {
     color: rgba(255, 255, 255, 0.6);
@@ -116,7 +166,7 @@ const SectionBar = styled.div`
     font-weight: 500;
     line-height: normal;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid;
     backdrop-filter: blur(5px);
   }
 `;
@@ -124,12 +174,18 @@ const SectionBar = styled.div`
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const AllContent = styled.div`
   padding-left: 20px;
   padding-right: 20px;
+  box-sizing: border-box;
   color: #fff;
+`;
+
+const SectionNum = styled.div`
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 169.336%;
 `;
 
 const Sentence = styled.div`
@@ -181,6 +237,7 @@ const Connect = styled.img`
 
 const HR = styled.div`
   width: 390px;
+  margin-left: -20px;
   height: 8px;
   background: #12111c;
 `;

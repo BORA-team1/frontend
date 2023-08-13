@@ -1,36 +1,66 @@
-//
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
-//components
-import TopBar from "../components/Common/TopBar";
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //images
-import X from "../images/X.svg";
+import X from '../images/X.svg';
 
-import savedpalylist from "../images/willbedeleted/savedpalylist.svg";
+//context
+import {useAuth} from '../contexts/AuthContext';
 
-// props로 받아올 posts 구조 분해 할당
 const DetailPlaylistPage = () => {
   const navigate = useNavigate();
-  const navigatorM = () => {
-    navigate("/mypage"); //이거 함수 불러올 수 있으면 안 써도 되지 않나?
+
+  // GET: 저장한 재생목록
+  const {authToken, BASE_URL} = useAuth();
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [data, setData] = useState([]);
+  const getData = () => {
+    axios
+      .get(`${BASE_URL}mypage/mypli/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setData(response.data.data.myPlaylist);
+        console.log(response.data.data.myPlaylist);
+      })
+      .catch((error) => {
+        console.error(
+          '팔로우한 에디터를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
+
   return (
     <Container>
-      <Scroll>
-        <>
-          <Box>
-            {/* 듣는 아티클 부분 */}
-            <Del src={X} onClick={navigatorM} />
-            <Title>저장한 재생목록</Title>
-          </Box>
-          <PlaylistList>
-            <PlaylistImg src={savedpalylist} />
-          </PlaylistList>
-        </>
-      </Scroll>
+      <Box>
+        <Del
+          src={X}
+          onClick={() => {
+            navigate('/mypage');
+          }}
+        />
+        <Title>저장한 재생목록</Title>
+      </Box>
+      <PlaylistList>
+        {data &&
+          data.map((playlist) => (
+            <PlaylistBox key={playlist.playlist_id}>
+              <Picture>{/* 나중에 이미지 4개 넣기 */}</Picture>
+              <TitleBox>
+                <PlaylistTitle>{playlist.title}</PlaylistTitle>
+                <SubTitle>{playlist.des}</SubTitle>
+              </TitleBox>
+            </PlaylistBox>
+          ))}
+      </PlaylistList>
     </Container>
   );
 };
@@ -42,47 +72,36 @@ export default DetailPlaylistPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   position: relative;
 
-  position: relative;
-  max-width: 390px;
-  max-height: 844px;
+  width: 390px;
+  height: 844px;
   margin: 0px auto;
 
   background-color: #161524;
   color: #fff;
-`;
-
-const Scroll = styled.div`
-  overflow-y: scroll;
-  height: 730px;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 
   &::-webkit-scrollbar {
     display: none;
   }
-
-  position: relative;
-  z-index: 0;
 `;
 
 const Box = styled.div`
   display: flex;
   flex-direction: row;
+  width: 390px;
   height: 80px;
   align-items: center;
   justify-content: center;
-
-  position: relative;
-
   border-bottom: 1px solid #353646;
 `;
 
 const Title = styled.div`
-  margin: 20px;
   color: #fff;
-  font-family: "Pretendard-Regular";
   font-size: 15px;
-  font-style: normal;
   font-weight: 600;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
@@ -93,13 +112,62 @@ const Del = styled.img`
   left: 20px;
   width: 18px;
   height: 18px;
-  margin: 20px;
 `;
 
 const PlaylistList = styled.div`
-  display: flex;
-  justify-content: center;
   margin-top: 30px;
+  width: 307px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
 `;
 
-const PlaylistImg = styled.img``;
+//하나의 재생목록 박스
+const PlaylistBox = styled.div`
+  width: 145.615px;
+  border-radius: 10px;
+  border: 1px solid #353646;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const Picture = styled.div`
+  width: 145.615px;
+  height: 111.893px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  img {
+    width: 100%;
+    background-color: white;
+    object-fit: cover;
+  }
+`;
+
+const TitleBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 145.615px;
+  padding: 10.73px;
+  box-sizing: border-box;
+  gap: 4.598px;
+  background: #2b2c3f;
+`;
+
+const PlaylistTitle = styled.div`
+  text-overflow: ellipsis;
+  font-size: 13.138px;
+  font-weight: 600;
+  line-height: 15.766px;
+`;
+
+const SubTitle = styled.div`
+  width: 82.77px;
+  text-overflow: ellipsis;
+  opacity: 0.5;
+  font-size: 9.854px;
+  font-weight: 600;
+  line-height: 15.766px;
+`;

@@ -1,67 +1,149 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
-import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
-import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
+import TopBar from '../components/Common/TopBar';
+import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
+import Editer from '../components/MyPage/Editer';
+import SavedPlayList from '../components/MyPage/SavedPlaylist';
 
 //images
-import vector from "../images/vector_btn.svg";
-//삭제하고 컴포넌트로 불러와야 하는 부분들
-import userprofile from "../images/willbedeleted/userprofile.svg";
-import userinfo from "../images/willbedeleted/userinfo.svg";
-import bookmarkedimg from "../images/willbedeleted/bookmarkedimg.svg";
-import followinggroup1 from "../images/willbedeleted/followinggroup1.svg";
-import followinggroup2 from "../images/willbedeleted/followinggroup2.svg";
-import savedpalylist from "../images/willbedeleted/savedpalylist.svg";
+import vector from '../images/vector_btn.svg';
 
-// props로 받아올 posts 구조 분해 할당
+//임시 img
+import profile from '../images/profile.svg';
+
+//context
+import {useAuth} from '../contexts/AuthContext';
+
 const MyPage = () => {
   const navigate = useNavigate();
-  const navigatorB = () => {
-    navigate("/detailbookmarkpage");
+
+  // GET: 마이페이지 데이터
+  const {authToken, BASE_URL, logout} = useAuth();
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [userinfo, setUserInfo] = useState([]);
+  const [data, setData] = useState([]);
+  const getData = () => {
+    axios
+      .get(`${BASE_URL}mypage/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setUserInfo(response.data.data.user);
+        setData(response.data.data);
+      })
+      .catch((error) => {
+        console.error(
+          '마이페이지 데이터를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
-  const navigatorE = () => {
-    navigate("/detaileditorpage");
-  };
-  const navigatorP = () => {
-    navigate("/detailplaylistpage");
-  };
+
   return (
     <Container>
       <TopBar />
       <Scroll>
-        <>
-          {/* 듣는 아티클 부분 */}
-          <UserProfile>
-            <Content1 src={userprofile} />
-            <Content2 src={userinfo} />
-          </UserProfile>
-          <BookMarkList>
-            <TitleBox>
-              <Title>북마크</Title>
-              <Btn src={vector} onClick={navigatorB} />
-            </TitleBox>
-            <Content3 src={bookmarkedimg} />
-          </BookMarkList>
-          <FollowingEditorList>
-            <TitleBox>
-              <Title>팔로우한 에디터</Title>
-              <Btn src={vector} onClick={navigatorE} />
-            </TitleBox>
-            <Content4 src={followinggroup1} />
-          </FollowingEditorList>
-          <SavedPlayList>
-            <TitleBox>
-              <Title>저장한 재생목록</Title>
-              <Btn src={vector} onClick={navigatorP} />
-            </TitleBox>
-            <Content3 src={savedpalylist} />
-          </SavedPlayList>
-        </>
+        {/* 듣는 아티클 부분 */}
+        <UserProfile>
+          <img src={profile}></img>
+          <UserInfo>
+            <div>{userinfo.nickname}</div>
+            <div style={{fontSize: '12px'}}>
+              <span>선호 키워드</span>
+              {userinfo.interest &&
+                userinfo.interest.map((interest, index) => (
+                  <div key={index}>#{interest.hashtag}</div>
+                ))}
+            </div>
+          </UserInfo>
+        </UserProfile>
+        <BookMarkList>
+          <TitleBox>
+            <div>
+              북마크{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
+                {data.book_num}
+              </span>
+            </div>
+            <Btn
+              src={vector}
+              onClick={() => {
+                navigate('/detailbookmarkpage');
+              }}
+            />
+          </TitleBox>
+          <BoxWrapper>
+            {data.bookmarkPost &&
+              data.bookmarkPost.map((article) => (
+                <TodayArticle
+                  key={article.post_id}
+                  article={article}
+                  // style={{width: '95px'}}
+                />
+              ))}
+          </BoxWrapper>
+        </BookMarkList>
+        <FollowingEditorList>
+          <TitleBox>
+            <div>
+              팔로우한 에디터{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
+                {data.follows_num}
+              </span>
+            </div>
+            <Btn
+              src={vector}
+              onClick={() => {
+                navigate('/detaileditorpage');
+              }}
+            />
+          </TitleBox>
+          <BoxWrapper>
+            {data.follows &&
+              data.follows.map((editer, index) => (
+                <Editer key={index} editer={editer} />
+              ))}
+          </BoxWrapper>
+        </FollowingEditorList>
+        <PlayList>
+          <TitleBox>
+            <div>
+              저장한 재생목록{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
+                {data.mypli_num}
+              </span>
+            </div>
+            <Btn
+              src={vector}
+              onClick={() => {
+                navigate('/detailplaylistpage');
+              }}
+            />
+          </TitleBox>
+          <BoxWrapper>
+            {data.myPlaylist &&
+              data.myPlaylist.map((playlist, index) => (
+                <SavedPlayList key={index} playlist={playlist} />
+              ))}
+          </BoxWrapper>
+        </PlayList>
+        <LogOut
+          onClick={() => {
+            logout();
+            navigate('/');
+          }}
+        >
+          로그아웃
+        </LogOut>
       </Scroll>
     </Container>
   );
@@ -74,15 +156,14 @@ export default MyPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
-
-  position: relative;
-  max-width: 390px;
-  max-height: 844px;
-  margin: 0px auto;
-
+  width: 390px;
+  height: 844px;
   background-color: #161524;
+  margin: 0 auto;
+
   color: #fff;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const Scroll = styled.div`
@@ -96,7 +177,6 @@ const Scroll = styled.div`
   position: relative;
   z-index: 0;
 `;
-//
 
 const DetailBox = styled.div`
   width: 320px;
@@ -120,14 +200,39 @@ const UserProfile = styled(DetailBox)`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 10px;
+
+  img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+
+  span {
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 5px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+    margin-right: 5px;
+  }
 `;
 
 const BookMarkList = styled(DetailBox)`
   height: 151px;
-`;
-
-const Title = styled.div`
-  font-family: "Pretendard-Regular";
 `;
 
 const Btn = styled.img`
@@ -139,29 +244,29 @@ const FollowingEditorList = styled(DetailBox)`
   height: 81px;
 `;
 
-const SavedPlayList = styled(DetailBox)`
+const PlayList = styled(DetailBox)`
+  display: flex;
+  flex-direction: column;
   height: 151px;
+  gap: 11px;
 `;
 
-const Content1 = styled.img`
-  width: 50px;
-  height: 50px;
+const BoxWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
-const Content2 = styled.img`
-  margin-left: 6px;
-  width: 266px;
-  height: 36px;
-`;
+const LogOut = styled.div`
+  width: 370px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 
-const Content3 = styled.img`
-  width: 200px;
-  height: 122px;
-  margin-top: 10px;
-`;
-
-const Content4 = styled.img`
-  width: 284px;
-  height: 53px;
-  margin-top: 10px;
+  color: var(--on-red, #ff5e2b);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 100%; /* 15px */
+  letter-spacing: -0.3px;
 `;
