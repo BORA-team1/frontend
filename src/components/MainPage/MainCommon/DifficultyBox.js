@@ -1,14 +1,15 @@
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 //img
-import voteicon_on from '../../../images/DifficultyArticle/voteicon-on.svg';
-import voteicon_off from '../../../images/DifficultyArticle/voteicon-off.svg';
-import dabateicon_on from '../../../images/DifficultyArticle/dabateicon-on.svg';
-import dabateicon_off from '../../../images/DifficultyArticle/dabateicon-off.svg';
-import QnAicon_on from '../../../images/DifficultyArticle/QnAicon-on.svg';
-import QnAicon_off from '../../../images/DifficultyArticle/QnAicon-off.svg';
+import voteicon_on from "../../../images/DifficultyArticle/voteicon-on.svg";
+import voteicon_off from "../../../images/DifficultyArticle/voteicon-off.svg";
+import dabateicon_on from "../../../images/DifficultyArticle/dabateicon-on.svg";
+import dabateicon_off from "../../../images/DifficultyArticle/dabateicon-off.svg";
+import QnAicon_on from "../../../images/DifficultyArticle/QnAicon-on.svg";
+import QnAicon_off from "../../../images/DifficultyArticle/QnAicon-off.svg";
 
-const DifficultyArticle = ({article}) => {
+const DifficultyArticle = ({ article }) => {
   return (
     <>
       <Box key={article.post_id}>
@@ -61,7 +62,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
   color: var(--main-purple, #5a45f5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
@@ -76,7 +77,7 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
@@ -84,7 +85,7 @@ const Title = styled.div`
 
 const ArticleAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 9px;
   font-style: normal;
   font-weight: 600;

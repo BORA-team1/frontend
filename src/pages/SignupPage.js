@@ -8,9 +8,13 @@ import TopBar from "../components/Common/TopBar";
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [id, setID] = useState("");
+  // const [id, setID] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [profile, setProfile] = useState("");
+  // const [gender, setGender] = useState("");
+  const [age, setAge] = useState();
 
   // 리렌더링용 변수
   const [render, setRender] = useState(0);
@@ -23,6 +27,10 @@ const SignupPage = () => {
       .post(`${BASE_URL}/account/signup/`, {
         username: username,
         password: password,
+        nickname: nickname,
+        profile: profile,
+        // gender: gender,
+        age: age,
       })
       .then((response) => {
         //회원가입 성공했을 때
@@ -41,8 +49,8 @@ const SignupPage = () => {
           <input
             type="text"
             placeholder="아이디"
-            value={id}
-            onChange={(e) => setID(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <input
             type="password"
@@ -53,8 +61,26 @@ const SignupPage = () => {
           <input
             type="text"
             placeholder="닉네임"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="프로필"
+            value={profile}
+            onChange={(e) => setProfile(e.target.value)}
+          />
+          {/* <input
+            type="text"
+            placeholder="성별"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          /> */}
+          <input
+            type="text"
+            placeholder="나이"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
           />
           <button onClick={handleSignup}>회원가입</button>
         </InputWrapper>
