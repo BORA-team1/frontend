@@ -66,7 +66,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
   color: var(--main-purple, #5a45f5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
@@ -81,7 +81,7 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
@@ -89,7 +89,7 @@ const Title = styled.div`
 
 const ArticleAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 9px;
   font-style: normal;
   font-weight: 600;

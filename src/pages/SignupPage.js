@@ -11,7 +11,7 @@ import {useAuth} from '../contexts/AuthContext';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');

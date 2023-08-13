@@ -203,3 +203,13 @@ const Explaination = styled.img`
   width: 280px;
   height: 75px;
 `;
+
+const DifficultyArticleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  margin: 0px 20px;
+`;
+
+const NoneSearching = styled.div``;
