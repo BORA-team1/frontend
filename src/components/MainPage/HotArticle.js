@@ -1,36 +1,16 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 
 //components
-import Difficulty from '../../Common/Difficulty';
-//images
-import bookmark_on from '../../../images/bookmark_on.svg';
-import bookmark_off from '../../../images/bookmark-off.svg';
-//context
-import {useAuth} from '../../../contexts/AuthContext';
-//api
-// import {postBookMark} from '../../../api/bookmark';
+import Difficulty from './../Common/Difficulty';
 
-const TodayArticle = ({article}) => {
+//img
+import bookmark_on from '../../images/bookmark_on.svg';
+import bookmark_off from '../../images/bookmark-off.svg';
+
+const HotArticle = ({article}) => {
   const navigate = useNavigate();
-  const {authToken, BASE_URL} = useAuth();
-
-  const postBookMark = ({postId}) => {
-    axios
-      .post(`${BASE_URL}post/${postId}/bookmark/`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error('북마크 여부 변경 중 오류가 발생했습니다.', error);
-      });
-  };
 
   let difficulty;
   if (article.diff === 1) {
@@ -43,13 +23,7 @@ const TodayArticle = ({article}) => {
 
   return (
     <Box onClick={() => navigate(`/article/${article.post_id}`)}>
-      <BookMark
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        //   postBookMark(article.post_id);
-        // }}
-        src={article.is_booked ? bookmark_on : bookmark_off}
-      />
+      <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
 
       <Picture src={article.post_image} />
 
@@ -77,7 +51,7 @@ const TodayArticle = ({article}) => {
   );
 };
 
-export default TodayArticle;
+export default HotArticle;
 
 const Box = styled.div`
   position: relative;

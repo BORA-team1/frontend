@@ -1,18 +1,22 @@
-import React from "react";
-import styled from "styled-components";
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 //img
-import voteicon_on from "../../../images/DifficultyArticle/voteicon-on.svg";
-import voteicon_off from "../../../images/DifficultyArticle/voteicon-off.svg";
-import dabateicon_on from "../../../images/DifficultyArticle/dabateicon-on.svg";
-import dabateicon_off from "../../../images/DifficultyArticle/dabateicon-off.svg";
-import QnAicon_on from "../../../images/DifficultyArticle/QnAicon-on.svg";
-import QnAicon_off from "../../../images/DifficultyArticle/QnAicon-off.svg";
+import voteicon_on from '../../../images/DifficultyArticle/voteicon-on.svg';
+import voteicon_off from '../../../images/DifficultyArticle/voteicon-off.svg';
+import dabateicon_on from '../../../images/DifficultyArticle/dabateicon-on.svg';
+import dabateicon_off from '../../../images/DifficultyArticle/dabateicon-off.svg';
+import QnAicon_on from '../../../images/DifficultyArticle/QnAicon-on.svg';
+import QnAicon_off from '../../../images/DifficultyArticle/QnAicon-off.svg';
 
-const DifficultyArticle = ({ article }) => {
+const DifficultyArticle = ({article}) => {
+  const navigate = useNavigate();
   return (
     <>
-      <Box key={article.post_id}>
+      <Box
+        key={article.post_id}
+        onClick={() => navigate(`/article/${article.post_id}`)}
+      >
         <ArticleImage src={article.post_image} />
         <TextContainer>
           <TagBox>

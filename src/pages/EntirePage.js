@@ -7,12 +7,11 @@ import axios from 'axios';
 import TopBar from '../components/Common/TopBar';
 import DifficultyBox from '../components/MainPage/MainCommon/DifficultyBox';
 
-//images
-import X from '../images/X.svg';
+//context
+import {useAuth} from '../contexts/AuthContext';
 
 const EntirePage = () => {
-  const BASE_URL = 'https://juliaheo.pythonanywhere.com/';
-  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  const {BASE_URL} = useAuth();
   useEffect(() => {
     getPosts();
   }, []);
@@ -23,7 +22,6 @@ const EntirePage = () => {
       .get(`${BASE_URL}post/lists`)
       .then((response) => {
         setPosts(response.data.data.Post);
-        console.log(response.data.data);
       })
       .catch((error) => {
         console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
@@ -54,8 +52,8 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
 
-  max-width: 390px;
-  max-height: 844px;
+  width: 390px;
+  height: 844px;
   margin: 0px auto;
 
   background-color: #161524;

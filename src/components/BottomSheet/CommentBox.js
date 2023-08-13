@@ -101,11 +101,14 @@ const CommentBox = ({
         <>
           <Mention>{mentionedUser} 님에게 답글</Mention>
           <InputBoxPosition>
-            <Inputbox
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-              onKeyDown={(e) => handleReply(e, author)}
-            ></Inputbox>
+            <Inputbox>
+              <div>@{mentionedUser}</div>
+              <input
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                onKeyDown={(e) => handleReply(e, author)}
+              ></input>
+            </Inputbox>
             <img
               onClick={() => handleReplyClick(author)}
               src={submiticon}
@@ -187,9 +190,9 @@ const Plus = styled.div`
 const InputBoxPosition = styled.div`
   z-index: 2;
   width: 350px;
+  height: 83px;
   padding: 21px 0px;
   box-sizing: border-box;
-  border-top: 1px solid #353646;
   position: absolute;
   bottom: 0;
   display: flex;
@@ -198,6 +201,9 @@ const InputBoxPosition = styled.div`
   align-items: center;
   background-color: #161524;
   gap: 6px;
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 
   img {
     width: 35px;
@@ -223,25 +229,42 @@ const Mention = styled.div`
   background: #242237;
 
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
 `;
 
-const Inputbox = styled.input`
+const Inputbox = styled.div`
   width: 309px;
   height: 35px;
   border-radius: 20px;
   box-shadow: 0 0 0 1px #fff inset;
   background-color: #161524;
-  padding-left: 10px;
+  display: flex;
+  align-items: center;
 
-  color: rgba(255, 255, 255, 0.6);
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  div {
+    padding-left: 10px;
+    width: auto;
+    color: #a397ff;
+  }
+
+  input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    flex: 1;
+    padding-left: 10px;
+    color: white;
+
+    font-family: 'Pretendard-Regular';
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+  }
 `;

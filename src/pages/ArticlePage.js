@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useParams} from 'react-router-dom';
 import {SheetContext} from '../contexts/SheetContext';
 import styled from 'styled-components';
 
@@ -42,12 +43,18 @@ const ArticlePage = () => {
     ),
   };
 
+  //post_id
+  const {post_id} = useParams();
+
   return (
     <SheetContext.Provider value={bottomSheetOpen}>
       <Wrapper>
         <StatusBar></StatusBar>
-        <ArticleHeader></ArticleHeader>
-        <ArticleContent isContentsOn={isContentsOn}></ArticleContent>
+        <ArticleHeader postPk={post_id}></ArticleHeader>
+        <ArticleContent
+          isContentsOn={isContentsOn}
+          postPk={post_id}
+        ></ArticleContent>
         <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
         <BottomBar
           isContentsOn={isContentsOn}

@@ -1,30 +1,62 @@
-// import React, {useState, useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import Difficulty from '../Common/Difficulty';
 import articlebackground from '../../images/articlebackground.png';
 import audioicon from '../../images/audioicon.png';
-// import axios from 'axios';
 
-const ArticleHeader = () => {
-  const {id} = useParams();
+//context
+import {useAuth} from '../../contexts/AuthContext';
+
+const ArticleHeader = ({postPk}) => {
   const navigate = useNavigate();
-  // const [hashtags, setHashtags] = useState([]);
 
-  // useEffect(() => {
-  //   getHashtags();
-  // }, []);
+  // GET: 세부포스트 헤더
+  const {authToken, BASE_URL} = useAuth();
+  useEffect(() => {
+    getPosts();
+  }, []);
 
-  // const getHashtags = () => {
-  //   axios
-  //     .get('URL')
-  //     .then((response) => {
-  //       setHashtags(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error', error);
-  //     });
-  // };
+  const [posts, setPosts] = useState([]);
+  const [date, setDate] = useState('');
+  const getPosts = () => {
+    axios
+      .get(`${BASE_URL}post/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setPosts(response.data.data);
+        setDate(response.data.data.date);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(
+          '세부포스트 헤더를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
+  };
+
+  //작성 날짜 추출
+  const inputDate = new Date(date);
+  const year = inputDate.getFullYear().toString().slice(2); // 년도에서 뒤의 두 자리 추출
+  const month = (inputDate.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 패딩
+  const day = inputDate.getDate().toString().padStart(2, '0'); // 일자를 두 자리로 패딩
+  const formattedDateString = `${year}.${month}.${day}`;
+
+  //난이도
+  let difficulty;
+  if (posts.diff === 1) {
+    difficulty = 'light';
+  } else if (posts.diff === 2) {
+    difficulty = 'medium';
+  } else if (posts.diff === 3) {
+    difficulty = 'heavy';
+  }
 
   return (
     <Wrapper>
@@ -35,7 +67,7 @@ const ArticleHeader = () => {
       <ButtonContainer>
         <AllContentsButton
           onClick={() => {
-            navigate(`/article/${id}/allcontents`);
+            navigate(`/article/${postPk}/allcontents`);
           }}
         >
           콘텐츠 모아보기
@@ -43,7 +75,7 @@ const ArticleHeader = () => {
         <AudioBookButton>
           <img
             onClick={() => {
-              navigate(`/article/${id}/audio`);
+              navigate(`/article/${postPk}/audio`);
             }}
             src={audioicon}
             alt='오디오 북 아이콘'
@@ -53,20 +85,19 @@ const ArticleHeader = () => {
       <TitleContainer>
         <ArticleTitleTop>
           <ArticleTag>
-            {/* {hashtags.map((tag, index) => (
-              <TagItem key={index}>{tag}</TagItem>
-            ))} */}
-            <TagItem>#라이프</TagItem>
-            <TagItem>#건강</TagItem>
+            {posts.hashtag &&
+              posts.hashtag.map((tag, index) => (
+                <TagItem key={index}>#{tag.hashtag}</TagItem>
+              ))}
           </ArticleTag>
-          <Difficulty size='medium' difficulty='light'>
-            light
+          <Difficulty size='medium' difficulty={difficulty}>
+            {difficulty}
           </Difficulty>
         </ArticleTitleTop>
-        <ArticleTitleText>제로 슈거와 아스파탐의 죄수?!</ArticleTitleText>
+        <ArticleTitleText>{posts.title}</ArticleTitleText>
         <ArticleTitleBottom>
-          <div>by. 헬시라이프</div>
-          <div>23.07.07</div>
+          <div>by. {posts.author}</div>
+          <div>{formattedDateString}</div>
         </ArticleTitleBottom>
       </TitleContainer>
     </Wrapper>

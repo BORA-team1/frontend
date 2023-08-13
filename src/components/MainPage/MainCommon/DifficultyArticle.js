@@ -2,14 +2,14 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-//임시 Data
-import {postCover} from '../../../data/_mock/articledata';
-
+//components
 import DifficultyBox from './DifficultyBox';
 
+//context
+import {useAuth} from '../../../contexts/AuthContext';
+
 const DifficultyArticle = ({selectDifficulty}) => {
-  const BASE_URL = 'http://localhost:3001';
-  // 페이지 로드 시 저장된 글 목록을 불러옵니다.
+  const {authToken, BASE_URL} = useAuth();
   useEffect(() => {
     getPosts();
   }, []);
@@ -17,20 +17,22 @@ const DifficultyArticle = ({selectDifficulty}) => {
   const [posts, setPosts] = useState([]);
   const getPosts = () => {
     axios
-      .get(`${BASE_URL}/main`)
+      .get(`${BASE_URL}post/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
-        setPosts(response.data);
-        console.log(response.data);
+        setPosts(response.data.data);
       })
       .catch((error) => {
-        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
+        console.error(
+          '난이도 별 글 목록을 불러오는 중 오류가 발생했습니다.',
+          error
+        );
       });
   };
 
-  //이미지 각각 받아오기
-  // const imageArrayL = postCover[1] || [];
-  // const imageArrayM = postCover[2] || [];
-  // const imageArrayH = postCover[3] || [];
   return (
     <>
       {posts &&

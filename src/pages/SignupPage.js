@@ -1,30 +1,33 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
+import TopBar from '../components/Common/TopBar';
+
+//context
+import {useAuth} from '../contexts/AuthContext';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  // const [id, setID] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [profile, setProfile] = useState("");
+  
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [profile, setProfile] = useState('');
   // const [gender, setGender] = useState("");
-  const [age, setAge] = useState();
+  const [age, setAge] = useState('');
 
   // 리렌더링용 변수
   const [render, setRender] = useState(0);
 
-  const BASE_URL = "https://juliaheo.pythonanywhere.com";
+  const {BASE_URL} = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     await axios
-      .post(`${BASE_URL}/account/signup/`, {
+      .post(`${BASE_URL}account/signup/`, {
         username: username,
         password: password,
         nickname: nickname,
@@ -36,6 +39,7 @@ const SignupPage = () => {
         //회원가입 성공했을 때
         setRender(render + 1);
         navigate(`/login`);
+        console.log(response);
       })
       .catch((error) => console.log(error));
   };
@@ -47,26 +51,26 @@ const SignupPage = () => {
         <h3>회원가입 페이지</h3>
         <InputWrapper>
           <input
-            type="text"
-            placeholder="아이디"
+            type='text'
+            placeholder='아이디'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
-            type="password"
-            placeholder="비밀번호"
+            type='password'
+            placeholder='비밀번호'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            type="text"
-            placeholder="닉네임"
+            type='text'
+            placeholder='닉네임'
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
           <input
-            type="text"
-            placeholder="프로필"
+            type='text'
+            placeholder='프로필'
             value={profile}
             onChange={(e) => setProfile(e.target.value)}
           />
@@ -77,8 +81,8 @@ const SignupPage = () => {
             onChange={(e) => setGender(e.target.value)}
           /> */}
           <input
-            type="text"
-            placeholder="나이"
+            type='number'
+            placeholder='나이'
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />

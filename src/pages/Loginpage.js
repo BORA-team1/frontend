@@ -1,27 +1,29 @@
 //loginpage
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 //components
-import TopBar from "../components/Common/TopBar";
-//images
+import TopBar from '../components/Common/TopBar';
+//context
+import {useAuth} from '../contexts/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   // 리렌더링용 변수
   const [render, setRender] = useState(0);
   // 받을 변수들
-  const [id, setID] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const BASE_URL = "https://juliaheo.pythonanywhere.com";
+  //사용자 상태 관리
+  const {login} = useAuth();
 
+  const BASE_URL = 'https://juliaheo.pythonanywhere.com/';
   const handleLogin = async (e) => {
     e.preventDefault();
     await axios
-      .post(`${BASE_URL}/account/login/`, {
+      .post(`${BASE_URL}account/login/`, {
         username: username,
         password: password,
       })
@@ -29,8 +31,17 @@ const LoginPage = () => {
         //로그인 성공했을 때
         setRender(render + 1);
         navigate(`/`);
+
+        // 로그인 로직 후 토큰을 설정
+        login(
+          response.data.data.id,
+          response.data.data.nickname,
+          response.data.data.access_token
+        );
+
+        console.log(response.data.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error, username, password));
   };
 
   return (
@@ -40,20 +51,14 @@ const LoginPage = () => {
         <Container>
           <InputWrapper>
             <input
-              type="text"
-              value={id}
-              placeHolder="아이디"
-              onChange={(e) => setID(e.target.value)}
-            ></input>
-            <input
-              type="text"
+              type='text'
               value={username}
-              placeHolder="닉네임"
+              placeholder='아이디'
               onChange={(e) => setUsername(e.target.value)}
             ></input>
             <input
-              type="password"
-              placeholder="비밀번호"
+              type='text'
+              placeholder='비밀번호'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
