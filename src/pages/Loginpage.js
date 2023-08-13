@@ -1,25 +1,26 @@
 //loginpage
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
-//components
-import TopBar from '../components/Common/TopBar';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 //context
-import {useAuth} from '../contexts/AuthContext';
+import { useAuth } from "../contexts/AuthContext";
+//img
+import logo from "../images/InitialPage/Logo.svg";
+import name from "../images/InitialPage/Name.svg";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   // 리렌더링용 변수
   const [render, setRender] = useState(0);
   // 받을 변수들
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   //사용자 상태 관리
-  const {login} = useAuth();
+  const { login } = useAuth();
 
-  const BASE_URL = 'https://juliaheo.pythonanywhere.com/';
+  const BASE_URL = "https://juliaheo.pythonanywhere.com/";
   const handleLogin = async (e) => {
     e.preventDefault();
     await axios
@@ -47,22 +48,23 @@ const LoginPage = () => {
   return (
     <>
       <Wrapper>
-        <TopBar />
         <Container>
+          <Logo src={logo} />
+          <Name src={name} />
           <InputWrapper>
-            <input
-              type='text'
+            <Input
+              type="text"
               value={username}
-              placeholder='아이디'
+              placeholder="아이디"
               onChange={(e) => setUsername(e.target.value)}
-            ></input>
-            <input
-              type='text'
-              placeholder='비밀번호'
+            ></Input>
+            <Input
+              type="text"
+              placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleLogin}>로그인</button>
+            <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
           </InputWrapper>
         </Container>
       </Wrapper>
@@ -94,26 +96,47 @@ const Container = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 250px;
   margin-top: 30px;
-  input,
-  button {
-    height: 40px;
-    border-style: none;
-    outline: none;
-    border-radius: 4px;
-  }
-  input {
-    margin-bottom: 15px;
-    padding-left: 7%;
+`;
 
-    background: #ffffff;
-    box-shadow: 0px 2px 6px 0px #a5a5a533;
-  }
-  button {
-    background: #809bc3;
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-  }
+const Input = styled.input`
+  width: 340px;
+  height: 46px;
+  margin-bottom: 7px;
+  color: #fff;
+
+  padding-left: 10px;
+
+  border-radius: 5px;
+  background: var(--card-color, #2b2c3f);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25);
+  outline: none;
+  border: none;
+
+  font-family: "Pretendard-Regular";
+  font-style: normal;
+`;
+
+const Logo = styled.img`
+  margin-top: 28px;
+`;
+
+const Name = styled.img`
+  margin-top: 149px;
+  margin-bottom: 50px;
+  width: 84px;
+  height: 65px;
+`;
+
+const LoginBtn = styled.button`
+  width: 350px;
+  height: 58px;
+  margin-top: 43px;
+
+  border-radius: 14px;
+  background: var(--main-purple, #5a45f5);
+  font-family: "Pretendard-Regular";
+  font-style: normal;
+  color: #fff;
+  border: none;
 `;
