@@ -1,12 +1,49 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import submiticon from '../../images/submiticon.svg';
 
-const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
-  //플로팅 바에서 import
-  //댓글 저장
-  const [comment, setComment] = useState('');
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import {usePost} from '../../contexts/PostContext';
 
+const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
+  //플로팅 바에서 import된 컴포넌트
+
+  //POST: 댓글
+  const {authToken, BASE_URL} = useAuth();
+  const {postPk, selectedIndex} = usePost();
+
+  const [comment, setComment] = useState('');
+  const handleCommentSubmit = () => {
+    if (comment.trim() === '') return null;
+    axios
+      .post(
+        `${BASE_URL}line/com/w/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          line_content: selectedIndex.sentence,
+          content: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setComment('');
+        closeInputBox();
+        handleOpenBottomSheet();
+        showListA();
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('댓글을 등록하는 중 오류가 발생했습니다.', error);
+      });
+  };
   return (
     <Wrapper onClick={closeInputBox}>
       <InputBoxContainer onClick={(e) => e.stopPropagation()}>
@@ -16,9 +53,7 @@ const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
         ></Inputbox>
         <img
           onClick={() => {
-            closeInputBox();
-            handleOpenBottomSheet();
-            showListA();
+            handleCommentSubmit();
           }}
           src={submiticon}
           alt='submiticon'

@@ -6,46 +6,33 @@ import anger from '../../images/emoji/anger.svg';
 import sad from '../../images/emoji/sad.svg';
 import curious from '../../images/emoji/curious.svg';
 
-const SentenceBoxEmoji = () => {
-  const EmojiList = [
-    {emoji: happy, alt: 'happy', number: 1},
-    {emoji: surprised, alt: 'surprised', number: 2},
-    {emoji: anger, alt: 'anger', number: 3},
-    {emoji: sad, alt: 'sad', number: 4},
-    {emoji: curious, alt: 'curious', number: 5},
-  ];
-
-  const [selectedNumber, setSelectedNumber] = useState(1);
-  // 숫자 1로 임시 지정 -> 나중에 데이터 받아서 변경하기
-  const selectedEmojiData = EmojiList.find(
-    (emojiData) => emojiData.number === selectedNumber
-  );
-
-  //이모지 삭제
-  const handleDelete = () => {
-    setSelectedNumber(null);
+const SentenceBoxEmoji = ({lineContent, emoji}) => {
+  //감정표현 이미지
+  const emojiImages = {
+    1: happy,
+    2: surprised,
+    3: anger,
+    4: sad,
+    5: curious,
   };
 
   return (
     <>
-      {selectedEmojiData && (
+      {lineContent && (
         <Container>
-          <Sentence>
-            “ 혹시 요즘 아스파탐 논란 보고 혹시 요즘 아스파탐 논란 보고
-            ‘제로슈거 음료 안 마시는 게 낫나?’ 고민한 사람 있나요? ”
-          </Sentence>
+          <Sentence>“ {lineContent} ”</Sentence>
           <EmojiContainer>
-            <Emoji>
-              <p>
-                <img
-                  src={selectedEmojiData.emoji}
-                  alt={selectedEmojiData.alt}
-                />
-              </p>
-            </Emoji>
-            <SelectButton>
+            {emoji.map((item) => (
+              <Emoji key={item.emo_id}>
+                <p>
+                  <img src={emojiImages[item.content]} alt='Emoji' />
+                </p>
+              </Emoji>
+            ))}
+
+            {/* <SelectButton>
               <span onClick={handleDelete}>삭제</span>
-            </SelectButton>
+            </SelectButton> */}
           </EmojiContainer>
         </Container>
       )}
@@ -79,7 +66,7 @@ const Sentence = styled.div`
 const EmojiContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 `;
 

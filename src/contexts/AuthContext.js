@@ -2,13 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  //임시로 초기값 설정
-  // const [userId, setUserId] = useState(null);
-  // const [nickname, setNickname] = useState('변지혜');
-  // const [authToken, setAuthToken] = useState(
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxODc4MjM1LCJpYXQiOjE2OTE4NDIyMzUsImp0aSI6ImVmNjViM2M0ZDMwNTQ5ZDdhMzBlZjI3OTUwOWZiNWE2IiwidXNlcl9pZCI6MX0.h3ANpss0GwZRpGvW-mOxRHKCH9iXxrykIn2vclQazBU'
-  // );
+export function AuthProvider({children}) {
 
   // API 연결 모두 완료하면 위 코드 삭제하고 아래 코드 활성화
   const [userId, setUserId] = useState(localStorage.getItem("userId"));

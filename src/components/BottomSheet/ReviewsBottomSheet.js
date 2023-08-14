@@ -1,120 +1,78 @@
 import React, {useState, useEffect} from 'react';
-// import axios from 'axios';
 import styled, {keyframes} from 'styled-components';
+import axios from 'axios';
+
 import Review from '../ArticlePage/Review';
 import submiticon from '../../images/submiticon.svg';
 
-const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
-  // const BASE_URL = 'http://localhost:3001';
-  // const [render, setRender] = useState(0);
+//context
+import {useAuth} from '../../contexts/AuthContext';
 
-  // 페이지 로드 시 저장된 댓글 목록을 불러옵니다.
-  // useEffect(() => {
-  //   loadReviews();
-  // }, [render]);
+const ReviewsBottomSheet = ({handleCloseBottomSheet, postPk}) => {
+  const [render, setRender] = useState(1);
 
-  // const [hanData, setHanData] = useState(null);
-  // const loadReviews = () => {
-  //   axios
-  //     .get(`${BASE_URL}/data`)
-  //     .then((response) => {
-  //       const hanContent = response.data.Han;
-  //       setHanData(hanContent);
-  //     })
-  //     .catch((error) => {
-  //       console.error('댓글 목록을 불러오는 중 오류가 발생했습니다.', error);
-  //     });
-  // };
+  // GET: 한마디
+  const {authToken, BASE_URL} = useAuth();
+  useEffect(() => {
+    getReviews();
+  }, [render]);
 
-  //한마디 등록
-  // const [review, setReview] = useState('');
-  // const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const getReviews = () => {
+    axios
+      .get(`${BASE_URL}han/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setReviews(response.data.data.han);
+        console.log(response.data.data.han);
+      })
+      .catch((error) => {
+        console.error('한마디를 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
 
-  // const handleReviewsSubmit = (event) => {
-  //   event.preventDefault();
-  //   if (review.trim() === '') return null;
-  //   axios
-  //     .post(`${BASE_URL}/data`, {content: review})
-  //     .then((response) => {
-  //       setRender(render + 1);
-  //       const newReview = response.data.Han.content;
-  //       setReviews([...reviews, newReview]);
-  //       setReview('');
-  //       console.log(reviews);
-  //     })
-  //     .catch((error) => {
-  //       console.error('한마디 저장 중 오류가 발생했습니다.', error);
-  //     });
-  // };
-
-  //한마디 삭제
-  // const handleDelete = (id) => {
-  //   const updatedReviews = reviews.filter((review) => review.id !== id);
-  //   setReviews(updatedReviews);
-  // };
-
+  //POST: 한마디
   const [review, setReview] = useState('');
-  const [reviews, setReviews] = useState([
-    {
-      id: 0,
-      content: '첫 번째 댓글입니다.',
-      author: '사용자 A',
-      replies: [
-        {id: 1, content: '대댓글 1', author: '사용자 C', mention: '사용자 A'},
-        {id: 2, content: '대댓글 2', author: '사용자 D', mention: '사용자 A'},
-      ],
-    },
-    {id: 1, content: '두 번째 댓글입니다.', author: '사용자 B', replies: []},
-  ]);
-
-  //한마디 등록
   const handleReviewsSubmit = () => {
     if (review.trim() === '') return null;
-    const newReview = {
-      id: reviews.length + 1,
-      content: review,
-      author: 'zimmmni',
-    };
-    setReviews([...reviews, newReview]);
-    setReview('');
-    console.log(reviews);
+    axios
+      .post(
+        `${BASE_URL}han/${postPk}/`,
+        {content: review},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setReview('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디를 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
-  //한마디 삭제
+  //Delete: 한마디 삭제
   const handleDelete = (id) => {
-    const updatedReviews = reviews.filter((review) => review.id !== id);
-    setReviews(updatedReviews);
-  };
-
-  //답글 등록
-  const addReply = (reviewId, replyText) => {
-    const updatedReviews = reviews.map((review) => {
-      if (review.id === reviewId) {
-        const newReply = {
-          content: replyText,
-          author: 'zimmmni', // 현재 로그인한 사용자 닉네임 넣기
-          mention: mentionedUser,
-          id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
-        };
-
-        const updatedReplies = review.replies
-          ? [...review.replies, newReply]
-          : [newReply];
-
-        return {
-          ...review,
-          replies: updatedReplies,
-        };
-      }
-      return review;
-    });
-    setReviews(updatedReviews);
-  };
-
-  //언급할 사용자 설정
-  const [mentionedUser, setMentionedUser] = useState('');
-  const setMention = (author) => {
-    setMentionedUser(author);
+    axios
+      .delete(`${BASE_URL}han/delete/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디를 삭제하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -139,19 +97,20 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet}) => {
             )}
           </ReviewsTop>
           <List>
-            {reviews.map((review) => (
-              <Review
-                key={review.id}
-                replies={review.replies}
-                reviewContent={review.content}
-                reviewId={review.id}
-                author={review.author}
-                handleDelete={handleDelete}
-                addReply={addReply}
-                mentionedUser={mentionedUser}
-                setMention={setMention}
-              ></Review>
-            ))}
+            {reviews &&
+              reviews.map((review) => (
+                <Review
+                  key={review.han_id}
+                  reviewId={review.han_id}
+                  reviewContent={review.content}
+                  author={review.han_user.nickname}
+                  like={review.like_num}
+                  handleDelete={handleDelete}
+                  replies={review.HanCom}
+                  render={render}
+                  setRender={setRender}
+                ></Review>
+              ))}
           </List>
         </ReviewContatiner>
         <InputBoxPosition>

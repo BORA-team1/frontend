@@ -4,8 +4,14 @@ import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 import submiticon from '../../images/submiticon.svg';
 
-const QnABox = ({comment, addReply}) => {
-  //답글 등록
+const QnABox = ({
+  comment,
+  commentContent,
+  nickname,
+  addReply,
+  handleDelete,
+}) => {
+  //답글 등록 함수들
   const [replyText, setReplyText] = useState('');
   const [showReplyForm, setShowReplyForm] = useState(false);
 
@@ -32,18 +38,24 @@ const QnABox = ({comment, addReply}) => {
           <img src={profile} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
-          <Id>broaden_horizons</Id>
-          <Content>{comment.content}</Content>
+          <Id>{nickname}</Id>
+          <Content>{commentContent}</Content>
           {comment.que_id && (
             <Plus>
-              <div onClick={() => setShowReplyForm(!showReplyForm)}>
-                답변 {comment.answers.length}개
-              </div>
-              {/* 이 질문이 내 질문이고 답변이 달리지 않았을 때만 삭제 허용 */}
-              {comment.is_my && comment.answers.length === 0 && (
+              {comment.Answer && (
                 <>
-                  <span>·</span>
-                  <div>삭제</div>
+                  <div onClick={() => setShowReplyForm(!showReplyForm)}>
+                    답변 {comment.Answer.length}개
+                  </div>
+                  {/* 이 질문이 내 질문이고 답변이 달리지 않았을 때만 삭제 허용 */}
+                  {comment.is_my && comment.Answer.length === 0 && (
+                    <>
+                      <span>·</span>
+                      <div onClick={() => handleDelete(comment.que_id)}>
+                        삭제
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </Plus>

@@ -1,83 +1,96 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
+//components
 import CommentBox from './CommentBox';
+//images
 import submiticon from '../../images/submiticon.svg';
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import {usePost} from '../../contexts/PostContext';
 
 const CommentsList = () => {
-  // const loadComments = () => {
-  //   axios
-  //     .get(`URL`)
-  //     .then((response) => {
-  //       setComments (response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('get Error: 질문', error);
-  //     });
-  // };
+  const [render, setRender] = useState(1);
 
+  // GET: 댓글
+  const {authToken, BASE_URL} = useAuth();
+  const {postPk, selectedIndex} = usePost();
+  useEffect(() => {
+    getComments();
+  }, [render]);
+
+  const [comments, setComments] = useState([]);
+  const getComments = () => {
+    axios
+      .get(`${BASE_URL}post/${postPk}/contents/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        const postData = response.data.data.PostSec;
+        const targetSection = postData.find(
+          (section) => section.sec_id === selectedIndex.index
+        );
+        if (targetSection) {
+          const targetLine = targetSection.Lines.find(
+            (line) => line.sentence === selectedIndex.sentenceIndex
+          );
+          const targetComments = targetLine.LineCom;
+          setComments(targetComments);
+        }
+        console.log(comments);
+      })
+      .catch((error) => {
+        console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  //POST: 댓글
   const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([
-    {
-      id: 0,
-      content: '첫 번째 댓글입니다.',
-      author: '사용자 A',
-      replies: [
-        {id: 1, content: '대댓글 1', author: '사용자 C', mention: '사용자 A'},
-        {id: 2, content: '대댓글 2', author: '사용자 D', mention: '사용자 A'},
-      ],
-    },
-    {id: 1, content: '두 번째 댓글입니다.', author: '사용자 B', replies: []},
-  ]);
-
-  //댓글 저장
   const handleCommentSubmit = () => {
     if (comment.trim() === '') return null;
-    const newComment = {
-      id: comments.length + 1,
-      content: comment,
-      author: 'zimmmni',
-    };
-    setComments([...comments, newComment]);
-    setComment('');
+    axios
+      .post(
+        `${BASE_URL}line/com/w/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          line_content: selectedIndex.sentence,
+          content: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setComment('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('댓글을 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
-  //댓글 삭제
-  const handleCommentDelete = (commentId) => {
-    const updatedComments = comments.filter(
-      (comment) => comment.id !== commentId
-    );
-    setComments(updatedComments);
-  };
-
-  //답글 등록
-  const addReply = (reviewId, replyText) => {
-    const updatedComments = comments.map((review) => {
-      if (review.id === reviewId) {
-        const newReply = {
-          content: replyText,
-          author: 'zimmmni', // 현재 로그인한 사용자 닉네임 넣기
-          mention: mentionedUser,
-          id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
-        };
-
-        const updatedReplies = review.replies
-          ? [...review.replies, newReply]
-          : [newReply];
-
-        return {
-          ...review,
-          replies: updatedReplies,
-        };
-      }
-      return review;
-    });
-    setComments(updatedComments);
-  };
-
-  //언급할 사용자 설정
-  const [mentionedUser, setMentionedUser] = useState('');
-  const setMention = (author) => {
-    setMentionedUser(author);
+  //Delete: 댓글 삭제
+  const handleDelete = (id) => {
+    axios
+      .delete(`${BASE_URL}line/com/del/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디를 삭제하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -86,15 +99,14 @@ const CommentsList = () => {
       <List>
         {comments.map((comment) => (
           <CommentBox
-            key={comment.id}
+            key={comment.linecom_id}
+            commentId={comment.linecom_id}
             commentContent={comment.content}
-            commentId={comment.id}
-            author={comment.author}
-            replies={comment.replies}
-            handleCommentDelete={handleCommentDelete}
-            addReply={addReply}
-            mentionedUser={mentionedUser}
-            setMention={setMention}
+            author={comment.linecom_user.nickname}
+            handleDelete={handleDelete}
+            replies={comment.LineComCom}
+            render={render}
+            setRender={setRender}
           ></CommentBox>
         ))}
       </List>
@@ -169,7 +181,7 @@ const Inputbox = styled.input`
   border-radius: 20px;
   box-shadow: 0 0 0 1px #fff inset;
   background-color: #161524;
-  padding-left: 10px;
+  padding-left: 16px;
 
   color: white;
   font-family: 'Pretendard-Regular';

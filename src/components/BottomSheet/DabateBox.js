@@ -1,14 +1,17 @@
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 //img
 import usericon from '../../images/willbedeleted/UserIcon.svg';
 
-const DateBox = ({debate}) => {
-  const {id} = useParams();
+const DabateBox = ({debate, postPk}) => {
   const navigate = useNavigate();
   return (
     <Box>
-      <Title>"{debate.title}"</Title>
+      <Title>
+        {'<'}
+        {debate.title}
+        {'>'}
+      </Title>
       <div
         style={{
           display: 'flex',
@@ -18,12 +21,15 @@ const DateBox = ({debate}) => {
         }}
       >
         <TagBox>
-          <UserIcon src={usericon} />
-          <People>모집중/{debate.participants}명</People>
+          <UserIcon>
+            <img></img>
+            <div>{debate.debate_user.nickname}</div>
+          </UserIcon>
+          <People>모집중/{debate.num}명</People>
         </TagBox>
         <JoinBtn
           onClick={() => {
-            navigate(`/article/${id}/debate`);
+            navigate(`/article/${postPk}/debate`);
           }}
         >
           참여하기
@@ -33,7 +39,7 @@ const DateBox = ({debate}) => {
   );
 };
 
-export default DateBox;
+export default DabateBox;
 
 const Box = styled.div`
   display: flex;
@@ -68,16 +74,28 @@ const TagBox = styled.div`
   flex-direction: row;
 `;
 
-const UserIcon = styled.img`
-  width: 26.897px;
-  height: 36.677px;
+const UserIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+
+  img {
+    width: 26.9px;
+    height: 26.9px;
+    border-radius: 50%;
+  }
+
+  div {
+    font-size: 6.113px;
+    font-weight: 600;
+    line-height: normal;
+  }
 `;
 
 const People = styled(Font)`
   font-size: 12px;
   font-weight: 600;
-
-  margin-left: 8px;
 `;
 
 const JoinBtn = styled(Font)`

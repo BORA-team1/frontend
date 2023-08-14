@@ -1,12 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
-//img
+//images
 import usericon from '../../images/willbedeleted/UserIcon.svg';
 import people_on from '../../images/Debate/people_on.svg';
 import people_off from '../../images/Debate/people_off.svg';
 import ready_debate from '../../images/Debate/ready_debate.svg';
 import start_debate from '../../images/Debate/start_debate.png';
+import profile from '../../images/profile.svg';
+
+//context
+import {useAuth} from '../../contexts/AuthContext';
 
 const GroupSettingModal = ({setModalOpen}) => {
   //이거 1,2,3,4,5,6도 인원수 따라서 어떻게 나올지 한 번 상황 보고 위 아래로 1,2 하던가 배정을 잘 바꿔야할 듯
@@ -54,6 +59,29 @@ const GroupSettingModal = ({setModalOpen}) => {
     }
   };
 
+  // GET: 본인 프로필
+  const {authToken, BASE_URL} = useAuth();
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const [account, setAccount] = useState([]);
+  const getProfile = () => {
+    axios
+      .get(`${BASE_URL}account/me/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setAccount(response.data.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('본인 프로필을 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
+
   return (
     <>
       <Wrapper>
@@ -74,12 +102,12 @@ const GroupSettingModal = ({setModalOpen}) => {
               <PeopleNum>3명</PeopleNum>
             </div>
             <PeopleBox>
-              <People
-                onClick={() => applyDebate(1)}
-                src={people1 ? people_on : people_off}
-              />
+              <People onClick={() => applyDebate(1)} src={people_off} />
               {people1 && (
-                <UserIcon style={{top: '76px', left: '48px'}} src={usericon} />
+                <Profile style={{top: '76px', left: '48px'}}>
+                  <img src={profile} alt='profile'></img>
+                  <span>{account.nickname}</span>
+                </Profile>
               )}
               <People
                 onClick={() => applyDebate(2)}
@@ -219,8 +247,6 @@ const PeopleNum = styled(Font)`
 `;
 
 const People = styled.img`
-  margin: 5px 24px 0px 0px;
-  position: relative;
   z-index: 1;
 `;
 
@@ -232,7 +258,38 @@ const UserIcon = styled.img`
   height: 36.677px;
 `;
 
-const PeopleBox = styled.div``;
+const Profile = styled.div`
+  position: absolute;
+  width: 26.9px;
+  top: 15px;
+  left: -40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+
+  img {
+    width: 26.9px;
+    height: 26.9px;
+    border-radius: 13.5px;
+  }
+
+  span {
+    color: #fff;
+    font-family: 'Pretendard-Regular';
+    font-size: 6.113px; //사이즈 오류?
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+`;
+
+const PeopleBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  gap: 24px;
+`;
 
 const Explaination1 = styled(Font)`
   position: absolute;

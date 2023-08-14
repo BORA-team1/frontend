@@ -15,6 +15,9 @@ import SentencesBottomSheet from '../components/BottomSheet/SentencesBottomSheet
 import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
 
 const ArticlePage = () => {
+  //post_id
+  const {post_id} = useParams();
+
   //콘텐츠 켜짐/꺼짐
   const [isContentsOn, setContentsOn] = useState(true);
   const handleContentsOn = () => {
@@ -32,19 +35,30 @@ const ArticlePage = () => {
   };
   const selectBottomSheet = {
     sentences: (
-      <SentencesBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />
+      <SentencesBottomSheet
+        handleCloseBottomSheet={handleCloseBottomSheet}
+        postPk={post_id}
+      />
     ),
     review: (
-      <ReviewsBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />
+      <ReviewsBottomSheet
+        handleCloseBottomSheet={handleCloseBottomSheet}
+        postPk={post_id}
+      />
     ),
-    vote: <VoteBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />,
+    vote: (
+      <VoteBottomSheet
+        handleCloseBottomSheet={handleCloseBottomSheet}
+        postPk={post_id}
+      />
+    ),
     debate: (
-      <DebateBottomSheet handleCloseBottomSheet={handleCloseBottomSheet} />
+      <DebateBottomSheet
+        handleCloseBottomSheet={handleCloseBottomSheet}
+        postPk={post_id}
+      />
     ),
   };
-
-  //post_id
-  const {post_id} = useParams();
 
   return (
     <SheetContext.Provider value={bottomSheetOpen}>
@@ -55,7 +69,10 @@ const ArticlePage = () => {
           isContentsOn={isContentsOn}
           postPk={post_id}
         ></ArticleContent>
-        <ArticleReview handleBottomSheet={handleBottomSheet}></ArticleReview>
+        <ArticleReview
+          handleBottomSheet={handleBottomSheet}
+          postPk={post_id}
+        ></ArticleReview>
         <BottomBar
           isContentsOn={isContentsOn}
           handleContentsOn={handleContentsOn}

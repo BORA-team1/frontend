@@ -2,7 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import profile from '../../images/profile.svg';
 
-const Reply = ({reply, showReplyForm, setShowReplyForm, setMention}) => {
+const Reply = ({
+  replyId,
+  mention,
+  content,
+  author,
+  showReplyForm,
+  setShowReplyForm,
+  setMention,
+  handleReplyDelete,
+  nickname,
+}) => {
   return (
     <>
       <Container>
@@ -10,22 +20,26 @@ const Reply = ({reply, showReplyForm, setShowReplyForm, setMention}) => {
           <img src={profile} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
-          <Id>{reply.author}</Id>
+          <Id>{author}</Id>
           <Content>
-            <span>@{reply.mention}</span> {''}
-            {reply.content}
+            <span>@{mention}</span> {''}
+            {content}
           </Content>
           <Plus>
             <div
               onClick={() => {
                 setShowReplyForm(!showReplyForm);
-                setMention(reply.author);
+                setMention(author);
               }}
             >
               답글달기
             </div>
-            <span>·</span>
-            <div>삭제</div>
+            {author === nickname && (
+              <>
+                <span>·</span>
+                <div onClick={() => handleReplyDelete(replyId)}>삭제</div>
+              </>
+            )}
           </Plus>
         </ContentContainer>
       </Container>

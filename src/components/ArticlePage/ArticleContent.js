@@ -13,7 +13,8 @@ import qna from "../../images/sectionbar/qnaicon.svg";
 import happy from "../../images/emoji/happy.svg";
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
+import {PostProvider} from '../../contexts/PostContext';
 
 const ArticleContent = ({ isContentsOn, postPk }) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
@@ -51,27 +52,12 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
   const showListC = () => setCategory("C");
 
   //클릭한 문장의 글자 색 바뀌기
-  const highlightText = (sentence) => {
+  const highlightText = (index, sentenceIndex, sentence) => {
+    const textInfo = {index, sentenceIndex, sentence};
+    setSelectedIndex(textInfo);
     setSelectedSentence((prevSelected) =>
       prevSelected === sentence ? null : sentence
     );
-  };
-
-  //클릭한 문장 정보 저장 (섹션 id, 문장 index)
-  const saveTextInfo = (index, sentenceIndex, sentence) => {
-    const textInfo = { index, sentenceIndex, sentence };
-    setSelectedIndex(textInfo);
-  };
-
-  //밑줄 추가
-  const addToHighlights = () => {
-    if (selectedSentence) {
-      // axios post 추가하기
-      setHighlights([...highlights, selectedIndex]);
-      console.log(highlights);
-      setSelectedIndex(null);
-      setSelectedSentence(null);
-    }
   };
 
   //아이콘 호버 시 문장 색 바뀌기
@@ -109,9 +95,34 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
       });
   };
 
-  //문장 index 확인용 콘솔 띄우는 함수
-  const handleClick = (index, sentenceIndex) => {
-    console.log(`클릭된 문장의 인덱스: 섹션 ${index}, 문장 ${sentenceIndex}`);
+  //POST: 밑줄 긋기
+  const [render, setRender] = useState(1);
+  const addToHighlights = () => {
+    axios
+      .post(
+        `${BASE_URL}line/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          content: selectedIndex.sentence,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setHighlights([...highlights, selectedIndex]);
+        console.log(highlights);
+        setSelectedIndex(null);
+        setSelectedSentence(null);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('밑줄을 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   let cumulativeSentenceIndex = 0;
@@ -144,25 +155,20 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                       const sentences = paragraph.split(/(?<=[?.](?=\s|'))/);
 
                       return (
-                        <div key={`${section.num}-${paragraphIndex}`}>
+                        <Paragraph key={`${section.num}-${paragraphIndex}`}>
                           {sentences.map((sentence, sentenceIndex) => {
                             const currentSentenceIndex =
                               cumulativeSentenceIndex++;
                             return (
                               <span
                                 key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
-                                onClick={() => {
-                                  handleClick(
-                                    section.num,
-                                    currentSentenceIndex
-                                  );
-                                  saveTextInfo(
+                                onClick={() =>
+                                  highlightText(
                                     section.num,
                                     currentSentenceIndex,
                                     sentence
-                                  );
-                                  highlightText(sentence);
-                                }}
+                                  )
+                                }
                                 style={{
                                   cursor: "pointer",
                                   color:
@@ -186,7 +192,7 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                               </span>
                             );
                           })}
-                        </div>
+                        </Paragraph>
                       );
                     })}
                   </div>
@@ -201,8 +207,11 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                               onMouseEnter={() => onHover(sentence)}
                               onMouseLeave={offHover}
                               onClick={() => {
-                                handleClick(section.sec_id, currentIconIndex);
-                                setSelectedSentence(sentence);
+                                highlightText(
+                                  section.sec_id,
+                                  currentIconIndex,
+                                  sentence
+                                );
                                 handleOpenBottomSheet();
                               }}
                               style={{
@@ -227,34 +236,35 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
         })}
 
       <EditerFollow>이 포스트의 에디터 팔로우하기</EditerFollow>
-      {selectedSentence && (
-        <FloatingBar
-          addToHighlights={addToHighlights}
-          isBottomSheetOpen={isBottomSheetOpen}
-          selectedSentence={selectedSentence}
-          handleOpenBottomSheet={handleOpenBottomSheet}
-          showListA={showListA}
-          showListB={showListB}
-          showListC={showListC}
-          isEmojiBarOpen={isEmojiBarOpen}
-          openEmojiBar={openEmojiBar}
-          closeEmojiBar={closeEmojiBar}
-        ></FloatingBar>
-      )}
-      {isBottomSheetOpen && (
-        <HighlightingBottomSheet
-          onClose={handleCloseBottomSheet}
-          expanded={expanded}
-          setExpanded={setExpanded}
-          category={category}
-          showListA={showListA}
-          showListB={showListB}
-          showListC={showListC}
-          openEmojiBar={openEmojiBar}
-          closeEmojiBar={closeEmojiBar}
-          selectedSentence={selectedSentence}
-        ></HighlightingBottomSheet>
-      )}
+      <PostProvider selectedIndex={selectedIndex} postPk={postPk}>
+        {selectedSentence && (
+          <FloatingBar
+            addToHighlights={addToHighlights}
+            isBottomSheetOpen={isBottomSheetOpen}
+            selectedSentence={selectedSentence}
+            handleOpenBottomSheet={handleOpenBottomSheet}
+            showListA={showListA}
+            showListB={showListB}
+            showListC={showListC}
+            isEmojiBarOpen={isEmojiBarOpen}
+            openEmojiBar={openEmojiBar}
+            closeEmojiBar={closeEmojiBar}
+          ></FloatingBar>
+        )}
+        {isBottomSheetOpen && (
+          <HighlightingBottomSheet
+            onClose={handleCloseBottomSheet}
+            expanded={expanded}
+            setExpanded={setExpanded}
+            category={category}
+            showListA={showListA}
+            showListB={showListB}
+            showListC={showListC}
+            openEmojiBar={openEmojiBar}
+            closeEmojiBar={closeEmojiBar}
+          ></HighlightingBottomSheet>
+        )}
+      </PostProvider>
     </Wrapper>
   );
 };
@@ -278,19 +288,23 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  margin-bottom: 30px;
 `;
 
 const SectionTitle = styled.div`
   width: 345px;
   font-size: 19px;
   font-weight: 600;
-  margin-top: 50px;
   margin-bottom: 20px;
 `;
 
 const SectionContent = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const Paragraph = styled.div`
+  margin-bottom: 20px;
 `;
 
 const BarContainer = styled.div`
@@ -303,7 +317,7 @@ const BarContainer = styled.div`
 
 const SectionBar = styled.div`
   width: 5px;
-  height: 100%;
+  height: calc(100% - 20px);
   background-color: #2b2c3f;
   border-radius: 10px;
   display: flex;
@@ -338,7 +352,7 @@ const EditerFollow = styled.div`
   display: flex;
   width: fit-content;
   padding: 10px 35px;
-  margin: 70px 76px 40px 76px;
+  margin: 20px 76px 40px 76px;
 
   border-radius: 20px;
   background: #5a45f5;

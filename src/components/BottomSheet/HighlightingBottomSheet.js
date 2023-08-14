@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import CommentsList from './CommentsList';
 import QnAList from './QnAList';
 import EmojiList from './EmojiList';
-import submiticon from '../../images/submiticon.svg';
-// import axios from 'axios';
+
+//context
+import {usePost} from '../../contexts/PostContext';
 
 const HighlightingBottomSheet = ({
   onClose,
@@ -15,8 +16,8 @@ const HighlightingBottomSheet = ({
   showListB,
   showListC,
   openEmojiBar,
-  selectedSentence,
 }) => {
+  const {selectedIndex} = usePost();
   //바텀시트 확장하기
   const openExpandSpace = () => {
     setExpanded('open');
@@ -46,7 +47,9 @@ const HighlightingBottomSheet = ({
             >
               닫기
             </CloseBottomSheet>
-            <Sentense>" {selectedSentence} "</Sentense>
+            {selectedIndex.sentence && (
+              <Sentense>" {selectedIndex.sentence} "</Sentense>
+            )}
           </HeaderText>
           <HR></HR>
           <Category>
@@ -216,48 +219,6 @@ const HR = styled.div`
   height: 5px;
   background: #353646;
 `;
-
-// const InputBoxPosition = styled.div`
-//   width: 390px;
-//   padding: 21px 20px;
-//   box-sizing: border-box;
-//   border-top: 1px solid #353646;
-//   position: absolute;
-//   bottom: 0;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: #161524;
-//   gap: 6px;
-
-//   img {
-//     width: 35px;
-//     height: 35px;
-//     cursor: pointer;
-//   }
-// `;
-
-// const Inputbox = styled.input`
-//   width: 309px;
-//   height: 35px;
-//   border-radius: 20px;
-//   box-shadow: 0 0 0 1px #fff inset;
-//   background-color: #161524;
-//   padding-left: 10px;
-
-//   color: rgba(255, 255, 255, 0.6);
-//   font-family: 'Pretendard-Regular';
-//   font-size: 12px;
-//   font-style: normal;
-//   font-weight: 500;
-//   line-height: normal;
-// `;
-
-// const ExpandSpace = styled.div`
-//   margin-top: 192px;
-//   margin-bottom: 90px;
-// `;
 
 const EmojiListContainer = styled.div`
   margin-top: 192px;

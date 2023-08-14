@@ -1,79 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import Pie from "./Pie";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import Pie from './Pie';
 
-const VoteResult = () => {
-  const user = "loy_soy";
-  //API 연결 코드
-  //const BASE_URL = "http://localhost:3001";
-  // useEffect(() => {
-  //   getVoteResult();
-  // }, []);
-
-  // const getVoteResult = () => {
-  //   axios
-  //     .get(`${BASE_URL}/vote`)
-  //     .then((response) => {
-  //       setVoteResult(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("글 목록을 불러오는 중 오류가 발생했습니다.", error);
-  //     });
-  // };
-  const voteData = {
-    data: {
-      Lines: [
-        {
-          line_id: 90,
-          content: "[밑줄 문장 내용]",
-          DoneVote: [
-            {
-              vote_id: 21,
-              title: "투표제목",
-              item1: "[투표항목1]",
-              item2: "[투표항목2]",
-              item3: "[투표항목3]",
-              start_date: "2023-05-01",
-              done_date: "2023-05-10",
-              vote_user: {
-                id: 4,
-                profile: "http://~[이미지url]",
-                nickname: "도라에몽",
-              },
-              result: {
-                result1_10: 1,
-                result1_20: 0,
-                result1_30: 0,
-                result1_40: 1,
-                result1_50: 1,
-                result2_10: 9,
-                result2_20: 2,
-                result2_30: 0,
-                result2_40: 3,
-                result2_50: 4,
-                result3_10: 5,
-                result3_20: 3,
-                result3_30: 2,
-                result3_40: 1,
-                result3_50: 1,
-              },
-            },
-          ],
-        },
-      ],
-    },
-  };
-
-  const selectedVote = voteData.data.Lines[0].DoneVote[0];
+const VoteResult = ({donevote}) => {
+  const selectedVote = donevote;
   const initialPercentages = {
     result1: 0,
     result2: 0,
     result3: 0,
   };
 
-  const [selectedAgeGroup, setSelectedAgeGroup] = useState("10대");
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState('10대');
   const [percentages, setPercentages] = useState(initialPercentages);
 
   const handleAgeGroupClick = (ageGroup, result1, result2, result3) => {
@@ -96,85 +33,85 @@ const VoteResult = () => {
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "10대",
+              '10대',
               selectedVote.result.result1_10,
               selectedVote.result.result2_10,
               selectedVote.result.result3_10
             )
           }
-          isSelected={selectedAgeGroup === "10대"}
+          isSelected={selectedAgeGroup === '10대'}
         >
           10대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "20대",
+              '20대',
               selectedVote.result.result1_20,
               selectedVote.result.result2_20,
               selectedVote.result.result3_20
             )
           }
-          isSelected={selectedAgeGroup === "20대"}
+          isSelected={selectedAgeGroup === '20대'}
         >
           20대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "30대",
+              '30대',
               selectedVote.result.result1_30,
               selectedVote.result.result2_30,
               selectedVote.result.result3_30
             )
           }
-          isSelected={selectedAgeGroup === "30대"}
+          isSelected={selectedAgeGroup === '30대'}
         >
           30대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "40대",
+              '40대',
               selectedVote.result.result1_40,
               selectedVote.result.result2_40,
               selectedVote.result.result3_40
             )
           }
-          isSelected={selectedAgeGroup === "40대"}
+          isSelected={selectedAgeGroup === '40대'}
         >
           40대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "50대",
+              '50대',
               selectedVote.result.result1_50,
               selectedVote.result.result2_50,
               selectedVote.result.result3_50
             )
           }
-          isSelected={selectedAgeGroup === "50대"}
+          isSelected={selectedAgeGroup === '50대'}
         >
           50대
         </AgeGroup>
       </Age>
       <Result>
         <Percent>
-          <div style={{ color: "#2B99FF" }}>
+          <div style={{color: '#2B99FF'}}>
             {percentages.result1.toFixed(1)}%
           </div>
-          <div style={{ color: "#FFDD2B" }}>
+          <div style={{color: '#FFDD2B'}}>
             {percentages.result2.toFixed(1)}%
           </div>
-          <div style={{ color: "#FF5E2B" }}>
+          <div style={{color: '#FF5E2B'}}>
             {percentages.result3.toFixed(1)}%
           </div>
         </Percent>
         <List>
-          <span>가능하다</span>
-          <span>잘 모르겠다.</span>
-          <span>절대 불가능하다.</span>
+          <span>{donevote.item1}</span>
+          <span>{donevote.item2}</span>
+          <span>{donevote.item3}</span>
         </List>
         <Pie
           percentages={{
@@ -187,7 +124,7 @@ const VoteResult = () => {
       <Plus>
         <div>2023.07.03 ~ 2023.07.09 · 총 197명</div>
         <div>
-          제작 <span>{user}</span>
+          제작 <span>{donevote.vote_user.nickname}</span>
         </div>
       </Plus>
     </Container>
@@ -200,7 +137,7 @@ const Container = styled.div`
   width: 310px;
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -221,17 +158,17 @@ const Age = styled.div`
 
 const AgeGroup = styled.div`
   cursor: pointer;
-  color: ${({ isSelected }) =>
-    isSelected ? "#1A1920" : "rgba(255, 255, 255, 0.5)"};
+  color: ${({isSelected}) =>
+    isSelected ? '#1A1920' : 'rgba(255, 255, 255, 0.5)'};
   font-size: 9.504px;
   font-weight: 600;
   line-height: normal;
   padding: 4.752px 9.504px;
   border-radius: 13.578px;
   border: 0.679px solid
-    ${({ isSelected }) => (isSelected ? "#ffffff" : "rgba(255, 255, 255, 0.5)")};
-  background-color: ${({ isSelected }) =>
-    isSelected ? "#ffffff" : "transparency"};
+    ${({isSelected}) => (isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.5)')};
+  background-color: ${({isSelected}) =>
+    isSelected ? '#ffffff' : 'transparency'};
 `;
 
 const Result = styled.div`

@@ -1,18 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled, {keyframes} from 'styled-components';
-import addbutton from '../../images/addbutton.png';
+import axios from 'axios';
+
 import VoteCreateModal from './VoteCreateModal';
 import SentenceBox from './SentenceBox';
 import VoteBox from './VoteBox';
 import VoteResult from '../ArticlePage/VoteResult';
+import addbutton from '../../images/addbutton.png';
 
-const VoteBottomSheet = ({handleCloseBottomSheet}) => {
+//context
+import {useAuth} from '../../contexts/AuthContext';
+
+const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [category, setCategory] = useState('A');
-  const [voteTitle, setVoteTitle] = useState(''); //투표 타이틀
-  const [options, setOptions] = useState(['', '', '']); //투표 항목 3개
-  const [votes, setVotes] = useState([]); // 생성된 투표가 저장되는 배열
-  const [completedVoteList, setCompletedVoteList] = useState([]); // 완료된 투표가 저장되는 배열
 
   //투표 생성 모달 띄우기
   const openModal = () => {
@@ -27,36 +28,89 @@ const VoteBottomSheet = ({handleCloseBottomSheet}) => {
   const showListB = () => setCategory('B');
   const showListC = () => setCategory('C');
 
-  // 항목 입력 변경 이벤트 처리
-  const handleOptionChange = (index, value) => {
-    const newOptions = [...options];
-    newOptions[index] = value;
-    setOptions(newOptions);
+  // GET: 진행중인 투표 조회
+  const {authToken, BASE_URL, nickname} = useAuth();
+  const [render, setRender] = useState(1);
+  useEffect(() => {
+    getVotes();
+    getDoneVotes();
+    getMyVotes();
+  }, [render]);
+
+  const [votes, setVotes] = useState([]);
+  const getVotes = () => {
+    axios
+      .get(`${BASE_URL}vote/ing/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setVotes(response.data.data.Lines);
+        console.log(response.data.data.Lines[0].IngVote[0]);
+      })
+      .catch((error) => {
+        console.error(
+          '진행중인 투표를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
 
-  // 모달에서 등록 버튼을 눌렀을 때 실행되는 함수 (투표 생성)
-  const handleSubmit = () => {
-    closeModal();
-
-    // 투표 항목 저장 로직 추가
-    const newVote = {
-      title: voteTitle,
-      options: options,
-    };
-
-    // 투표 리스트에 추가
-    setVotes([...votes, newVote]);
-
-    // 저장 후 초기화
-    setVoteTitle('');
-    setOptions(['', '', '']);
+  // PATCH: 투표 종료하기
+  const handleVoteComplete = (voteId) => {
+    axios
+      .patch(`${BASE_URL}vote/finish/${voteId}/`, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('투표 종료 중 오류가 발생했습니다.', error);
+      });
   };
 
-  //투표 종료하기
-  const handleVoteComplete = (index) => () => {
-    const completedVote = votes.splice(index, 1)[0];
-    setVotes([...votes]);
-    setCompletedVoteList([...completedVoteList, completedVote]);
+  // GET: 완료된 투표 조회
+  const [doneVotes, setDoneVotes] = useState([]);
+  const getDoneVotes = () => {
+    axios
+      .get(`${BASE_URL}vote/done/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setDoneVotes(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error('완료된 투표를 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  // GET: 내가 만든 투표 조회
+  const [myVotes, setMyVotes] = useState([]);
+  const getMyVotes = () => {
+    axios
+      .get(`${BASE_URL}vote/my/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setMyVotes(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error(
+          '내가 만든 투표를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
 
   const barPosition = {
@@ -115,59 +169,76 @@ const VoteBottomSheet = ({handleCloseBottomSheet}) => {
                 <ListNum>투표 {votes.length}개</ListNum>
               )}
 
-              {votes.map((vote, index) => (
-                <div key={index}>
-                  <SentenceBox></SentenceBox>
-                  <VoteBoxContainer>
-                    <VoteBox
-                      vote={vote}
-                      handleVoteComplete={handleVoteComplete}
-                    ></VoteBox>
-                    <VoteEnd onClick={handleVoteComplete(vote.index)}>
-                      투표 종료하기
-                    </VoteEnd>
-                  </VoteBoxContainer>
-                </div>
-              ))}
+              {votes &&
+                votes.map((vote, index) => (
+                  <div key={index}>
+                    <SentenceBox lineContent={vote.content}></SentenceBox>
+                    <VoteBoxContainer>
+                      <VoteBox ingvote={vote.IngVote[0]}></VoteBox>
+                      {vote.IngVote[0].vote_user.nickname === nickname && (
+                        <VoteEnd
+                          onClick={() =>
+                            handleVoteComplete(vote.IngVote[0].vote_id)
+                          }
+                        >
+                          투표 종료하기
+                        </VoteEnd>
+                      )}
+                    </VoteBoxContainer>
+                  </div>
+                ))}
             </ListContatiner>
             <CreateButton src={addbutton} onClick={openModal}></CreateButton>
             {isModalOpen && (
               <VoteCreateModal
                 closeModal={closeModal}
-                handleSubmit={handleSubmit}
-                voteTitle={voteTitle}
-                setVoteTitle={setVoteTitle}
-                options={options}
-                handleOptionChange={handleOptionChange}
+                postPk={postPk}
+                render={render}
+                setRender={setRender}
               ></VoteCreateModal>
             )}
           </>
         )}
         {category === 'B' && (
-          <>
-            <ListContatiner>
-              <ListNum>투표 1개</ListNum>
-              <SentenceBox></SentenceBox>
-              <VoteResultContainer>
-                <VoteResult></VoteResult>
-              </VoteResultContainer>
-            </ListContatiner>
-          </>
-        )}
-        {category === 'C' && (
-          <>
-            <ListContatiner>
-              <ListNum>아직 생성된 투표가 없습니다.</ListNum>
-              {votes.map((vote, index) => (
+          <ListContatiner>
+            <ListNum>투표 {doneVotes.length}개</ListNum>
+            {doneVotes &&
+              doneVotes.map((vote, index) => (
                 <div key={index}>
-                  <SentenceBox></SentenceBox>
-                  <VoteBoxContainer>
-                    <VoteBox vote={vote}></VoteBox>
-                  </VoteBoxContainer>
+                  <SentenceBox lineContent={vote.content}></SentenceBox>
+                  <VoteResultContainer>
+                    <VoteResult donevote={vote.DoneVote[0]}></VoteResult>
+                  </VoteResultContainer>
                 </div>
               ))}
-            </ListContatiner>
-          </>
+          </ListContatiner>
+        )}
+        {category === 'C' && (
+          <ListContatiner>
+            {myVotes.length === 0 ? (
+              <ListNum>아직 생성된 투표가 없습니다.</ListNum>
+            ) : (
+              <ListNum>투표 {myVotes.length}개</ListNum>
+            )}
+            {myVotes.map((vote, index) => (
+              <div key={index}>
+                <SentenceBox lineContent={vote.content}></SentenceBox>
+                {vote.IngVote[0] && (
+                  <VoteBoxContainer>
+                    <VoteBox ingvote={vote.IngVote[0]}></VoteBox>
+                  </VoteBoxContainer>
+                )}
+                {vote.DoneVote[0] && (
+                  <VoteResultContainer>
+                    <VoteResult
+                      user={vote.DoneVote.vote_user}
+                      donevote={vote.DoneVote[0]}
+                    ></VoteResult>
+                  </VoteResultContainer>
+                )}
+              </div>
+            ))}
+          </ListContatiner>
         )}
       </BottomSheetContainer>
     </BottomSheetOverlay>
@@ -206,6 +277,8 @@ const BottomSheetContainer = styled.div`
   box-shadow: 0 0 0 1px #353646 inset;
   background: var(--background, #161524);
   overflow-y: auto;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 
   &::-webkit-scrollbar {
     display: none;
@@ -219,9 +292,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: 'Pretendard-Regular';
   font-size: 15px;
-  font-style: normal;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
 
@@ -295,9 +366,7 @@ const ListContatiner = styled.div`
 const ListNum = styled.div`
   margin: 20px 21px;
   color: #fff;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: 16px;
   letter-spacing: -0.24px;
@@ -325,10 +394,7 @@ const VoteEnd = styled.div`
   margin-top: 30px;
   border-radius: 20px;
   border: 1.2px solid #fff;
-  backdrop-filter: blur(5px);
-  font-family: 'Pretendard-Regular';
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
   cursor: pointer;

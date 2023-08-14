@@ -263,6 +263,8 @@ const OtherAgeGroupArticle = styled.div`
 
   margin: 50px 0px;
   padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 
   background-color: #242237;
 `;
@@ -286,6 +288,7 @@ const PickedArticle = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 19.8px;
 
   font-family: 'Pretendard-Regular';
   font-style: normal;
@@ -298,7 +301,11 @@ const Intro = styled(FontStyle)`
 `;
 
 const PickedSentence = styled.div`
-  padding: 10px 0px 20px;
+  width: 174px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
   font-family: 'Jeju Myeongjo', serif;
   font-size: 12px;
   font-weight: 400;
