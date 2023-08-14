@@ -1,12 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled, {keyframes} from 'styled-components';
+import axios from 'axios';
 
-import addBtn from '../../images/addbutton.png';
 import DebateCreateModal from './DebateCreateModal';
 import SentenceBox from './SentenceBox';
 import DebateBox from './DabateBox';
+import addBtn from '../../images/addbutton.png';
 
-const DebateBottomSheet = ({handleCloseBottomSheet}) => {
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import DebateResult from '../ArticlePage/DebateResult';
+
+const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
   const [category, setCategory] = useState('A');
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
@@ -21,34 +26,72 @@ const DebateBottomSheet = ({handleCloseBottomSheet}) => {
     setModalOpen(false);
   };
 
-  // 주제, 참여인원 입력 변경 이벤트 처리
-  const [debateTitle, setDebateTitle] = useState(''); //토론 타이틀
-  const [participants, setParticipants] = useState(4); //토론 인원
-  const [debates, setDebates] = useState([]); // 생성된 토론이 저장되는 배열
+  // GET: 진행중인 토론 조회
+  const {authToken, BASE_URL, nickname} = useAuth();
+  const [render, setRender] = useState(1);
+  useEffect(() => {
+    getDebates();
+    getDoneDebates();
+    getMyDebates();
+  }, [render]);
 
-  //토론 참여 인원 변경
-  const handleParticipantChange = (value) => {
-    setParticipants(value);
+  const [debates, setDebates] = useState([]);
+  const getDebates = () => {
+    axios
+      .get(`${BASE_URL}debate/ing/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setDebates(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error(
+          '진행중인 토론을 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
 
-  // 모달에서 등록 버튼을 눌렀을 때 실행되는 함수 (토론 생성)
-  const handleSubmit = () => {
-    closeModal();
+  // GET: 완료된 투표 조회
+  const [doneDebates, setDoneDebates] = useState([]);
+  const getDoneDebates = () => {
+    axios
+      .get(`${BASE_URL}debate/done/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setDoneDebates(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error('완료된 토론을 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
 
-    // State들 배열로 저장
-    const newDebate = {
-      title: debateTitle,
-      participants: participants,
-    };
-
-    console.log(newDebate);
-
-    // 토론 리스트에 추가
-    setDebates([...debates, newDebate]);
-
-    // 저장 후 초기화
-    setDebateTitle('');
-    setParticipants(-1);
+  // GET: 내가 만든 토론 조회
+  const [myDebates, setMyDebates] = useState([]);
+  const getMyDebates = () => {
+    axios
+      .get(`${BASE_URL}debate/my/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setMyDebates(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error(
+          '내가 만든 토론을 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
 
   const barPosition = {
@@ -107,12 +150,14 @@ const DebateBottomSheet = ({handleCloseBottomSheet}) => {
                 <ListNum>토론 {debates.length}개</ListNum>
               )}
 
-              {debates.map((debate, index) => (
+              {debates.map((line, index) => (
                 <div key={index}>
-                  <SentenceBox></SentenceBox>
-                  <BoxContainer>
-                    <DebateBox debate={debate}></DebateBox>
-                  </BoxContainer>
+                  <SentenceBox lineContent={line.content}></SentenceBox>
+                  {line.Debate.map((debate, index) => (
+                    <BoxContainer key={index}>
+                      <DebateBox debate={debate} postPk={postPk}></DebateBox>
+                    </BoxContainer>
+                  ))}
                 </div>
               ))}
             </ListContatiner>
@@ -120,14 +165,49 @@ const DebateBottomSheet = ({handleCloseBottomSheet}) => {
             {isModalOpen && (
               <DebateCreateModal
                 closeModal={closeModal}
-                handleSubmit={handleSubmit}
-                debateTitle={debateTitle}
-                setDebateTitle={setDebateTitle}
-                participants={participants}
-                handleParticipantChange={handleParticipantChange}
+                postPk={postPk}
+                render={render}
+                setRender={setRender}
               ></DebateCreateModal>
             )}
           </>
+        )}
+        {category === 'B' && (
+          <ListContatiner>
+            {debates.length === 0 ? (
+              <ListNum>아직 완료된 토론이 없습니다.</ListNum>
+            ) : (
+              <ListNum>토론 {debates.length}개</ListNum>
+            )}
+            {doneDebates &&
+              doneDebates.map((debate, index) => (
+                <div key={index}>
+                  <SentenceBox lineContent={debate.content}></SentenceBox>
+                  <BoxContainer key={index}>
+                    <DebateResult doneDebate={debate.Debate[0]}></DebateResult>
+                  </BoxContainer>
+                </div>
+              ))}
+          </ListContatiner>
+        )}
+        {category === 'C' && (
+          <ListContatiner>
+            {myDebates.length === 0 ? (
+              <ListNum>아직 생성된 토론이 없습니다.</ListNum>
+            ) : (
+              <ListNum>토론 {myDebates.length}개</ListNum>
+            )}
+            {myDebates.map((line, index) => (
+              <div key={index}>
+                <SentenceBox lineContent={line.content}></SentenceBox>
+                {line.Debate.map((debate, index) => (
+                  <BoxContainer key={index}>
+                    <DebateBox debate={debate} postPk={postPk}></DebateBox>
+                  </BoxContainer>
+                ))}
+              </div>
+            ))}
+          </ListContatiner>
         )}
       </BottomSheetContainer>
     </BottomSheetOverlay>

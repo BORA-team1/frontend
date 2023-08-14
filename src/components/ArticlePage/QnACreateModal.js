@@ -1,25 +1,52 @@
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import {usePost} from '../../contexts/PostContext';
 
 const QnACreateModal = ({
   closeQnACreateModal,
   handleOpenBottomSheet,
   showListB,
 }) => {
-  const [question, setQuestion] = useState('');
-  const [questions, setQuestions] = useState([]);
-
+  //질문 입력창 높이 조절
   const textRef = useRef();
   const handleResizeHeight = () => {
     textRef.current.style.height = 'auto';
     textRef.current.style.height = textRef.current.scrollHeight + 'px';
   };
 
+  //POST: QnA
+  const {authToken, BASE_URL} = useAuth();
+  const {postPk, selectedIndex} = usePost();
+
+  const [question, setQuestion] = useState('');
   const handleSubmit = () => {
-    setQuestions([...questions, question]);
-    console.log(question);
-    console.log(questions);
-    setQuestion('');
+    if (question.trim() === '') return null;
+    axios
+      .post(
+        `${BASE_URL}line/qna/w/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          line_content: selectedIndex.sentence,
+          content: question,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setQuestion('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('질문을 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (

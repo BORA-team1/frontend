@@ -1,26 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import Quotation from './Quotation';
-import axios from 'axios';
 
-const QuoteBottomSheet = ({closeBottomSheet}) => {
-  const BASE_URL = 'http://localhost:3001/';
-
-  //밑줄 Get
-  const [lines, setLines] = useState([]);
-  useEffect(() => {
-    const getLines = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}line`);
-        setLines(response.data.Lines);
-      } catch (error) {
-        console.error('밑줄을 불러오는 중 오류가 발생했습니다.', error);
-      }
-    };
-
-    getLines();
-  }, []);
-
+const QuoteBottomSheet = ({closeBottomSheet, line, setLineId}) => {
   return (
     <BottomSheetOverlay>
       <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
@@ -33,14 +15,17 @@ const QuoteBottomSheet = ({closeBottomSheet}) => {
         </BottomSheetHeader>
 
         <List>
-          <Num>문장 {lines.length}개</Num>
-          {lines.map((line) => (
-            <Quotation
-              key={line.line_id}
-              lineContent={line.content}
-              closeBottomSheet={closeBottomSheet}
-            ></Quotation>
-          ))}
+          {line && <Num>문장 {line.length}개</Num>}
+          {line &&
+            line.map((line) => (
+              <Quotation
+                key={line.line_id}
+                line={line.line_id}
+                lineContent={line.content}
+                setLineId={setLineId}
+                closeBottomSheet={closeBottomSheet}
+              ></Quotation>
+            ))}
         </List>
       </BottomSheetContainer>
     </BottomSheetOverlay>

@@ -105,7 +105,7 @@ const AllContentsPage = () => {
           </Content>
           <Content>
             <Category>감정표현</Category>
-            <EmojiList></EmojiList>
+            {/* <EmojiList></EmojiList> */}
           </Content>
         </div>
         <HR></HR>

@@ -2,55 +2,44 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import Reply from '../BottomSheet/Reply';
+//images
 import profile from '../../images/profile.svg';
 import heart from '../../images/heart.svg';
 import heartclick from '../../images/heartclick.svg';
-import submiticon from '../../images/submiticon.svg';
 
 //context
 import {useAuth} from '../../contexts/AuthContext';
 
-const CommentBox = ({
-  commentId,
-  commentContent,
-  author,
-  handleDelete,
-  replies,
+const MyCommentBox = ({
+  comId,
+  comContent,
+  user,
+  mention,
   render,
   setRender,
 }) => {
-  //POST: 댓글 답글
-  const {authToken, BASE_URL, nickname} = useAuth();
-  const [replyText, setReplyText] = useState('');
-  const handleReplyClick = () => {
-    if (replyText.trim() === '') return null;
+  //좋아요/좋아요취소
+  const [clickIcon, setClickIcon] = useState(false);
+  const handleClickIcon = () => {
+    setClickIcon(!clickIcon);
+  };
+
+  //Delete: 내 댓글 삭제
+  const {authToken, BASE_URL} = useAuth();
+  const handleDelete = (id) => {
     axios
-      .post(
-        `${BASE_URL}line/comcom/${commentId}/`,
-        {content: replyText, mention: mentionedUser},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .delete(`${BASE_URL}line/com/del/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
         setRender(render + 1);
-        setReplyText('');
-        setShowReplyForm(false);
         console.log(response);
       })
       .catch((error) => {
-        console.error('댓글의 답글을 등록하는 중 오류가 발생했습니다.', error);
+        console.error('문장의 댓글을 삭제하는 중 오류가 발생했습니다.', error);
       });
-  };
-
-  const handleReply = (event) => {
-    if (event.key === 'Enter' && event.shiftKey === false) {
-      event.preventDefault();
-      handleReplyClick();
-    }
   };
 
   //Delete: 댓글 답글 삭제
@@ -70,20 +59,6 @@ const CommentBox = ({
       });
   };
 
-  //답글 입력창 관리, 언급할 사용자 설정
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [mentionedUser, setMentionedUser] = useState('');
-  const handleButtonClick = (author) => {
-    setShowReplyForm(!showReplyForm);
-    setMentionedUser(author);
-  };
-
-  //좋아요/좋아요취소
-  const [clickIcon, setClickIcon] = useState(false);
-  const handleClickIcon = () => {
-    setClickIcon(!clickIcon);
-  };
-
   return (
     <>
       <Container>
@@ -91,8 +66,16 @@ const CommentBox = ({
           <img src={profile} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
-          <Id>{author}</Id>
-          <Content>{commentContent}</Content>
+          <Id>{user}</Id>
+          {mention ? (
+            <Content>
+              <span>@{mention} </span>
+              {comContent}
+            </Content>
+          ) : (
+            <Content>{comContent}</Content>
+          )}
+
           <Plus>
             {clickIcon ? (
               <img
@@ -116,61 +99,27 @@ const CommentBox = ({
               <div onClick={handleClickIcon}>좋아요</div>
             )}
             <span>·</span>
-            <div onClick={() => handleButtonClick(author)}>답글달기</div>
-            {author === nickname && (
-              <>
-                <span>·</span>
-                <div onClick={() => handleDelete(commentId)}>삭제</div>
-              </>
+            {mention ? (
+              <div onClick={() => handleReplyDelete(comId)}>삭제</div>
+            ) : (
+              <div onClick={() => handleDelete(comId)}>삭제</div>
             )}
           </Plus>
         </ContentContainer>
       </Container>
-      {replies &&
-        replies.map((reply) => (
-          <Reply
-            key={reply.linecomcom_id}
-            replyId={reply.linecomcom_id}
-            mention={reply.mention}
-            content={reply.content}
-            author={reply.linecomcom_user.nickname}
-            showReplyForm={showReplyForm}
-            setShowReplyForm={setShowReplyForm}
-            setMention={setMentionedUser}
-            handleReplyDelete={handleReplyDelete}
-            nickname={nickname}
-          ></Reply>
-        ))}
-      {showReplyForm && (
-        <>
-          <Mention>{mentionedUser} 님에게 답글</Mention>
-          <InputBoxPosition>
-            <Inputbox>
-              <div>@{mentionedUser}</div>
-              <input
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-                onKeyDown={(e) => handleReply(e)}
-              ></input>
-            </Inputbox>
-            <img
-              onClick={() => handleReplyClick()}
-              src={submiticon}
-              alt='submiticon'
-            ></img>
-          </InputBoxPosition>
-        </>
-      )}
     </>
   );
 };
 
-export default CommentBox;
+export default MyCommentBox;
 
 const Container = styled.div`
   width: 350px;
   display: flex;
   flex-direction: row;
+  padding: 20px;
+  border-bottom: 1px solid #353646;
+  background: #1e1c2e;
 `;
 
 const ProfileContainer = styled.div`
@@ -207,6 +156,10 @@ const Content = styled.div`
   font-size: 12px;
   font-weight: 500;
   line-height: 125%;
+
+  span {
+    color: #a397ff;
+  }
 `;
 
 const Plus = styled.div`

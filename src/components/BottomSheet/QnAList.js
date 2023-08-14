@@ -1,48 +1,79 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
 //components
 import QnABox from './QnABox';
 //images
 import submiticon from '../../images/submiticon.svg';
-// import axios from 'axios';
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import {usePost} from '../../contexts/PostContext';
 
 const QnAList = ({expanded, openExpandSpace}) => {
-  //질문 등록
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([
-    {
-      que_id: 1,
-      content: '첫 번째 질문입니다.',
-      is_my: true,
-      answers: [
-        {ans_id: 1, content: '답변 1'},
-        {ans_id: 2, content: '답변 2'},
-        {ans_id: 3, content: '답변 3'},
-      ],
-    },
-    {
-      que_id: 2,
-      content: '두 번째 질문입니다.',
-      is_my: false,
-      answers: [
-        {ans_id: 1, content: '답변 1'},
-        {ans_id: 2, content: '답변 2'},
-      ],
-    },
-  ]);
+  const [render, setRender] = useState(1);
 
+  // GET: QnA
+  const {authToken, BASE_URL} = useAuth();
+  const {postPk, selectedIndex} = usePost();
+  useEffect(() => {
+    getComments();
+  }, [render]);
+
+  const [comments, setComments] = useState([]);
+  const getComments = () => {
+    axios
+      .get(`${BASE_URL}post/${postPk}/contents/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        const postData = response.data.data.PostSec;
+        const targetSection = postData.find(
+          (section) => section.sec_id === selectedIndex.index
+        );
+        if (targetSection) {
+          const targetLine = targetSection.Lines.find(
+            (line) => line.sentence === selectedIndex.sentenceIndex
+          );
+          const targetComments = targetLine.Question;
+          setComments(targetComments);
+        }
+        console.log(comments);
+      })
+      .catch((error) => {
+        console.error('QnA 목록을 불러오는 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  //POST: QnA
+  const [comment, setComment] = useState('');
   const handleCommentSubmit = () => {
     if (comment.trim() === '') return null;
-    const newQuestion = {
-      que_id: comments + 1,
-      content: comment, //API 연결해서 Post할 때는 content만 전달하면 됨.
-      is_my: true,
-      answers: [],
-    };
-
-    setComments([...comments, newQuestion]);
-    console.log(comments);
-    setComment('');
+    axios
+      .post(
+        `${BASE_URL}line/qna/w/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          line_content: selectedIndex.sentence,
+          content: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setComment('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('질문을 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   //첫번째 답변 클릭하면 다른 답변 펼쳐지기
@@ -54,28 +85,43 @@ const QnAList = ({expanded, openExpandSpace}) => {
     }));
   };
 
-  //답변 등록
+  //POST: 댓글 답글
   const addReply = (commentId, replyText) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.que_id === commentId) {
-        const newReply = {
-          content: replyText,
-          author: 'zimmmni', // 현재 로그인한 사용자 닉네임 넣기
-          id: Date.now(), //아이디 다르게 주려고 임시로 넣어둠
-        };
+    if (replyText.trim() === '') return null;
+    axios
+      .post(
+        `${BASE_URL}line/ans/${commentId}/`,
+        {content: replyText},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('질문의 답변을 등록하는 중 오류가 발생했습니다.', error);
+      });
+  };
 
-        const updatedReplies = comment.answers
-          ? [...comment.answers, newReply]
-          : [newReply];
-
-        return {
-          ...comment,
-          answers: updatedReplies,
-        };
-      }
-      return comment;
-    });
-    setComments(updatedComments);
+  //Delete: 질문 삭제
+  const handleDelete = (id) => {
+    axios
+      .delete(`${BASE_URL}line/qnadelete/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('질문을 삭제하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -90,28 +136,38 @@ const QnAList = ({expanded, openExpandSpace}) => {
           {comments.map((comment, id) => (
             <QnAContainer>
               <QContainer key={id}>
-                <QnABox comment={comment} addReply={addReply}></QnABox>
+                <QnABox
+                  comment={comment}
+                  commentContent={comment.content}
+                  nickname={comment.que_user.nickname}
+                  addReply={addReply}
+                  handleDelete={handleDelete}
+                ></QnABox>
               </QContainer>
               <>
-                {comment.answers.length > 0 && (
+                {comment.Answer.length > 0 && (
                   <>
                     <AContainer
                       onClick={() => {
                         toggleAnswers(comment.que_id);
                       }}
                     >
-                      <QnABox comment={comment.answers[0]}></QnABox>
+                      <QnABox
+                        comment={comment.Answer[0]}
+                        commentContent={comment.Answer[0].content}
+                        nickname={comment.Answer[0].ans_user.nickname}
+                      ></QnABox>
                     </AContainer>
                     {!expandedQuestions[comment.que_id] && (
                       <BoxContainer>
-                        {comment.answers.length > 1 && (
+                        {comment.Answer.length > 1 && (
                           <>
                             <Box1
                               style={{
                                 background: '#4332BD',
                               }}
                             ></Box1>
-                            {comment.answers.length > 2 && (
+                            {comment.Answer.length > 2 && (
                               <Box2
                                 style={{
                                   background: '#362994',
@@ -132,9 +188,13 @@ const QnAList = ({expanded, openExpandSpace}) => {
                   }}
                 >
                   {expandedQuestions[comment.que_id] &&
-                    comment.answers.slice(1).map((comment, id) => (
+                    comment.Answer.slice(1).map((comment, id) => (
                       <AContainer key={id}>
-                        <QnABox comment={comment}></QnABox>
+                        <QnABox
+                          comment={comment}
+                          commentContent={comment.content}
+                          nickname={comment.ans_user.nickname}
+                        ></QnABox>
                       </AContainer>
                     ))}
                 </AnswerWrapper>
@@ -150,7 +210,11 @@ const QnAList = ({expanded, openExpandSpace}) => {
         >
           {comments.length > 0 && (
             <QContainer onClick={openExpandSpace}>
-              <QnABox comment={comments[comments.length - 1]}></QnABox>
+              <QnABox
+                comment={comments[comments.length - 1]}
+                commentContent={comments[comments.length - 1].content}
+                nickname={comments[comments.length - 1].que_user.nickname}
+              ></QnABox>
             </QContainer>
           )}
           <BoxContainer>
@@ -294,7 +358,7 @@ const Inputbox = styled.input`
   border-radius: 20px;
   box-shadow: 0 0 0 1px #fff inset;
   background-color: #161524;
-  padding-left: 10px;
+  padding-left: 16px;
 
   color: white;
   font-family: 'Pretendard-Regular';

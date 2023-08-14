@@ -1,14 +1,36 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
+//images
 import profile from '../../images/profile.svg';
 import votedicon from '../../images/votedicon.svg';
 
-const VoteBox = ({vote}) => {
-  const [votedIndex, setVotedIndex] = useState(-1); // 투표된 항목의 인덱스
+//context
+import {useAuth} from '../../contexts/AuthContext';
 
-  // 투표 처리 함수
+const VoteBox = ({ingvote}) => {
+  const {authToken, BASE_URL} = useAuth();
+  const [votedIndex, setVotedIndex] = useState(-1);
+
   const handleVote = (index) => {
-    setVotedIndex(index);
+    axios
+      .post(
+        `${BASE_URL}vote/voting/${ingvote.vote_id}/`,
+        {content: index},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setVotedIndex(index);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('투표하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -18,25 +40,38 @@ const VoteBox = ({vote}) => {
           <img src={profile} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
-          <Id>broaden_horizons</Id>
-          <Content>{vote.title}</Content>
+          <Id>{ingvote.vote_user.nickname}</Id>
+          <Content>{ingvote.title}</Content>
         </ContentContainer>
       </Header>
       <List>
-        {vote.options.map((option, index) => (
-          <div
-            key={index}
-            onClick={() => handleVote(index)}
-            style={{
-              backgroundColor: votedIndex === index ? '#5A45F5' : '#6a6881',
-            }}
-          >
-            {option}
-            {votedIndex === index && (
-              <CheckCircle src={votedicon} alt='투표 완료'></CheckCircle>
-            )}
-          </div>
-        ))}
+        <div
+          onClick={() => handleVote(1)}
+          style={{
+            backgroundColor: votedIndex === 1 ? '#5A45F5' : '#6a6881',
+          }}
+        >
+          {ingvote.item1}
+          {votedIndex === 1 && <img src={votedicon} alt='투표 완료'></img>}
+        </div>
+        <div
+          onClick={() => handleVote(2)}
+          style={{
+            backgroundColor: votedIndex === 2 ? '#5A45F5' : '#6a6881',
+          }}
+        >
+          {ingvote.item2}
+          {votedIndex === 2 && <img src={votedicon} alt='투표 완료'></img>}
+        </div>
+        <div
+          onClick={() => handleVote(3)}
+          style={{
+            backgroundColor: votedIndex === 3 ? '#5A45F5' : '#6a6881',
+          }}
+        >
+          {ingvote.item3}
+          {votedIndex === 3 && <img src={votedicon} alt='투표 완료'></img>}
+        </div>
       </List>
     </Container>
   );
@@ -108,10 +143,8 @@ const List = styled.div`
     font-weight: 600;
     line-height: 136.5%; /* 17.745px */
     letter-spacing: -0.26px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
-`;
-
-const CheckCircle = styled.img`
-  position: absolute;
-  right: 40px;
 `;

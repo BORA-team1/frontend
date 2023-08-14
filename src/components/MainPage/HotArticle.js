@@ -59,8 +59,6 @@ const Box = styled.div`
   height: 171px;
   overflow: hidden;
 
-  margin-right: 15px;
-
   border-radius: 10px;
   border: 1px solid #353646;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);

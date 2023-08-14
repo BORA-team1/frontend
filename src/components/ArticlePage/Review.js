@@ -1,56 +1,113 @@
 import React, {useContext, useState} from 'react';
 import {SheetContext} from '../../contexts/SheetContext';
 import styled from 'styled-components';
+import axios from 'axios';
+
 import Reply from '../BottomSheet/Reply';
+
+//images
 import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
 import thumbsupclick from '../../images/thumbsupclick.svg';
 import submiticon from '../../images/submiticon.svg';
-// import ReplyForm from '../BottomSheet/ReplyForm';
+
+//context
+import {useAuth} from '../../contexts/AuthContext';
 
 const Review = ({
-  replies,
-  reviewContent,
   reviewId,
+  reviewContent,
   author,
+  like,
   handleDelete,
-  addReply,
-  mentionedUser,
-  setMention,
+  replies,
+  render,
+  setRender,
 }) => {
-  //추천해요/추천취소
-  const [clickIcon, setClickIcon] = useState(false);
-  const handleClickIcon = () => {
-    setClickIcon(!clickIcon);
-  };
-
-  //답글 등록
+  //POST: 한마디 답글
+  const {authToken, BASE_URL, nickname} = useAuth();
   const [replyText, setReplyText] = useState('');
-  const [showReplyForm, setShowReplyForm] = useState(false);
+  const handleReplyClick = () => {
+    if (replyText.trim() === '') return null;
+    axios
+      .post(
+        `${BASE_URL}han/com/${reviewId}/`,
+        {content: replyText, mention: mentionedUser},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setReplyText('');
+        setShowReplyForm(false);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(
+          '한마디의 답글을 등록하는 중 오류가 발생했습니다.',
+          error
+        );
+      });
+  };
 
   const handleReply = (event) => {
     if (event.key === 'Enter' && event.shiftKey === false) {
       event.preventDefault();
-
-      addReply(reviewId, replyText, author);
-      setReplyText('');
-      setShowReplyForm(false);
+      handleReplyClick();
     }
   };
 
-  const handleReplyClick = () => {
-    addReply(reviewId, replyText, author);
-    setReplyText('');
-    setShowReplyForm(false);
+  //Delete: 한마디 답글 삭제
+  const handleReplyDelete = (replyId) => {
+    axios
+      .delete(`${BASE_URL}han/com/del/${replyId}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디의 답글 삭제하는 중 오류가 발생했습니다.', error);
+      });
   };
 
+  //답글 입력창 관리, 언급할 사용자 설정
   const bottomSheetOpen = useContext(SheetContext);
-  //답글 입력창 관리
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [mentionedUser, setMentionedUser] = useState('');
   const handleButtonClick = (author) => {
     if (bottomSheetOpen) {
       setShowReplyForm(!showReplyForm);
-      setMention(author);
+      setMentionedUser(author);
     }
+  };
+
+  //POST: 추천 여부 변경
+  const [clickIcon, setClickIcon] = useState(false);
+  const handleClickIcon = () => {
+    axios
+      .post(`${BASE_URL}han/like/${reviewId}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setClickIcon(!clickIcon);
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(
+          '한마디의 좋아요 여부를 변경하는 중 오류가 발생했습니다.',
+          error
+        );
+      });
   };
 
   return (
@@ -82,7 +139,7 @@ const Review = ({
                 color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
               }}
             >
-              0
+              {like}
             </div>
             <span>·</span>
             {clickIcon ? (
@@ -92,19 +149,28 @@ const Review = ({
             )}
             <span>·</span>
             <div onClick={() => handleButtonClick(author)}>답글달기</div>
-            <span>·</span>
-            <div onClick={() => handleDelete(reviewId)}>삭제</div>
+            {author === nickname && (
+              <>
+                <span>·</span>
+                <div onClick={() => handleDelete(reviewId)}>삭제</div>
+              </>
+            )}
           </Plus>
         </ContentContainer>
       </Container>
       {replies &&
         replies.map((reply) => (
           <Reply
-            key={reply.id}
-            reply={reply}
+            key={reply.hancom_id}
+            replyId={reply.hancom_id}
+            mention={reply.mention}
+            content={reply.content}
+            author={reply.hancom_user.nickname}
             showReplyForm={showReplyForm}
             setShowReplyForm={setShowReplyForm}
-            setMention={setMention}
+            setMention={setMentionedUser}
+            handleReplyDelete={handleReplyDelete}
+            nickname={nickname}
           ></Reply>
         ))}
       {showReplyForm && (
@@ -116,11 +182,11 @@ const Review = ({
               <input
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
-                onKeyDown={(e) => handleReply(e, author)}
+                onKeyDown={(e) => handleReply(e)}
               ></input>
             </Inputbox>
             <img
-              onClick={() => handleReplyClick(author)}
+              onClick={() => handleReplyClick()}
               src={submiticon}
               alt='submiticon'
             ></img>

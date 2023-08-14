@@ -1,12 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Quotation = ({lineContent, closeBottomSheet}) => {
+const Quotation = ({line, lineContent, setLineId, closeBottomSheet}) => {
   return (
     <Container>
       <Sentence>“ {lineContent} ”</Sentence>
       <SelectButton>
-        <span onClick={closeBottomSheet}>선택</span>
+        <span
+          onClick={() => {
+            closeBottomSheet();
+            setLineId(line);
+          }}
+        >
+          선택
+        </span>
       </SelectButton>
     </Container>
   );

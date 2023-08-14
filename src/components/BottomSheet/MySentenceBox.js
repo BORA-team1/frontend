@@ -1,12 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
-const MySentenceBox = ({lineContent}) => {
+//context
+import {useAuth} from '../../contexts/AuthContext';
+
+const MySentenceBox = ({lineId, lineContent, render, setRender}) => {
+  //Delete: 내 밑줄 삭제
+  const {authToken, BASE_URL} = useAuth();
+  const handleDelete = (id) => {
+    axios
+      .delete(`${BASE_URL}line/delete/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('밑줄을 삭제하는 중 오류가 발생했습니다.', error);
+      });
+  };
+
   return (
     <Container>
       <Sentence>“ {lineContent} ”</Sentence>
       <SelectButton>
-        <span>삭제</span>
+        <span onClick={() => handleDelete(lineId)}>삭제</span>
       </SelectButton>
     </Container>
   );

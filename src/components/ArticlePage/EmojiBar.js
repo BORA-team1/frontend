@@ -1,10 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
+//images
 import happy from '../../images/emoji/happy.svg';
 import surprised from '../../images/emoji/surprised.svg';
 import anger from '../../images/emoji/anger.svg';
 import sad from '../../images/emoji/sad.svg';
 import curious from '../../images/emoji/curious.svg';
+
+//context
+import {useAuth} from '../../contexts/AuthContext';
+import {usePost} from '../../contexts/PostContext';
 
 const EmojiBar = ({
   closeEmojiBar,
@@ -12,16 +19,37 @@ const EmojiBar = ({
   handleOpenBottomSheet,
   showListC,
 }) => {
-  const [selectedEmoji, setSelectedEmoji] = useState(null);
-
+  //POST: 댓글
+  const {authToken, BASE_URL} = useAuth();
+  const {postPk, selectedIndex, emojiRender, setEmojiRender} = usePost();
   const handleEmojiSelect = (number) => {
-    console.log(number);
-    setSelectedEmoji(number);
-    closeEmojiBar();
-    if (!isBottomSheetOpen) {
-      handleOpenBottomSheet();
-      showListC();
-    }
+    axios
+      .post(
+        `${BASE_URL}line/emo/w/${postPk}/`,
+        {
+          line_postsec: selectedIndex.index,
+          sentence: selectedIndex.sentenceIndex,
+          line_content: selectedIndex.sentence,
+          content: number,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setEmojiRender(emojiRender + 1);
+        closeEmojiBar();
+        if (!isBottomSheetOpen) {
+          handleOpenBottomSheet();
+          showListC();
+        }
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('감정표현을 등록하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (

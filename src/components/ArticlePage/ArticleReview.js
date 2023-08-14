@@ -1,30 +1,80 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+
+//images
 import more from '../../images/more.svg';
 import Review from '../ArticlePage/Review';
 import submiticon from '../../images/submiticon.svg';
 
-const ArticleReview = ({handleBottomSheet}) => {
-  const [review, setReview] = useState('');
-  const [reviews, setReviews] = useState([]);
+//context
+import {useAuth} from '../../contexts/AuthContext';
 
-  //한마디 등록
-  const handleReviewsSubmit = () => {
-    if (review.trim() === '') return null;
-    const newReview = {
-      id: reviews.length + 1,
-      content: review,
-      author: 'zimmmni',
-    };
-    setReviews([...reviews, newReview]);
-    setReview('');
-    console.log(reviews);
+const ArticleReview = ({handleBottomSheet, postPk}) => {
+  const [render, setRender] = useState(1);
+
+  // GET: 한마디
+  const {authToken, BASE_URL} = useAuth();
+  useEffect(() => {
+    getReviews();
+  }, [render]);
+
+  const [reviews, setReviews] = useState([]);
+  const getReviews = () => {
+    axios
+      .get(`${BASE_URL}han/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setReviews(response.data.data.han);
+        console.log(response.data.data.han);
+      })
+      .catch((error) => {
+        console.error('한마디를 불러오는 중 오류가 발생했습니다.', error);
+      });
   };
 
-  //한마디 삭제
+  //POST: 한마디
+  const [review, setReview] = useState('');
+  const handleReviewsSubmit = () => {
+    if (review.trim() === '') return null;
+    axios
+      .post(
+        `${BASE_URL}han/${postPk}/`,
+        {content: review},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        setRender(render + 1);
+        setReview('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디를 등록하는 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  //Delete: 한마디 삭제
   const handleDelete = (id) => {
-    const updatedReviews = reviews.filter((review) => review.id !== id);
-    setReviews(updatedReviews);
+    axios
+      .delete(`${BASE_URL}han/delete/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('한마디를 삭제하는 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -38,20 +88,22 @@ const ArticleReview = ({handleBottomSheet}) => {
           </MoreReview>
         </ReviewTop>
         <ReviewContainer>
-          {reviews.length > 0 && (
+          {reviews[reviews.length - 1] && (
             <Review
-              reviewId={reviews[reviews.length - 1].id}
+              reviewId={reviews[reviews.length - 1].han_id}
               reviewContent={reviews[reviews.length - 1].content}
-              author={reviews[reviews.length - 1].author}
+              author={reviews[reviews.length - 1].han_user.nickname}
               handleDelete={handleDelete}
             ></Review>
           )}
+          {reviews.length === 0 && <span>아직 남겨진 한마디가 없습니다.</span>}
         </ReviewContainer>
         <HR></HR>
         <InputBoxPosition>
           <Inputbox
             value={review}
             onChange={(e) => setReview(e.target.value)}
+            placeholder='나의 한마디를 남겨 보세요.'
           ></Inputbox>
           <img
             onClick={handleReviewsSubmit}
@@ -71,6 +123,9 @@ const ArticleReviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 50px;
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const HR = styled.div`
@@ -86,9 +141,7 @@ const ReviewTop = styled.div`
   justify-content: space-between;
 
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
 
@@ -106,6 +159,15 @@ const ReviewContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 15px;
+
+  span {
+    padding-top: 5px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 133.5%; /* 16.02px */
+    letter-spacing: -0.24px;
+  }
 `;
 
 const InputBoxPosition = styled.div`
@@ -132,12 +194,15 @@ const Inputbox = styled.input`
   border-radius: 20px;
   box-shadow: 0 0 0 1px #fff inset;
   background-color: #161524;
-  padding-left: 10px;
+  padding-left: 16px;
 
-  color: rgba(255, 255, 255, 0.6);
   font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
 `;
