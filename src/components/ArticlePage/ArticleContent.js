@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import axios from "axios";
 
 //components
-import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
-import FloatingBar from './FloatingBar';
-import ContentPopup from './ContentPopup';
+import HighlightingBottomSheet from "../BottomSheet/HighlightingBottomSheet";
+import FloatingBar from "./FloatingBar";
+import ContentPopup from "./ContentPopup";
 
 //images
-import comment from '../../images/sectionbar/commenticon.svg';
-import qna from '../../images/sectionbar/qnaicon.svg';
-import happy from '../../images/emoji/happy.svg';
+import comment from "../../images/sectionbar/commenticon.svg";
+import qna from "../../images/sectionbar/qnaicon.svg";
+import happy from "../../images/emoji/happy.svg";
 
 //context
-import {useAuth} from '../../contexts/AuthContext';
+import { useAuth } from "../../contexts/AuthContext";
 
-const ArticleContent = ({isContentsOn, postPk}) => {
+const ArticleContent = ({ isContentsOn, postPk }) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
-  const [expanded, setExpanded] = useState('close');
+  const [expanded, setExpanded] = useState("close");
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-  const [category, setCategory] = useState('A');
+  const [category, setCategory] = useState("A");
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -34,7 +34,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       setSelectedSentence(null);
     }
     setBottomSheetOpen(false);
-    setExpanded('close');
+    setExpanded("close");
   };
 
   //이모지 바 오픈/클로즈
@@ -46,9 +46,9 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   };
 
   //카테고리에 따른 리스트 띄우기
-  const showListA = () => setCategory('A');
-  const showListB = () => setCategory('B');
-  const showListC = () => setCategory('C');
+  const showListA = () => setCategory("A");
+  const showListB = () => setCategory("B");
+  const showListC = () => setCategory("C");
 
   //클릭한 문장의 글자 색 바뀌기
   const highlightText = (sentence) => {
@@ -59,7 +59,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
 
   //클릭한 문장 정보 저장 (섹션 id, 문장 index)
   const saveTextInfo = (index, sentenceIndex, sentence) => {
-    const textInfo = {index, sentenceIndex, sentence};
+    const textInfo = { index, sentenceIndex, sentence };
     setSelectedIndex(textInfo);
   };
 
@@ -84,7 +84,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   };
 
   // GET: 세부포스트
-  const {authToken, BASE_URL} = useAuth();
+  const { authToken, BASE_URL } = useAuth();
   useEffect(() => {
     getPosts();
   }, []);
@@ -103,7 +103,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       })
       .catch((error) => {
         console.error(
-          '세부포스트 내용을 불러오는 중 오류가 발생했습니다.',
+          "세부포스트 내용을 불러오는 중 오류가 발생했습니다.",
           error
         );
       });
@@ -122,24 +122,24 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       {posts.PostSec &&
         posts.PostSec.map((section) => {
           const paragraphs = section.content
-            .split('·')
-            .filter((paragraph) => paragraph.trim() !== '');
+            .split("·")
+            .filter((paragraph) => paragraph.trim() !== "");
 
           const sentencesIcon = paragraphs
             .map((paragraph) => paragraph.split(/(?<=[?.·](?=\s|'))/))
             .reduce((acc, val) => {
               const flattened = val.filter(
-                (sentence) => sentence.trim() !== ''
+                (sentence) => sentence.trim() !== ""
               );
               return acc.concat(flattened);
             }, []);
 
           return (
             <>
-              <Section key={section.num} className='ebook-container'>
+              <Section key={section.num} className="ebook-container">
                 {section.title && <SectionTitle>{section.title}</SectionTitle>}
                 <SectionContent>
-                  <div style={{width: isContentsOn ? '330px' : '345px'}}>
+                  <div style={{ width: isContentsOn ? "330px" : "345px" }}>
                     {paragraphs.map((paragraph, paragraphIndex) => {
                       const sentences = paragraph.split(/(?<=[?.](?=\s|'))/);
 
@@ -164,22 +164,22 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                                   highlightText(sentence);
                                 }}
                                 style={{
-                                  cursor: 'pointer',
+                                  cursor: "pointer",
                                   color:
                                     selectedSentence === sentence ||
                                     hoveredIndex === sentence
-                                      ? '#A397FF'
-                                      : 'white',
+                                      ? "#A397FF"
+                                      : "white",
 
                                   backgroundColor: selectedSentence
-                                    ? 'transparent'
+                                    ? "transparent"
                                     : highlights.some(
                                         (highlight) =>
                                           highlight.sentenceIndex ===
                                           currentSentenceIndex
                                       )
-                                    ? 'rgba(170, 158, 255, 0.35)'
-                                    : 'transparent',
+                                    ? "rgba(170, 158, 255, 0.35)"
+                                    : "transparent",
                                 }}
                               >
                                 {sentence}
@@ -210,7 +210,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                               }}
                             >
                               {/* <div></div> */}
-                              <img src={comment} alt='comment'></img>
+                              <img src={comment} alt="comment"></img>
                               {/* <img src={qna} alt='qna'></img>
                                     <img src={happy} alt='happy'></img> */}
                             </Icon>
@@ -267,7 +267,7 @@ const Wrapper = styled.div`
   margin-top: 37.4px;
 
   color: white;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   font-weight: 300;

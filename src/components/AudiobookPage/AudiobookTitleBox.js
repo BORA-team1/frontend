@@ -8,7 +8,7 @@ import PlaylistDetailBottomSheet from "../../components/AudiobookPage/PlaylistDe
 import more from "../../images/more.svg";
 import audiobookdetail from "../../images/Audiobook/audiobookdetail.svg";
 
-const AudiobookTitleBox = () => {
+const AudiobookTitleBox = ({ audio }) => {
   //바텀시트
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
@@ -31,7 +31,7 @@ const AudiobookTitleBox = () => {
             alignItems: "flex-start",
           }}
         >
-          <Title>제로 슈거와 아스파탐의 죄수?!</Title>
+          <Title>{audio.audio_post.title}</Title>
           <AudiobookDetail
             src={audiobookdetail}
             onClick={handleOpenBottomSheet}
