@@ -1,35 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const AudioContent = ({ isAudioPlaying, audioRef }) => {
-  const BASE_URL = "http://localhost:3001";
+//context
+import { useAuth } from "../../contexts/AuthContext";
 
-  const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  const getPosts = () => {
-    axios
-      .get(`${BASE_URL}/data`)
-      .then((response) => {
-        setPosts(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('글 목록을 불러오는 중 오류가 발생했습니다.', error);
-      });
-  };
-
+const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
   const [highlightedSectionIndex, setHighlightedSectionIndex] = useState(0);
 
-  const sections = posts.reduce((acc, item) => {
-    if (item.post_id === 1) {
-      acc.push(...item.PostSec);
-    }
-    return acc;
-  }, []);
+  // const sections = audio.reduce((acc, item) => {
+  //   if (item.audio_id === 1) {
+  //     acc.push(...item.PostSec);
+  //   }
+  //   return acc;
+  // }, []);
+
+  const { PostSec: sections } = audio;
 
   const timeIntervals = [
     { start: 0, end: 3, sectionId: 1 },
@@ -59,12 +46,12 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
     };
 
     if (audioRef.current) {
-      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
       }
     };
   }, [isAudioPlaying, audioRef, timeIntervals]);
@@ -85,9 +72,12 @@ const AudioContent = ({ isAudioPlaying, audioRef }) => {
 
   return (
     <Wrapper>
-      {sections.length > 0 &&
+      {sections &&
+        sections.length > 0 &&
         sections.map((sec, sectionIndex) => {
-          const sentences = sec.content.split(/(?<=[?.](?=\s|'))/);
+          const sentences = sec.content
+            .split("·")
+            .filter((paragraph) => paragraph.trim() !== "");
           return (
             <Gap key={sec.sec_id}>
               <Section
@@ -123,7 +113,7 @@ const Wrapper = styled.div`
   gap: 50px;
 
   color: white;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -151,9 +141,9 @@ const TextContainer = styled.div`
   width: 360px;
 `;
 
-const HighlightedSpan = styled.span`
+const HighlightedSpan = styled.div`
   cursor: pointer;
-  color: ${(props) => (props.isHighlighted ? '#A397FF' : 'white')};
+  color: ${(props) => (props.isHighlighted ? "#A397FF" : "white")};
 `;
 
 const Button = styled.button`
