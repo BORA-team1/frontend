@@ -19,6 +19,18 @@ const AudiobookTitleBox = ({ audio }) => {
   const handleCloseBottomSheet = () => {
     setShowBottomSheet(false);
   };
+  //난이도 판단
+  const getDifficultyText = (difficulty) => {
+    if (difficulty === 1) {
+      return "Light";
+    } else if (difficulty === 2) {
+      return "Medium";
+    } else if (difficulty === 3) {
+      return "Heavy";
+    } else {
+      return "";
+    }
+  };
   return (
     <>
       <Box>
@@ -38,9 +50,11 @@ const AudiobookTitleBox = ({ audio }) => {
           />
         </div>
         <TagBox>
-          <Difficulty>Light</Difficulty>
-          <Tag>라이프</Tag>
-          <Tag>건강</Tag>
+          <Difficulty>{getDifficultyText(audio.audio_post.diff)}</Difficulty>
+          {audio.audio_post.hashtag &&
+            audio.audio_post.hashtag.map((tagObj, index) => (
+              <Tag key={index}>{tagObj.hashtag}</Tag>
+            ))}
         </TagBox>
       </Box>
 

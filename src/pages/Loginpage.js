@@ -59,7 +59,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
             ></Input>
             <Input
-              type="text"
+              type="password"
               placeholder="비밀번호"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -139,4 +139,5 @@ const LoginBtn = styled.button`
   font-style: normal;
   color: #fff;
   border: none;
+  cursor: pointer;
 `;

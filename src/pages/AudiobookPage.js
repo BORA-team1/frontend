@@ -23,11 +23,12 @@ const AudiobookPage = () => {
   const { post_id } = useParams(); // 받아온 post_id
   console.log(post_id);
 
-  const [audio_pk, setAudioPk] = useState(1); // 세부포스트에서 추출한 audio_pk
+  const [audio_pk, setAudioPk] = useState(null);
   const [playlist_pk, setPlaylistPk] = useState(0);
 
   useEffect(() => {
     getPosts();
+    console.log("hi");
   }, []);
 
   const getPosts = () => {
@@ -42,6 +43,7 @@ const AudiobookPage = () => {
         const audioPkFromPost = response.data.data.Audio;
         setAudioPk(audioPkFromPost); // audio_pk 설정
         console.log(audioPkFromPost);
+        handleGetAudio();
       })
       .catch((error) => {
         console.error("Error fetching post details:", error);
@@ -49,9 +51,9 @@ const AudiobookPage = () => {
   };
 
   //오디오북 받아오기
-  useEffect(() => {
-    getAudio();
-  }, []);
+  const handleGetAudio = () => {
+    getAudio(); // getAudio 호출
+  };
 
   const [audio, setAudio] = useState([]);
   const getAudio = () => {
