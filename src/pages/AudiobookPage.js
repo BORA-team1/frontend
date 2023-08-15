@@ -69,24 +69,26 @@ const AudiobookPage = () => {
   return (
     <>
       <Container>
-        <AudiobookTitleBox audio={audio} />
-        <Scroll>
-          <>
-            <Box>
-              <AudioContent
-                isAudioPlaying={isAudioPlaying}
-                audioRef={audioRef}
-                audio={audio}
-              />
-            </Box>
-          </>
-        </Scroll>
-        <PlayingBar
-          isAudioPlaying={isAudioPlaying}
-          setIsAudioPlaying={setIsAudioPlaying}
-          audioRef={audioRef}
-          audio={audio}
-        />
+        <Background>
+          <AudiobookTitleBox audio={audio} />
+          <Scroll>
+            <>
+              <Box>
+                <AudioContent
+                  isAudioPlaying={isAudioPlaying}
+                  audioRef={audioRef}
+                  audio={audio}
+                />
+              </Box>
+            </>
+          </Scroll>
+          <PlayingBar
+            isAudioPlaying={isAudioPlaying}
+            setIsAudioPlaying={setIsAudioPlaying}
+            audioRef={audioRef}
+            audio={audio}
+          />
+        </Background>
       </Container>
     </>
   );
@@ -109,6 +111,24 @@ const Container = styled.div`
   color: #fff;
 `;
 
+const Background = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  max-width: 390px;
+  max-height: 844px;
+  margin: 0px auto;
+
+  background: linear-gradient(
+    180deg,
+    rgba(22, 21, 36, 0.3) 0%,
+    rgba(90, 69, 245, 0.3) 50.29%,
+    rgba(21, 20, 34, 0.3) 100%
+  );
+  color: #fff;
+`;
+
 const Scroll = styled.div`
   overflow-y: scroll;
   height: 730px;
@@ -119,13 +139,9 @@ const Scroll = styled.div`
 
   position: relative;
   z-index: 0;
+  background: transparent;
 `;
 
 const Box = styled.div`
-  background: linear-gradient(
-    180deg,
-    rgba(22, 21, 36, 0.3) 0%,
-    rgba(90, 69, 245, 0.3) 50.29%,
-    rgba(21, 20, 34, 0.3) 100%
-  );
+  background: transparent;
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
 //components
@@ -30,8 +30,22 @@ const PlaylistBottomSheet = ({
   const handleCloseCompleteModal = () => {
     setCompleteModal(false);
   };
-  if (!handleOpenBottomSheet) return null;
 
+  // 재생목록 삭제 리스트
+  const [playlistItems, setPlaylistItems] = useState([]);
+  useEffect(() => {
+    setPlaylistItems(playlist?.playlist_audio);
+  }, [playlist?.playlist_audio]);
+
+  // 삭제된 아이템 필터링하여 새로운 목록 설정
+  const handleDeleteAudiobook = (index) => {
+    const newPlaylistItems = playlistItems.filter((_, i) => i !== index);
+    setPlaylistItems(newPlaylistItems);
+    // console.log(newPlaylistItems);
+    // console.log(playlistItems);
+  };
+
+  if (!handleOpenBottomSheet) return null;
   return (
     <>
       <BottomSheetOverlay>
@@ -48,13 +62,18 @@ const PlaylistBottomSheet = ({
 
           {/* 아래는 내용 부분 */}
           <BookContatiner>
-            {playlist.playlist_audio.map((audio, index) => (
-              <Audiobook
-                key={index}
-                audio_post={audio.audio_post}
-                long={audio.long}
-              />
-            ))}
+            {playlistItems && playlistItems.length > 0 ? (
+              playlistItems.map((audio, index) => (
+                <Audiobook
+                  key={index}
+                  audio_post={audio.audio_post}
+                  long={audio.long}
+                  onDelete={() => handleDeleteAudiobook(index)}
+                />
+              ))
+            ) : (
+              <NoPlaylistText>재생목록이 비어 있습니다.</NoPlaylistText>
+            )}
           </BookContatiner>
           <SaveContainer>
             <SaveBtn src={savebtn} onClick={openCreateModal} />
@@ -176,4 +195,12 @@ const SaveContainer = styled.div``;
 
 const SaveBtn = styled.img`
   margin: 30px 21.5px;
+`;
+
+const NoPlaylistText = styled.div`
+  color: #fff;
+  font-family: "Pretendard-Regular";
+  font-size: 16px;
+  text-align: center;
+  margin-top: 50px;
 `;
