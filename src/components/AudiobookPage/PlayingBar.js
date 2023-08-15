@@ -80,15 +80,6 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef, audio }) => {
     setWarningModal(false);
   };
 
-  // const handleClick = () => {
-  //   reOK();
-  //   if (playlist && OK) {
-  //     handleOpenBottomSheet(); // 바텀시트를 열기 위한 함수
-  //   } else if (!playlist && OK) {
-  //     openWarningModal(); // 모달을 열기 위한 함수
-  //   }
-  // };
-
   const handlePlaylistIconClick = () => {
     reOK();
     if (playlist.playlist_id === 0 && OK) {
@@ -169,6 +160,7 @@ const Box = styled.div`
 
   width: 279px;
   height: 29px;
+  background: transparent;
 `;
 
 const PlayListIcon = styled.img`
@@ -180,19 +172,23 @@ const PlayListIcon = styled.img`
 const BeforeSecond = styled.img`
   width: 24px;
   height: 27px;
+  cursor: pointer;
 `;
 
 const StopnGo = styled.img`
   width: 20px;
   height: 27px;
+  cursor: pointer;
 `;
 
 const AfterSecond = styled.img`
   width: 24px;
   height: 27px;
+  cursor: pointer;
 `;
 
 const BookmarkIcon = styled.img`
   width: 17px;
   height: 21px;
+  cursor: pointer;
 `;

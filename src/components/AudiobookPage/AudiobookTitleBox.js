@@ -53,24 +53,11 @@ const AudiobookTitleBox = ({ audio }) => {
           <Difficulty>{getDifficultyText(audio?.audio_post?.diff)}</Difficulty>
           {audio?.audio_post?.hashtag &&
             audio?.audio_post?.hashtag.map((tag, index) => (
-              <Tag key={index}>{tag.hashtag}</Tag>
+              <Tag key={index}>#{tag.hashtag}</Tag>
             ))}
         </TagBox>
       </Box>
 
-      {/* <Title>ㅎㅎ</Title>
-          <AudiobookDetail
-            src={audiobookdetail}
-            onClick={handleOpenBottomSheet}
-          />
-        </div>
-        <TagBox>
-          <Difficulty>ㅎㅎ</Difficulty>
-
-          <Tag>ㅎㅎ</Tag>
-        </TagBox>
-      </Box> */}
-      {/* 이게 무슨 청기 백기 에러??????? */}
       {showBottomSheet && (
         <PlaylistDetailBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}
@@ -91,6 +78,7 @@ const Box = styled.div`
   gap: 10px;
 
   background: transparent;
+  margin-bottom: 10px;
 `;
 
 const Font = styled.div`

@@ -67,6 +67,7 @@ const SignupPage = () => {
     }
 
     setUsername(value);
+    console.log(username);
   };
 
   //아이디 중복 확인
@@ -147,7 +148,7 @@ const SignupPage = () => {
     } else if (age >= 50) {
       ageGroup = "5";
     }
-
+    console.log(ageGroup);
     return ageGroup;
   };
 
@@ -176,7 +177,6 @@ const SignupPage = () => {
   //버튼 활성화
   const [requiredFieldsValid, setRequiredFieldsValid] = useState(false);
   useEffect(() => {
-    // Calculate requiredFieldsValid based on all required fields
     const isRequiredFieldsValid =
       usernameValid &&
       passwordValid &&

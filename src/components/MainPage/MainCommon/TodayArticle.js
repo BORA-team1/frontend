@@ -13,7 +13,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 //api
 // import {postBookMark} from '../../../api/bookmark';
 
-const TodayArticle = ({ article }) => {
+const TodayArticle = ({ article, width, height }) => {
   const navigate = useNavigate();
   const { authToken, BASE_URL } = useAuth();
 
@@ -42,13 +42,17 @@ const TodayArticle = ({ article }) => {
   }
 
   return (
-    <Box onClick={() => navigate(`/article/${article.post_id}`)}>
+    <Box
+      width={width}
+      height={height}
+      onClick={() => navigate(`/article/${article.post_id}`)}
+    >
       <BookMark
-      // onClick={(e) => {
-      //   e.stopPropagation();
-      //   postBookMark(article.post_id);
-      // }}
-      // src={article.is_booked ? bookmark_on : bookmark_off}
+        // onClick={(e) => {
+        //   e.stopPropagation();
+        //   postBookMark(article.post_id);
+        // }}
+        src={article.is_booked ? bookmark_on : bookmark_off}
       />
 
       <Picture src={article.post_image} />
@@ -81,11 +85,9 @@ export default TodayArticle;
 
 const Box = styled.div`
   position: relative;
-  width: 133px;
-  height: 171px;
+  width: ${({ width }) => width || "133px"};
+  height: ${({ height }) => height || "171px"};
   overflow: hidden;
-
-  margin-right: 15px;
 
   border-radius: 10px;
   border: 1px solid #353646;
