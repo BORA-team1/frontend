@@ -43,21 +43,34 @@ const AudiobookTitleBox = ({ audio }) => {
             alignItems: "flex-start",
           }}
         >
-          <Title>{audio.audio_post.title}</Title>
+          <Title>{audio?.audio_post?.title}</Title>
           <AudiobookDetail
             src={audiobookdetail}
             onClick={handleOpenBottomSheet}
           />
         </div>
         <TagBox>
-          <Difficulty>{getDifficultyText(audio.audio_post.diff)}</Difficulty>
-          {audio.audio_post.hashtag &&
-            audio.audio_post.hashtag.map((tagObj, index) => (
-              <Tag key={index}>{tagObj.hashtag}</Tag>
+          <Difficulty>{getDifficultyText(audio?.audio_post?.diff)}</Difficulty>
+          {audio?.audio_post?.hashtag &&
+            audio?.audio_post?.hashtag.map((tag, index) => (
+              <Tag key={index}>{tag.hashtag}</Tag>
             ))}
         </TagBox>
       </Box>
 
+      {/* <Title>ㅎㅎ</Title>
+          <AudiobookDetail
+            src={audiobookdetail}
+            onClick={handleOpenBottomSheet}
+          />
+        </div>
+        <TagBox>
+          <Difficulty>ㅎㅎ</Difficulty>
+
+          <Tag>ㅎㅎ</Tag>
+        </TagBox>
+      </Box> */}
+      {/* 이게 무슨 청기 백기 에러??????? */}
       {showBottomSheet && (
         <PlaylistDetailBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}

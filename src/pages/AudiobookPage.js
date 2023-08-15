@@ -28,7 +28,6 @@ const AudiobookPage = () => {
 
   useEffect(() => {
     getPosts();
-    console.log("hi");
   }, []);
 
   const getPosts = () => {
@@ -40,23 +39,15 @@ const AudiobookPage = () => {
       }) // 세부포스트 정보 가져오기
       .then((response) => {
         // 세부포스트에서 원하는 정보 추출
-        const audioPkFromPost = response.data.data.Audio;
-        setAudioPk(audioPkFromPost); // audio_pk 설정
-        console.log(audioPkFromPost);
-        handleGetAudio();
+        getAudio(response.data.data.Audio);
       })
       .catch((error) => {
         console.error("Error fetching post details:", error);
       });
   };
 
-  //오디오북 받아오기
-  const handleGetAudio = () => {
-    getAudio(); // getAudio 호출
-  };
-
   const [audio, setAudio] = useState([]);
-  const getAudio = () => {
+  const getAudio = (audio_pk) => {
     axios
       .get(`${BASE_URL}audio/${audio_pk}/${playlist_pk}/`, {
         headers: {

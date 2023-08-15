@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
-import styled, {keyframes} from 'styled-components';
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
 //components
-import PlaylistCreateModal from '../AudiobookPage/PlaylistCreateModal';
-import PlaylistCompleteModal from '../AudiobookPage/PlaylistCompleteModal';
-import Audiobook from '../AudiobookPage/Audiobook';
+import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
+import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
+import Audiobook from "../AudiobookPage/Audiobook";
 
 //img
-import savebtn from '../../images/Audiobook/savebtn.svg';
+import savebtn from "../../images/Audiobook/savebtn.svg";
 
 const PlaylistBottomSheet = ({
   handleOpenBottomSheet,
   handleCloseBottomSheet,
+  playlist,
 }) => {
   const [createModal, setcreateModal] = useState(false);
   const [completeModal, setCompleteModal] = useState(false);
@@ -45,14 +46,15 @@ const PlaylistBottomSheet = ({
             <HR></HR>
           </BottomSheetHeader>
 
-          {/* 아래는 내용 부분 - 스크롤 기능 넣을 것!*/}
+          {/* 아래는 내용 부분 */}
           <BookContatiner>
-            <Audiobook />
-            <Audiobook />
-            <Audiobook />
-            <Audiobook />
-            <Audiobook />
-            <Audiobook />
+            {playlist.playlist_audio.map((audio, index) => (
+              <Audiobook
+                key={index}
+                audio_post={audio.audio_post}
+                long={audio.long}
+              />
+            ))}
           </BookContatiner>
           <SaveContainer>
             <SaveBtn src={savebtn} onClick={openCreateModal} />
@@ -121,7 +123,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   line-height: 100%; /* 15px */
