@@ -69,6 +69,28 @@ const SignupPage = () => {
     setUsername(value);
   };
 
+  //아이디 중복 확인
+  const [duplicate, setDuplicate] = useState(null); // 중복 여부 상태
+
+  const handleCheckDuplicate = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}account/duplicate/`, {
+        username: username,
+      });
+
+      // 중복 아님
+      if (response.data.duplicate === false) {
+        setDuplicate(false);
+        // 중복 아님을 사용자에게 표시하는 로직 추가
+      } else {
+        setDuplicate(true);
+        // 중복임을 사용자에게 표시하는 로직 추가
+      }
+    } catch (error) {
+      console.error("중복 확인 중 오류가 발생했습니다.", error);
+    }
+  };
+
   //비밀번호 일치 확인
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
@@ -196,7 +218,7 @@ const SignupPage = () => {
             value={username}
             onChange={handleUsernameChange}
           />
-          <Check>중복확인</Check>
+          <Check onClick={handleCheckDuplicate}>중복확인</Check>
           {usernameValid ? (
             <Condition>영문과 숫자를 조합하여 6자 이상</Condition>
           ) : (
@@ -204,7 +226,14 @@ const SignupPage = () => {
               아이디가 형식에 맞지 않습니다. 다시 입력해주십시오.
             </Condition>
           )}
-          {/* <ConditionGood>사용 가능한 아이디입니다.</ConditionGood> */}
+          {duplicate === true && (
+            <Condition style={{ color: "#FF5E2B" }}>
+              같은 아이디가 이미 존재합니다. 다른 아이디로 다시 입력해주세요.
+            </Condition>
+          )}
+          {duplicate === false && (
+            <ConditionGood>사용 가능한 아이디입니다.</ConditionGood>
+          )}
         </ID>
         <div style={{ marginBottom: "30px" }}>
           <Guide>

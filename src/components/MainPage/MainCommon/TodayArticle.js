@@ -1,23 +1,23 @@
-import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import styled from 'styled-components';
-import axios from 'axios';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
 
 //components
-import Difficulty from '../../Common/Difficulty';
+import Difficulty from "../../Common/Difficulty";
 //images
-import bookmark_on from '../../../images/bookmark_on.svg';
-import bookmark_off from '../../../images/bookmark-off.svg';
+import bookmark_on from "../../../images/bookmark_on.svg";
+import bookmark_off from "../../../images/bookmark-off.svg";
 //context
-import {useAuth} from '../../../contexts/AuthContext';
+import { useAuth } from "../../../contexts/AuthContext";
 //api
 // import {postBookMark} from '../../../api/bookmark';
 
-const TodayArticle = ({article}) => {
+const TodayArticle = ({ article }) => {
   const navigate = useNavigate();
-  const {authToken, BASE_URL} = useAuth();
+  const { authToken, BASE_URL } = useAuth();
 
-  const postBookMark = ({postId}) => {
+  const postBookMark = ({ postId }) => {
     axios
       .post(`${BASE_URL}post/${postId}/bookmark/`, {
         headers: {
@@ -28,27 +28,27 @@ const TodayArticle = ({article}) => {
         console.log(response);
       })
       .catch((error) => {
-        console.error('북마크 여부 변경 중 오류가 발생했습니다.', error);
+        console.error("북마크 여부 변경 중 오류가 발생했습니다.", error);
       });
   };
 
   let difficulty;
   if (article.diff === 1) {
-    difficulty = 'light';
+    difficulty = "light";
   } else if (article.diff === 2) {
-    difficulty = 'medium';
+    difficulty = "medium";
   } else if (article.diff === 3) {
-    difficulty = 'heavy';
+    difficulty = "heavy";
   }
 
   return (
     <Box onClick={() => navigate(`/article/${article.post_id}`)}>
       <BookMark
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        //   postBookMark(article.post_id);
-        // }}
-        src={article.is_booked ? bookmark_on : bookmark_off}
+      // onClick={(e) => {
+      //   e.stopPropagation();
+      //   postBookMark(article.post_id);
+      // }}
+      // src={article.is_booked ? bookmark_on : bookmark_off}
       />
 
       <Picture src={article.post_image} />
@@ -57,10 +57,10 @@ const TodayArticle = ({article}) => {
         <Title>{article.title}</Title>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            width: '113px',
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            width: "113px",
           }}
         >
           <TagBox>
@@ -68,7 +68,7 @@ const TodayArticle = ({article}) => {
               <Tag key={tagIndex}>#{tag.hashtag}</Tag>
             ))}
           </TagBox>
-          <Difficulty size='small' difficulty={difficulty}>
+          <Difficulty size="small" difficulty={difficulty}>
             {difficulty}
           </Difficulty>
         </div>
@@ -100,6 +100,7 @@ const BookMark = styled.img`
   top: 12px;
   right: 12px;
   z-index: 10;
+  cursor: pointer;
 `;
 
 const Picture = styled.img`
@@ -136,7 +137,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -152,11 +153,11 @@ const TagBox = styled.ul`
 const Tag = styled.li`
   display: inline-block;
   &:not(:last-child)::after {
-    content: ' • ';
+    content: " • ";
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;

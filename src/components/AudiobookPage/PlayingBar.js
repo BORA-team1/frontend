@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import AudioPlayer from "react-audio-player";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 //components
 import WarningModal from "../AudiobookPage/WarningModal";
@@ -15,10 +16,13 @@ import aftersecond from "../../images/Audiobook/aftersecond.svg";
 import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
 import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
 
+//context
+import { useAuth } from "../../contexts/AuthContext";
+
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
 import example from "../../audio/example.mp3";
 
-const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
+const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef, audio }) => {
   //bookmark
   const [bookmark, setBookmark] = useState(false);
   const reBookmark = () => {
@@ -26,6 +30,34 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
   };
 
   //playlist - 나중에 넘겨줘야 하는 거
+  // const [playlist, setPlaylist] = useState(playlist_pk !== "0"); //단일 아티클인지, 플레이리스트 있는지 판단
+  const playlist_pk = 1;
+
+  // GET: 플레이리스트
+  const { authToken, BASE_URL } = useAuth();
+  useEffect(() => {
+    getPlaylist();
+  }, []);
+
+  const [playlist, setPlaylist] = useState([]);
+  const getPlaylist = () => {
+    axios
+      .get(`${BASE_URL}audio/${playlist_pk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setPlaylist(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.error(
+          "세부포스트 내용을 불러오는 중 오류가 발생했습니다.",
+          error
+        );
+      });
+  };
 
   const [bottomsheet, setBottomsheet] = useState(true);
   const [warningmodal, setWarningModal] = useState(true);
@@ -48,13 +80,21 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
     setWarningModal(false);
   };
 
-  const [playlist, setPlaylist] = useState(true); //단일 아티클인지, 플레이리스트 있는지 판단
-  const handleClick = () => {
+  // const handleClick = () => {
+  //   reOK();
+  //   if (playlist && OK) {
+  //     handleOpenBottomSheet(); // 바텀시트를 열기 위한 함수
+  //   } else if (!playlist && OK) {
+  //     openWarningModal(); // 모달을 열기 위한 함수
+  //   }
+  // };
+
+  const handlePlaylistIconClick = () => {
     reOK();
-    if (playlist && OK) {
-      handleOpenBottomSheet(); // 바텀시트를 열기 위한 함수
-    } else if (!playlist && OK) {
-      openWarningModal(); // 모달을 열기 위한 함수
+    if (playlist.playlist_id === 0 && OK) {
+      openWarningModal();
+    } else if (OK) {
+      handleOpenBottomSheet();
     }
   };
 
@@ -92,7 +132,7 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
   return (
     <>
       <Box>
-        <PlayListIcon src={playlisticon} onClick={handleClick} />
+        <PlayListIcon src={playlisticon} onClick={handlePlaylistIconClick} />
         <BeforeSecond onClick={handleSkipBackward} src={beforesecond} />
         <audio ref={audioRef} src={example} />
         <StopnGo onClick={handlePlayPause} src={isPlaying ? stop : start} />
@@ -106,6 +146,7 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef }) => {
         <PlaylistBottomSheet
           handleOpenBottomSheet={handleOpenBottomSheet}
           handleCloseBottomSheet={handleCloseBottomSheet}
+          playlist={playlist}
         />
       ) : null}
       {!playlist && OK && warningmodal ? (
@@ -133,6 +174,7 @@ const Box = styled.div`
 const PlayListIcon = styled.img`
   width: 24px;
   height: 23px;
+  cursor: pointer;
 `;
 
 const BeforeSecond = styled.img`

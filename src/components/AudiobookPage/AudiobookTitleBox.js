@@ -19,6 +19,18 @@ const AudiobookTitleBox = ({ audio }) => {
   const handleCloseBottomSheet = () => {
     setShowBottomSheet(false);
   };
+  //난이도 판단
+  const getDifficultyText = (difficulty) => {
+    if (difficulty === 1) {
+      return "Light";
+    } else if (difficulty === 2) {
+      return "Medium";
+    } else if (difficulty === 3) {
+      return "Heavy";
+    } else {
+      return "";
+    }
+  };
   return (
     <>
       <Box>
@@ -31,19 +43,34 @@ const AudiobookTitleBox = ({ audio }) => {
             alignItems: "flex-start",
           }}
         >
-          <Title>{audio.audio_post.title}</Title>
+          <Title>{audio?.audio_post?.title}</Title>
           <AudiobookDetail
             src={audiobookdetail}
             onClick={handleOpenBottomSheet}
           />
         </div>
         <TagBox>
-          <Difficulty>Light</Difficulty>
-          <Tag>라이프</Tag>
-          <Tag>건강</Tag>
+          <Difficulty>{getDifficultyText(audio?.audio_post?.diff)}</Difficulty>
+          {audio?.audio_post?.hashtag &&
+            audio?.audio_post?.hashtag.map((tag, index) => (
+              <Tag key={index}>{tag.hashtag}</Tag>
+            ))}
         </TagBox>
       </Box>
 
+      {/* <Title>ㅎㅎ</Title>
+          <AudiobookDetail
+            src={audiobookdetail}
+            onClick={handleOpenBottomSheet}
+          />
+        </div>
+        <TagBox>
+          <Difficulty>ㅎㅎ</Difficulty>
+
+          <Tag>ㅎㅎ</Tag>
+        </TagBox>
+      </Box> */}
+      {/* 이게 무슨 청기 백기 에러??????? */}
       {showBottomSheet && (
         <PlaylistDetailBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}
