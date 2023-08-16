@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import styled, {css} from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled, { css } from "styled-components";
+import axios from "axios";
 
 //context
-import {useAuth} from '../contexts/AuthContext';
+import { useAuth } from "../contexts/AuthContext";
 
 //images
-import X from '../images/X.svg';
+import X from "../images/X.svg";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const SignupPage = () => {
   const [age, setAge] = useState('');
 
   // 리렌더링용 변수
-  const {BASE_URL} = useAuth();
+  const { BASE_URL } = useAuth();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -29,14 +29,20 @@ const SignupPage = () => {
       const calculatedAgeGroup = calculateAgeGroup(Number(birthYear));
       setAge(calculatedAgeGroup);
 
+      const interestArray = interest
+        .split("#")
+        .filter((item) => item.trim() !== "");
+
+      const interestObjects = interestArray.map((item) => ({ hashtag: item }));
+      console.log(interestObjects);
       try {
         const formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
-        formData.append('nickname', nickname);
-        formData.append('interest', interest);
-        formData.append('profile', profile);
-        formData.append('age', age);
+        formData.append("username", username);
+        formData.append("password", password);
+        formData.append("nickname", nickname);
+        formData.append("interest", interestObjects);
+        formData.append("profile", profile);
+        formData.append("age", calculatedAgeGroup);
 
         const response = await axios.post(
           `${BASE_URL}account/signup/`,
@@ -44,7 +50,7 @@ const SignupPage = () => {
         );
 
         // 회원가입 성공 시 처리
-        setAge('');
+        setAge("");
         navigate(`/login`);
         console.log(response);
       } catch (error) {
@@ -88,12 +94,12 @@ const SignupPage = () => {
         // 중복임을 사용자에게 표시하는 로직 추가
       }
     } catch (error) {
-      console.error('중복 확인 중 오류가 발생했습니다.', error);
+      console.error("중복 확인 중 오류가 발생했습니다.", error);
     }
   };
 
   //비밀번호 일치 확인
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
@@ -129,24 +135,24 @@ const SignupPage = () => {
   };
 
   //연령층 계산
-  const [birthYear, setBirthYear] = useState(''); // 출생 연도 입력값
+  const [birthYear, setBirthYear] = useState(""); // 출생 연도 입력값
 
   const calculateAgeGroup = (birthYear) => {
     const today = new Date();
     const currentYear = today.getFullYear();
     const age = currentYear - birthYear + 1;
 
-    let ageGroup = '';
+    let ageGroup = "";
     if (age >= 10 && age < 20) {
-      ageGroup = '1';
+      ageGroup = "1";
     } else if (age >= 20 && age < 30) {
-      ageGroup = '2';
+      ageGroup = "2";
     } else if (age >= 30 && age < 40) {
-      ageGroup = '3';
+      ageGroup = "3";
     } else if (age >= 40 && age < 50) {
-      ageGroup = '4';
+      ageGroup = "4";
     } else if (age >= 50) {
-      ageGroup = '5';
+      ageGroup = "5";
     }
     console.log(ageGroup);
     return ageGroup;
@@ -156,7 +162,7 @@ const SignupPage = () => {
   const handleBirthYearChange = (e) => {
     const value = e.target.value;
     // 숫자만 남기도록 처리
-    const numericValue = value.replace(/\D/g, '');
+    const numericValue = value.replace(/\D/g, "");
 
     // 4글자 이상 입력되지 않도록 제한
     if (numericValue.length <= 4) {
@@ -201,7 +207,7 @@ const SignupPage = () => {
         <Del
           src={X}
           onClick={() => {
-            navigate('/initial');
+            navigate("/initial");
           }}
         />
         <Title>회원가입</Title>
@@ -212,8 +218,8 @@ const SignupPage = () => {
             아이디 <span>*</span>
           </Guide>
           <InputID
-            type='text'
-            placeholder='예 : bora1234'
+            type="text"
+            placeholder="예 : bora1234"
             value={username}
             onChange={handleUsernameChange}
           />
@@ -221,12 +227,12 @@ const SignupPage = () => {
           {usernameValid ? (
             <Condition>영문과 숫자를 조합하여 6자 이상</Condition>
           ) : (
-            <Condition style={{color: '#FF5E2B'}}>
+            <Condition style={{ color: "#FF5E2B" }}>
               아이디가 형식에 맞지 않습니다. 다시 입력해주십시오.
             </Condition>
           )}
           {duplicate === true && (
-            <Condition style={{color: '#FF5E2B'}}>
+            <Condition style={{ color: "#FF5E2B" }}>
               같은 아이디가 이미 존재합니다. 다른 아이디로 다시 입력해주세요.
             </Condition>
           )}
@@ -234,13 +240,13 @@ const SignupPage = () => {
             <ConditionGood>사용 가능한 아이디입니다.</ConditionGood>
           )}
         </ID>
-        <div style={{marginBottom: '30px'}}>
+        <div style={{ marginBottom: "30px" }}>
           <Guide>
             비밀번호 <span>*</span>
           </Guide>
           <Input
-            type='password'
-            placeholder='비밀번호를 입력해 주세요.'
+            type="password"
+            placeholder="비밀번호를 입력해 주세요."
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -248,13 +254,13 @@ const SignupPage = () => {
             영문, 숫자, 특수문자 중 2개 이상 조합하여 10자 이상
           </Condition>
         </div>
-        <div style={{marginBottom: '60px'}}>
+        <div style={{ marginBottom: "60px" }}>
           <Guide>
             비밀번호 확인 <span>*</span>
           </Guide>
           <Input
-            type='password'
-            placeholder='위에서 입력한 비밀번호를 한 번 더 입력해 주세요.'
+            type="password"
+            placeholder="위에서 입력한 비밀번호를 한 번 더 입력해 주세요."
             value={passwordConfirm}
             onChange={handlePasswordConfirmChange}
           />
@@ -263,43 +269,43 @@ const SignupPage = () => {
           ) : (
             <Condition>
               {passwordMatch
-                ? '영문, 숫자, 특수문자 중 2개 이상 조합하여 10자 이상'
-                : '비밀번호가 일치하지 않습니다.'}
+                ? "영문, 숫자, 특수문자 중 2개 이상 조합하여 10자 이상"
+                : "비밀번호가 일치하지 않습니다."}
             </Condition>
           )}
         </div>
-        <div style={{marginBottom: '50px'}}>
+        <div style={{ marginBottom: "50px" }}>
           <Guide>
             닉네임 <span>*</span>
           </Guide>
           <Input
-            type='text'
-            placeholder='창밖을보라에서 사용할 닉네임을 입력해 주세요.'
+            type="text"
+            placeholder="창밖을보라에서 사용할 닉네임을 입력해 주세요."
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
-        <div style={{marginBottom: '88px'}}>
+        <div style={{ marginBottom: "88px" }}>
           <Guide>
             생년월일 <span>*</span>
           </Guide>
           <InputY
-            type='text'
-            placeholder='YYYY'
+            type="text"
+            placeholder="YYYY"
             value={birthYear}
             onChange={handleBirthYearChange}
           />
-          <InputM type='text' placeholder='MM' />
-          <InputD type='text' placeholder='DD' />
+          <InputM type="text" placeholder="MM" />
+          <InputD type="text" placeholder="DD" />
           <Condition>왼쪽부터 년 (YYYY), 월 (MM), 일 (DD) 순 입력</Condition>
         </div>
-        <div style={{marginBottom: '50px'}}>
+        <div style={{ marginBottom: "50px" }}>
           <Guide>관심사</Guide>
           <InputI
-            type='text'
-            placeholder='예 : #라이프, #건강, #테크, #문화, #경제, #환경'
-            value={interest.join(` `)}
-            onChange={(e) => setInterest(e.target.value.split(' '))}
+            type="text"
+            placeholder="예 : #라이프 #건강 #테크 #문화 #경제 #환경"
+            value={interest}
+            onChange={(e) => setInterest(e.target.value)}
           />
           <Condition>관심사 및 선호하는 주제를 '#'를 이용하여 입력</Condition>
         </div>
@@ -310,12 +316,12 @@ const SignupPage = () => {
           </ConditionP>
           <InputImgContainer>
             <InputImg
-              type='file'
-              accept='image/*'
+              type="file"
+              accept="image/*"
               onChange={handleImageChange}
             />
             {selectedImage && (
-              <PreviewImage src={selectedImage} alt='Profile Preview' />
+              <PreviewImage src={selectedImage} alt="Profile Preview" />
             )}
           </InputImgContainer>
         </div>
@@ -365,7 +371,7 @@ const InputGuide = styled.input`
   border: none;
   outline: none;
 
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 13px;
   font-style: normal;
   color: #fff;
@@ -391,7 +397,7 @@ const Box = styled.div`
 
 const Title = styled.div`
   color: #fff;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 15px;
   font-style: normal;
   font-weight: 600;
@@ -409,7 +415,7 @@ const Del = styled.img`
 //내용 부분
 
 const Guide = styled.div`
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -425,7 +431,7 @@ const Input = styled(InputGuide)`
 `;
 
 const Condition = styled.div`
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   color: rgba(255, 255, 255, 0.6);
   font-size: 10px;
   font-style: normal;
@@ -433,7 +439,7 @@ const Condition = styled.div`
 `;
 
 const ConditionGood = styled.div`
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   color: var(--main-purple, #5a45f5);
   font-size: 12px;
   font-style: normal;
@@ -461,7 +467,7 @@ const Check = styled.button`
   border: none;
   color: #fff;
   text-align: center;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
 
   font-size: 14px;
   font-style: normal;
@@ -507,7 +513,7 @@ const InputImgContainer = styled.div`
 
 const InputImg = styled.input`
   position: absolute;
-  opacity: ${({selectedImage}) => (selectedImage ? 0 : 1)};
+  opacity: ${({ selectedImage }) => (selectedImage ? 0 : 1)};
   width: 131px;
   height: 131px;
 `;
@@ -525,7 +531,7 @@ const PreviewImage = styled.img`
 `;
 
 const ConditionP = styled.div`
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   color: rgba(255, 255, 255, 0.6);
   font-size: 12px;
   font-style: normal;
@@ -546,7 +552,7 @@ const Btn = styled.button`
 
   color: rgba(255, 255, 255, 0.4);
   text-align: center;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 18px;
   font-style: normal;
   font-weight: 600;

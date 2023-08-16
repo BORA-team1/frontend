@@ -19,6 +19,9 @@ import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
 //context
 import {useAuth} from '../../contexts/AuthContext';
 
+//api
+import { postBookMark } from "../../api/bookmark";
+
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
 import example from '../../audio/example.mp3';
 
@@ -26,12 +29,20 @@ const PlayingBar = ({
   isAudioPlaying,
   setIsAudioPlaying,
   audioRef,
+  audio,
   playlistPk,
 }) => {
   //bookmark
-  const [bookmark, setBookmark] = useState(false);
-  const reBookmark = () => {
-    setBookmark(!bookmark);
+  const [bookmarkSrc, setBookmarkSrc] = useState(
+    audio.is_booked ? bookmarkicon_off : bookmarkicon_on
+  );
+
+  const handleBookmarkClick = (e) => {
+    e.stopPropagation();
+    const newBookmarkSrc =
+      bookmarkSrc === bookmarkicon_on ? bookmarkicon_off : bookmarkicon_on;
+    setBookmarkSrc(newBookmarkSrc);
+    postBookMark({ postId: audio.audio_post.post_id });
   };
 
   // GET: 플레이리스트
@@ -55,7 +66,7 @@ const PlayingBar = ({
             console.log(response.data.data);
           })
           .catch((error) => {
-            console.error('재생목록을 불러오는 중 오류가 발생했습니다.', error);
+            console.error("재생목록을 불러오는 중 오류가 발생했습니다.", error);
           });
     }
   };
@@ -125,10 +136,7 @@ const PlayingBar = ({
         <audio ref={audioRef} src={example} />
         <StopnGo onClick={handlePlayPause} src={isPlaying ? stop : start} />
         <AfterSecond onClick={handleSkipForward} src={aftersecond} />
-        <BookmarkIcon
-          onClick={reBookmark}
-          src={bookmark ? bookmarkicon_on : bookmarkicon_off}
-        />
+        <BookmarkIcon onClick={handleBookmarkClick} src={bookmarkSrc} />
       </Box>
       {bottomsheet ? (
         <PlaylistBottomSheet

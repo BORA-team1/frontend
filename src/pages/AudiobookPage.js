@@ -67,6 +67,7 @@ const AudiobookPage = () => {
             isAudioPlaying={isAudioPlaying}
             setIsAudioPlaying={setIsAudioPlaying}
             audioRef={audioRef}
+            audio={audio}
             playlistPk={playlist_id}
           />
         </Background>
