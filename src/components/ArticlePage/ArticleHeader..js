@@ -61,7 +61,7 @@ const ArticleHeader = ({postPk}) => {
   return (
     <Wrapper>
       <BackgroundImg>
-        <img src={articlebackground} alt='포스트 배경 이미지'></img>
+        <img src={posts.post_image} alt='포스트 배경 이미지'></img>
       </BackgroundImg>
       <GradientOverlay></GradientOverlay>
       <ButtonContainer>
@@ -75,7 +75,7 @@ const ArticleHeader = ({postPk}) => {
         <AudioBookButton>
           <img
             onClick={() => {
-              navigate(`/article/${postPk}/audio`);
+              navigate(`/article/${postPk}/${posts.Audio}`);
             }}
             src={audioicon}
             alt='오디오 북 아이콘'
@@ -224,6 +224,7 @@ const ArticleTitleText = styled.div`
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.48px;
+  line-height: 1.4;
 `;
 const ArticleTitleBottom = styled.div`
   color: rgba(255, 255, 255, 0.6);

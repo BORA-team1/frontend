@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
-import DifficultyArticle from "../components/MainPage/MainCommon/DifficultyArticle";
-import DifficultyBar from "../components/MainPage/DifficultyBar";
-import InterestArticle from "../components/MainPage/MainCommon/InterestArticle";
-import HotArticle from "../components/MainPage/HotArticle";
+import TopBar from '../components/Common/TopBar';
+import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
+import DifficultyArticle from '../components/MainPage/MainCommon/DifficultyArticle';
+import DifficultyBar from '../components/MainPage/DifficultyBar';
+import InterestArticle from '../components/MainPage/MainCommon/InterestArticle';
+import HotArticle from '../components/MainPage/HotArticle';
 
 //images
-import listeningarticle_btn from "../images/ListeningArticleBtn.svg";
-import entire_btn from "../images/entireBtn.svg";
+import listeningarticle_btn from '../images/ListeningArticleBtn.svg';
+import entire_btn from '../images/entireBtn.svg';
 
 //context
-import { useAuth } from "../contexts/AuthContext";
+import {useAuth} from '../contexts/AuthContext';
 
 const MainPage = () => {
   const [selectDifficulty, setSelectDifficulty] = useState(1);
   const navigate = useNavigate();
 
   //GET: 메인페이지 데이터
-  const { authToken, BASE_URL, nickname } = useAuth();
+  const {authToken, BASE_URL, nickname} = useAuth();
   useEffect(() => {
     getPosts();
   }, []);
@@ -41,14 +41,14 @@ const MainPage = () => {
         console.log(response.data.data);
       })
       .catch((error) => {
-        console.error("보는 홈화면을 불러오는 중 오류가 발생했습니다.", error);
+        console.error('보는 홈화면을 불러오는 중 오류가 발생했습니다.', error);
       });
   };
 
   //토큰따라 화면이동
   useEffect(() => {
     if (!authToken) {
-      navigate("/initial");
+      navigate('/initial');
     } else {
       getPosts();
     }
@@ -68,7 +68,7 @@ const MainPage = () => {
         <ListingArticleBtn
           src={listeningarticle_btn}
           onClick={() => {
-            navigate("/guidebookpage");
+            navigate('/guidebookpage');
           }}
         />
 
@@ -100,7 +100,7 @@ const MainPage = () => {
         <EntireBtn
           src={entire_btn}
           onClick={() => {
-            navigate("/entirepage");
+            navigate('/entirepage');
           }}
         />
 
@@ -109,8 +109,8 @@ const MainPage = () => {
           <OtherAgeGroupArticle>
             <AgeGroupTitle>
               우리 부모님
-              <span style={{ height: "460px" }}>
-                {" "}
+              <span style={{height: '460px'}}>
+                {' '}
                 #{posts.HotLine.hot_age}0대
               </span>
               가 관심있는 아티클 엿보기
@@ -119,8 +119,8 @@ const MainPage = () => {
               <HotArticle article={posts.HotPost} />
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
                 <Intro>많은 독자들이 밑줄 그은 문장 -</Intro>
@@ -181,7 +181,7 @@ const Scroll = styled.div`
 
 const FontStyle = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -300,7 +300,7 @@ const PickedArticle = styled.div`
   align-items: center;
   gap: 19.8px;
 
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -316,7 +316,7 @@ const PickedSentence = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   box-sizing: border-box;
-  font-family: "Jeju Myeongjo", serif;
+  font-family: 'Jeju Myeongjo', serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 154%;
