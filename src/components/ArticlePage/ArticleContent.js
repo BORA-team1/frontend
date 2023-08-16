@@ -249,9 +249,6 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                             if (maxNum === 0) {
                               hasEmotion = null;
                             }
-                            if (hasEmotion !== null) {
-                              const emojiImage = emojiImages[hasEmotion];
-                            }
 
                             return (
                               <Icon

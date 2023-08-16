@@ -1,19 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile from '../../images/profile.svg';
 
-const QBox = () => {
+const QBox = ({question}) => {
   return (
     <Container>
       <ProfileContainer>
-        <img src={profile} alt='profileimg'></img>
+        <img src={`${question.que_user.profile}`} alt='profileimg'></img>
       </ProfileContainer>
       <ContentContainer>
-        <Id>broaden_horizons</Id>
-        <Content>방과후 돌봄 교실이 뭔가요??</Content>
-        <Plus>
-          <div>답변 2개</div>
-        </Plus>
+        <Id>{question.que_user.nickname}</Id>
+        <Content>{question.content}</Content>
+        {question.Answer && (
+          <Plus>
+            <div>답변 {question.Answer.length}개</div>
+          </Plus>
+        )}
       </ContentContainer>
     </Container>
   );

@@ -1,19 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const VoteNow = () => {
+const VoteNow = ({vote}) => {
   return (
     <Container>
       <DebateContent>
         <Title>
-          {'<'}수능이 기초학력평가용으로 바뀌어야 한다고 생각하시나요?{'>'}
+          {'<'}
+          {vote.title}
+          {'>'}
         </Title>
         <Subtitle>
           <div>주제로</div>
           <Member>
             <div>
-              <img></img>
-              <span>04jjk</span>
+              <img src={`${vote.vote_user.profile}`} alt='profile' />
+              <span>{vote.vote_user.nickname}</span>
             </div>
           </Member>
           <div>님이 생성한 투표 진행 중!</div>

@@ -55,7 +55,24 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
       });
   };
 
-  // GET: 완료된 투표 조회
+  // PATCH: 토론 종료하기
+  const handleDebateComplete = (voteId) => {
+    axios
+      .patch(`${BASE_URL}debate/finish/${voteId}/`, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setRender(render + 1);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('토론 종료 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  // GET: 완료된 토론 조회
   const [doneDebates, setDoneDebates] = useState([]);
   const getDoneDebates = () => {
     axios
@@ -140,7 +157,6 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
           <Bar style={{left: barPosition[category]}} />
         </BottomSheetHeader>
 
-        {/* 카테고리에 맞는 리스트가 뜨게끔 추후에 수정할 예정 */}
         {category === 'A' && (
           <>
             <ListContatiner>
@@ -155,7 +171,12 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                   <SentenceBox lineContent={line.content}></SentenceBox>
                   {line.Debate.map((debate, index) => (
                     <BoxContainer key={index}>
-                      <DebateBox debate={debate} postPk={postPk}></DebateBox>
+                      <DebateBox
+                        debate={debate}
+                        nickname={nickname}
+                        postPk={postPk}
+                        handleDebateComplete={handleDebateComplete}
+                      ></DebateBox>
                     </BoxContainer>
                   ))}
                 </div>
@@ -174,17 +195,20 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
         )}
         {category === 'B' && (
           <ListContatiner>
-            {debates.length === 0 ? (
+            {doneDebates.length === 0 ? (
               <ListNum>아직 완료된 토론이 없습니다.</ListNum>
             ) : (
-              <ListNum>토론 {debates.length}개</ListNum>
+              <ListNum>토론 {doneDebates.length}개</ListNum>
             )}
             {doneDebates &&
               doneDebates.map((debate, index) => (
                 <div key={index}>
                   <SentenceBox lineContent={debate.content}></SentenceBox>
                   <BoxContainer key={index}>
-                    <DebateResult doneDebate={debate.Debate[0]}></DebateResult>
+                    <DebateResult
+                      doneDebate={debate.Debate[0]}
+                      BASE_URL={BASE_URL}
+                    ></DebateResult>
                   </BoxContainer>
                 </div>
               ))}
@@ -202,7 +226,12 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                 <SentenceBox lineContent={line.content}></SentenceBox>
                 {line.Debate.map((debate, index) => (
                   <BoxContainer key={index}>
-                    <DebateBox debate={debate} postPk={postPk}></DebateBox>
+                    <DebateBox
+                      debate={debate}
+                      nickname={nickname}
+                      postPk={postPk}
+                      handleDebateComplete={handleDebateComplete}
+                    ></DebateBox>
                   </BoxContainer>
                 ))}
               </div>

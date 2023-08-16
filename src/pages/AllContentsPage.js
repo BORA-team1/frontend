@@ -1,46 +1,67 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import VoteNow from '../components/ArticlePage/VoteNow';
+import VoteResult from '../components/ArticlePage/VoteResult';
 import DebateNow from '../components/ArticlePage/DebateNow';
 import QBox from '../components/AllContentPage/QBox';
 import ABox from '../components/AllContentPage/ABox';
 import qnaconnect from '../images/qnaconnect.svg';
-import CommentBox from '../components/BottomSheet/CommentBox';
-import EmojiList from '../components/BottomSheet/EmojiList';
+import ComBox from '../components/AllContentPage/ComBox';
+import EmojiBox from '../components/AllContentPage/EmojiBox';
+
+//context
+import {useAuth} from '../contexts/AuthContext';
 
 const AllContentsPage = () => {
+  const {post_id} = useParams();
   const navigate = useNavigate();
 
   const [selectedSection, setSelectedSection] = useState(1);
+  const handleSectionClick = (sec_id) => {
+    setSelectedSection(sec_id);
 
-  const handleSectionClick = (sectionId) => {
-    setSelectedSection(sectionId);
+    // 선택한 섹션의 위치로 스크롤 조작
+    const selectedSectionIndex = sections.findIndex(
+      (section) => section.sec_id === sec_id
+    );
+    const sectionElement = document.getElementById(
+      `section-${selectedSectionIndex}`
+    );
+    if (sectionElement) {
+      const yOffset =
+        sectionElement.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({top: yOffset, behavior: 'smooth'});
+    }
   };
 
-  const sections = [
-    {
-      sec_id: 1,
-      'Lines': [
-        {
-          'line_id': 90,
-          'sentence': 2,
-          'content': '[밑줄 문장 내용]',
+  const {authToken, BASE_URL, nickname} = useAuth();
+
+  useEffect(() => {
+    getSection();
+  }, []);
+
+  const [sections, setSections] = useState([]);
+  const getSection = () => {
+    axios
+      .get(`${BASE_URL}post/${post_id}/contents/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
         },
-      ],
-    },
-    {
-      sec_id: 2,
-      'Lines': [
-        {
-          'line_id': 90,
-          'sentence': 2,
-          'content': '[밑줄 문장 내용]',
-        },
-      ],
-    },
-  ];
+      })
+      .then((response) => {
+        setSections(response.data.data.PostSec);
+        console.log(response.data.data.PostSec);
+      })
+      .catch((error) => {
+        console.error(
+          '콘텐츠 모아보기를 불러오는 중 오류가 발생했습니다.',
+          error
+        );
+      });
+  };
 
   return (
     <Wrapper>
@@ -75,41 +96,107 @@ const AllContentsPage = () => {
         ))}
       </SectionBar>
 
-      {/* 섹션 map으로 돌리기 */}
-      <Section>
-        <SectionNum>섹션 {selectedSection}</SectionNum>
-        <div>
-          <Sentence>
-            “ 얼마 전부터 대학수학능력시험(수능)에서 ‘킬러 문항’ 없앤다 만다 말
-            많았잖아요. ”
-          </Sentence>
-          <Content>
-            <Category>투표</Category>
-            <VoteNow></VoteNow>
-          </Content>
-          <Content>
-            <Category>토론</Category>
-            <DebateNow></DebateNow>
-          </Content>
-          <Content>
-            <Category>Q&A</Category>
-            <QnAContainer>
-              <QBox></QBox>
-              <Connect src={qnaconnect}></Connect>
-              <ABox></ABox>
-            </QnAContainer>
-          </Content>
-          <Content>
-            <Category>댓글</Category>
-            <CommentBox></CommentBox>
-          </Content>
-          <Content>
-            <Category>감정표현</Category>
-            {/* <EmojiList></EmojiList> */}
-          </Content>
-        </div>
-        <HR></HR>
-      </Section>
+      {sections.map((section, index) => (
+        <Section key={index} id={`section-${index}`}>
+          <SectionNum>섹션 {index + 1}</SectionNum>
+
+          {section.Lines.map((line) => (
+            <div key={line.sentence}>
+              {/* 밑줄 내용 출력 */}
+              {(line.IngVote.length !== 0 ||
+                line.DoneVote.length !== 0 ||
+                line.Debate.length !== 0 ||
+                line.Question.length !== 0 ||
+                line.LineCom.length !== 0 ||
+                line.Emotion.some((emotion) => emotion.num !== 0)) && (
+                <Sentence>“ {line.content} ”</Sentence>
+              )}
+
+              {/* 밑줄 투표 출력 */}
+              {(line.IngVote.length !== 0 || line.DoneVote.length !== 0) && (
+                <Content>
+                  <Category>투표</Category>
+                  {line.IngVote.map((vote) => (
+                    <VoteNow
+                      key={vote.vote_id}
+                      vote={vote}
+                      BASE_URL={BASE_URL}
+                    />
+                  ))}
+                  {line.DoneVote.map((vote) => (
+                    <div style={{marginLeft: '22px'}}>
+                      <VoteResult key={vote.vote_id} donevote={vote} />
+                    </div>
+                  ))}
+                </Content>
+              )}
+
+              {/* 밑줄 토론 출력 */}
+              {line.Debate.length !== 0 && (
+                <Content>
+                  <Category>토론</Category>
+                  {line.Debate.map((debate) => (
+                    <DebateNow
+                      key={debate.debate_id}
+                      debate={debate}
+                      BASE_URL={BASE_URL}
+                    ></DebateNow>
+                  ))}
+                </Content>
+              )}
+
+              {/* 밑줄 질문 출력 */}
+              {line.Question.length !== 0 && (
+                <Content>
+                  <Category>Q&A</Category>
+                  {line.Question.map((question) => (
+                    <QnAContainer key={question.que_id}>
+                      <QBox question={question}></QBox>
+                      {question.Answer.map((answer) => (
+                        <>
+                          <Connect src={qnaconnect}></Connect>
+                          <ABox key={answer.ans_id} answer={answer}></ABox>
+                        </>
+                      ))}
+                    </QnAContainer>
+                  ))}
+                </Content>
+              )}
+
+              {/* 밑줄에 대한 댓글 출력 */}
+              {line.LineCom.length !== 0 && (
+                <Content>
+                  <Category>댓글</Category>
+                  {line.LineCom.map((comment) => (
+                    <>
+                      <ComBox
+                        key={comment.linecom_id}
+                        comment={comment}
+                        BASE_URL={BASE_URL}
+                        authToken={authToken}
+                        nickname={nickname}
+                      />
+                      {/* {comment.LineComCom.map((reply) => (
+                      <CommentBox key={reply.linecomcom_id} reply={reply} />
+                    ))} */}
+                    </>
+                  ))}
+                </Content>
+              )}
+
+              {/* 밑줄에 대한 감정표현 출력 */}
+              {line.Emotion.some((emotion) => emotion.num !== 0) && (
+                <Content>
+                  <Category>감정표현</Category>
+                  <EmojiBox emoji={line.Emotion} />
+                </Content>
+              )}
+
+              <HR></HR>
+            </div>
+          ))}
+        </Section>
+      ))}
     </Wrapper>
   );
 };
@@ -118,7 +205,7 @@ export default AllContentsPage;
 
 const Wrapper = styled.div`
   width: 390px;
-  height: 100%;
+  min-height: 844px;
   background: var(--background, #161524);
   display: flex;
   flex-direction: column;
