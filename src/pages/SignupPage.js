@@ -12,12 +12,12 @@ import X from '../images/X.svg';
 const SignupPage = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
   const [interest, setInterest] = useState([]);
-  const [profile, setProfile] = useState("");
-  const [age, setAge] = useState("");
+  const [profile, setProfile] = useState('');
+  const [age, setAge] = useState('');
 
   // 리렌더링용 변수
   const {BASE_URL} = useAuth();
@@ -53,7 +53,7 @@ const SignupPage = () => {
       }
     }
   };
-  
+
   //아이디 규격 확인
   const [usernameValid, setUsernameValid] = useState(true);
 
@@ -195,46 +195,6 @@ const SignupPage = () => {
     profile,
   ]);
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-
-    if (birthYear) {
-      const calculatedAgeGroup = calculateAgeGroup(Number(birthYear));
-      setAge(calculatedAgeGroup);
-
-      // const userData = {
-      //   username: username,
-      //   password: password,
-      //   nickname: nickname,
-      //   interest: interest,
-      //   profile: profile,
-      //   age: calculatedAgeGroup,
-      // };
-
-      try {
-        const formData = new FormData();
-        formData.append("username", username);
-        formData.append("password", password);
-        formData.append("nickname", nickname);
-        formData.append("interest", interest);
-        formData.append("profile", profile);
-        formData.append("age", age);
-
-        const response = await axios.post(
-          `${BASE_URL}account/signup/`,
-          formData
-        );
-
-        // 회원가입 성공 시 처리
-        setAge("");
-        navigate(`/login`);
-        console.log(response);
-      } catch (error) {
-        // 오류 처리
-        console.error(error);
-      }
-    }
-  };
   return (
     <Wrapper>
       <Box>
@@ -336,10 +296,10 @@ const SignupPage = () => {
         <div style={{marginBottom: '50px'}}>
           <Guide>관심사</Guide>
           <InputI
-            type="text"
-            placeholder="예 : #라이프, #건강, #테크, #문화, #경제, #환경"
+            type='text'
+            placeholder='예 : #라이프, #건강, #테크, #문화, #경제, #환경'
             value={interest.join(` `)}
-            onChange={(e) => setInterest(e.target.value.split(" "))}
+            onChange={(e) => setInterest(e.target.value.split(' '))}
           />
           <Condition>관심사 및 선호하는 주제를 '#'를 이용하여 입력</Condition>
         </div>
