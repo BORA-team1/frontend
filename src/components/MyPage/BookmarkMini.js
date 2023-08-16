@@ -1,26 +1,30 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 //components
-import Difficulty from "../Common/Difficulty";
+import Difficulty from '../Common/Difficulty';
 //images
-import bookmark_on from "../../images/bookmark_on.svg";
-import bookmark_off from "../../images/bookmark-off.svg";
+import bookmark_on from '../../images/bookmark_on.svg';
+import bookmark_off from '../../images/bookmark-off.svg';
 
 //api
-import { postBookMark } from "../../api/bookmark";
+import {postBookMark} from '../../api/bookmark';
 
-const BookmarkMini = ({ article, width, height }) => {
+//context
+import {useAuth} from '../../contexts/AuthContext';
+
+const BookmarkMini = ({article, width, height}) => {
+  const {BASE_URL} = useAuth();
   const navigate = useNavigate();
 
   let difficulty;
   if (article.diff === 1) {
-    difficulty = "light";
+    difficulty = 'light';
   } else if (article.diff === 2) {
-    difficulty = "medium";
+    difficulty = 'medium';
   } else if (article.diff === 3) {
-    difficulty = "heavy";
+    difficulty = 'heavy';
   }
 
   //북마크 여부에 따른 이미지 띄우기, 여부 변경하기
@@ -32,7 +36,7 @@ const BookmarkMini = ({ article, width, height }) => {
     const newBookmarkSrc =
       bookmarkSrc === bookmark_on ? bookmark_off : bookmark_on;
     setBookmarkSrc(newBookmarkSrc);
-    postBookMark({ postId: article.post_id });
+    postBookMark({postId: article.post_id});
   };
 
   return (
@@ -43,27 +47,27 @@ const BookmarkMini = ({ article, width, height }) => {
     >
       <BookMark onClick={handleBookmarkClick} src={bookmarkSrc} />
 
-      <Picture src={article.post_image} />
+      <Picture src={`${BASE_URL}${article.post_image}`} />
 
       <TitleBox>
         <Title>{article.title}</Title>
-        <div
+        {/* <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            width: "113px",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '113px',
           }}
-        >
-          <TagBox>
-            {article.hashtag.map((tag, tagIndex) => (
-              <Tag key={tagIndex}>#{tag.hashtag}</Tag>
-            ))}
-          </TagBox>
-          <Difficulty size="verysmall" difficulty={difficulty}>
+        > */}
+        <TagBox>
+          {article.hashtag.map((tag, tagIndex) => (
+            <Tag key={tagIndex}>#{tag.hashtag}</Tag>
+          ))}
+        </TagBox>
+        {/* <Difficulty size='verysmall' difficulty={difficulty}>
             {difficulty}
-          </Difficulty>
-        </div>
+          </Difficulty> */}
+        {/* </div> */}
       </TitleBox>
     </Box>
   );
@@ -76,6 +80,7 @@ const Box = styled.div`
   width: 95px;
   height: 122px;
   overflow: hidden;
+  margin-top: 10px;
 
   border-radius: 10px;
   border: 1px solid #353646;
@@ -111,11 +116,15 @@ const TitleBox = styled.div`
 
   display: flex;
   width: 95px;
-  height: 49px;
+  height: 52px;
   padding: 7px;
   flex-direction: column;
   align-items: flex-start;
   background: #2b2c3f;
+  gap: 10px;
+
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
 `;
 
 const Title = styled.div`
@@ -127,9 +136,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: "Pretendard-Regular";
   font-size: 8.571px;
-  font-style: normal;
   font-weight: 500;
 `;
 
@@ -141,14 +148,13 @@ const TagBox = styled.ul`
 `;
 
 const Tag = styled.li`
-  display: inline-block;
   &:not(:last-child)::after {
-    content: " • ";
+    content: ' • ';
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
-  font-size: 5px;
+  font-family: 'Pretendard-Regular';
+  font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-style: normal;

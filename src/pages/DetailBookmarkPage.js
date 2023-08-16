@@ -5,7 +5,7 @@ import axios from 'axios';
 
 //images
 import X from '../images/X.svg';
-// import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
+import TodayArticle from '../components/MainPage/MainCommon/TodayArticle';
 
 //context
 import {useAuth} from '../contexts/AuthContext';
@@ -51,10 +51,14 @@ const DetailBookmarkPage = () => {
         <Title>북마크</Title>
       </Box>
       <BookMarkList>
-        {/* {data &&
-              data.map((article) => (
-                <TodayArticle key={article.post_id} article={article} />
-              ))} */}
+        {data &&
+          data.map((article) => (
+            <TodayArticle
+              key={article.post_id}
+              article={article}
+              BASE_URL={BASE_URL}
+            />
+          ))}
       </BookMarkList>
     </Container>
   );

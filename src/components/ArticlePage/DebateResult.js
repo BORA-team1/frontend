@@ -1,107 +1,112 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const DebateResult = ({doneDebate}) => {
+const DebateResult = ({doneDebate, BASE_URL}) => {
   return (
-    <Container>
-      <DebateContent>
-        <Title>
-          {'<'}
-          {doneDebate.title}
-          {'>'}
-        </Title>
-        <Subtitle>
-          <Member>
-            {doneDebate.debaters &&
-              doneDebate.debaters.map((debater, index) => (
-                <div key={index}>
-                  <img alt='profile'></img>
-                  <span>{debater.nickname}</span>
-                </div>
-              ))}
-          </Member>
-          {doneDebate.debaters && (
-            <div>
-              {doneDebate.debaters.length}/{doneDebate.num}명
-            </div>
-          )}
-        </Subtitle>
-      </DebateContent>
-      <EnterButton>참관하기</EnterButton>
-    </Container>
+    <Box>
+      <Title>
+        {'<'}
+        {doneDebate.title}
+        {'>'}
+      </Title>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '350px',
+        }}
+      >
+        <TagBox>
+          <People>만든 이</People>
+          <UserIcon>
+            <img src={`${BASE_URL}${doneDebate.debate_user.profile}`} />
+            <div>{doneDebate.debate_user.nickname}</div>
+          </UserIcon>
+        </TagBox>
+        <BtnContainer>
+          <EndBtn>토론종료</EndBtn>
+        </BtnContainer>
+      </div>
+    </Box>
   );
 };
 
 export default DebateResult;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  font-family: 'Pretendard-Regular';
-  font-style: normal;
-  gap: 13px;
-`;
-
-const DebateContent = styled.div`
+const Box = styled.div`
   display: flex;
   flex-direction: column;
-  line-height: 151.336%;
-  color: #fff;
-  gap: 3px;
+  align-items: flex-start;
+  width: 350px;
+  height: 64.7px;
 `;
 
-const Title = styled.div`
-  max-width: 236px;
+const Font = styled.div`
+  color: #fff;
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
+`;
+
+const Title = styled(Font)`
+  width: 350px;
+  height: 23px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 14.989px;
   font-weight: 400;
+
+  margin-bottom: 5px;
 `;
 
-const Subtitle = styled.div`
+const TagBox = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: row;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 600;
 `;
 
-const Member = styled.div`
+const UserIcon = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-left: 5px;
-  margin-right: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.83px;
+
+  img {
+    width: 26.9px;
+    height: 26.9px;
+    border-radius: 50%;
+  }
 
   div {
-    margin-left: -5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.83px;
-  }
-
-  div > img {
-    width: 27px;
-    height: 27px;
-    border-radius: 13.5px;
-  }
-
-  div > span {
-    font-size: 6px; //사이즈 오류?
+    font-size: 6.113px;
+    font-weight: 600;
     line-height: normal;
   }
 `;
 
-const EnterButton = styled.div`
-  font-family: 'Pretendard-Regular';
+const People = styled(Font)`
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 10px;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const EndBtn = styled(Font)`
+  display: flex;
+  align-items: flex-start;
   padding: 7px 14px;
-  width: 77px;
-  height: 31px;
-  box-sizing: border-box;
   border-radius: 20px;
-  background: #fff;
-  color: #1a1920;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
   font-size: 14px;
   font-weight: 600;
-  line-height: normal;
 `;

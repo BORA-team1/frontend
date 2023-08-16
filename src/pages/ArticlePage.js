@@ -17,6 +17,7 @@ import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
 const ArticlePage = () => {
   //post_id
   const {post_id} = useParams();
+  console.log(post_id);
 
   //콘텐츠 켜짐/꺼짐
   const [isContentsOn, setContentsOn] = useState(true);

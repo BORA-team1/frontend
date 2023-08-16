@@ -1,19 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile from '../../images/profile.svg';
 
-const ABox = () => {
+const ABox = ({answer}) => {
   return (
     <Container>
       <ProfileContainer>
-        <img src={profile} alt='profileimg'></img>
+        <img src={`${answer.ans_user.profile}`} alt='profileimg'></img>
       </ProfileContainer>
       <ContentContainer>
-        <Id>broaden_horizons</Id>
-        <Content>
-          맞벌이 가정의 자녀들을 위해 방과 후 학교 돌봄교실에서 아이들을
-          돌봐주는 제도예요!
-        </Content>
+        <Id>{answer.ans_user.nickname}</Id>
+        <Content>{answer.content}</Content>
       </ContentContainer>
     </Container>
   );
