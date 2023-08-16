@@ -1,22 +1,31 @@
 //위로 원래 모달
 
-import React, {useState, useRef, useEffect} from 'react';
-import styled from 'styled-components';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useRef, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //img
-import guidebtn from '../../images/Audiobook/guidebtn.svg';
-import createbtn from '../../images/Audiobook/createbtn.svg';
+import guidebtn from "../../images/Audiobook/guidebtn.svg";
+import createbtn from "../../images/Audiobook/createbtn.svg";
 
-const PlaylistCreateModal = ({closeCreateModal, handleOpenCompleteModal}) => {
+//context
+import { useAuth } from "../../contexts/AuthContext";
+
+const PlaylistCreateModal = ({
+  closeCreateModal,
+  handleOpenCompleteModal,
+  remainingAudioIds,
+  playlist_id,
+}) => {
   const navigate = useNavigate();
   const navigatorG = () => {
-    navigate('/guidebookpage');
+    navigate("/guidebookpage");
   };
   //input 입력창
   // 두 개의 입력 창에 초기값 설정
-  const [title, setTitle] = useState(''); // 첫 번째 입력창의 값
-  const [description, setDescription] = useState(''); // 두 번째 입력창의 값
+  const [title, setTitle] = useState(""); // 첫 번째 입력창의 값
+  const [description, setDescription] = useState(""); // 두 번째 입력창의 값
 
   // 첫 번째 입력창 값 변경 이벤트 핸들러
   const handleTitleChange = (event) => {
@@ -28,21 +37,28 @@ const PlaylistCreateModal = ({closeCreateModal, handleOpenCompleteModal}) => {
     setDescription(event.target.value);
   };
 
-  //완료 모달
-  // const handleSubmit = () => {
-  //     closeCreateModal(); // Close the CreateModal
-  //     handleOpenCompleteModal(); // Open the PlaylistCompleteModal
-  // };
-  // const [completeModal, setCompleteModal] = useState(false);
+  // POST
+  const { authToken, BASE_URL } = useAuth();
+  const handleCreatePlaylist = async () => {
+    const playlistData = {
+      title: title,
+      des: description,
+      playlist_id: playlist_id,
+      playlist_audio: remainingAudioIds,
+    };
 
-  // const handleSubmit = () => {
-  //     setCompleteModal(true);
-  // };
+    try {
+      const response = await axios.post(`${BASE_URL}audio/new`, playlistData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-  // const closeCompleteModal = () => {
-  //     setCompleteModal(false);
-  // };
-
+      console.log(response);
+    } catch (error) {
+      console.error("플레이리스트 생성 과정에서 오류가 발생했습니다.", error);
+    }
+  };
   return (
     <>
       <Wrapper onClick={closeCreateModal}>
@@ -55,12 +71,12 @@ const PlaylistCreateModal = ({closeCreateModal, handleOpenCompleteModal}) => {
           <Input
             value={title}
             onChange={handleTitleChange}
-            placeholder='제목을 입력하세요'
+            placeholder="제목을 입력하세요"
           />
           <Input
             value={description}
             onChange={handleDescriptionChange}
-            placeholder='추가설명을 입력하세요'
+            placeholder="추가설명을 입력하세요"
           />
           <BtnBox>
             <GuideBtn src={guidebtn} onClick={navigatorG} />
@@ -69,6 +85,7 @@ const PlaylistCreateModal = ({closeCreateModal, handleOpenCompleteModal}) => {
               onClick={() => {
                 closeCreateModal();
                 handleOpenCompleteModal();
+                handleCreatePlaylist();
               }}
             />
           </BtnBox>
@@ -116,7 +133,7 @@ const Title = styled.div`
   background: var(--main-purple, #5a45f5);
 
   color: #fff;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -131,7 +148,7 @@ const Input = styled.input`
   color: #fff;
   text-align: center;
 
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
 
   &.empty {
     /* 입력되지 않았을 때의 스타일 */
