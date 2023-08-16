@@ -4,7 +4,7 @@ import {SheetContext} from '../contexts/SheetContext';
 import styled from 'styled-components';
 
 import StatusBar from '../components/ArticlePage/StatusBar';
-import ArticleHeader from '../components/ArticlePage/ArticleHeader.';
+import ArticleHeader from '../components/ArticlePage/ArticleHeader';
 import ArticleContent from '../components/ArticlePage/ArticleContent';
 import ArticleReview from '../components/ArticlePage/ArticleReview';
 import BottomBar from '../components/ArticlePage/BottomBar';

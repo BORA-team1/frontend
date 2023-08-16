@@ -5,7 +5,7 @@ import axios from "axios";
 
 //components
 import TopBar from "../components/Common/TopBar";
-import TodayArticle from "../components/MainPage/MainCommon/TodayArticle";
+import BookmarkMini from "../components/MyPage/BookmarkMini";
 import Editer from "../components/MyPage/Editer";
 import SavedPlayList from "../components/MyPage/SavedPlaylist";
 
@@ -85,12 +85,7 @@ const MyPage = () => {
           <BoxWrapper>
             {data.bookmarkPost &&
               data.bookmarkPost.map((article) => (
-                <TodayArticle
-                  key={article.post_id}
-                  article={article}
-                  width="95px"
-                  height="122px"
-                />
+                <BookmarkMini key={article.post_id} article={article} />
               ))}
           </BoxWrapper>
         </BookMarkList>

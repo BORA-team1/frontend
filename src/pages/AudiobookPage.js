@@ -20,36 +20,17 @@ const AudiobookPage = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   const { authToken, BASE_URL } = useAuth();
-  const { post_id } = useParams(); // 받아온 post_id
-  console.log(post_id);
-
-  const [audio_pk, setAudioPk] = useState(null);
-  const [playlist_pk, setPlaylistPk] = useState(0);
+  const { audio_id, playlist_id } = useParams(); // 받아온 post_id
+  console.log(audio_id, playlist_id);
 
   useEffect(() => {
-    getPosts();
+    getAudio();
   }, []);
 
-  const getPosts = () => {
-    axios
-      .get(`${BASE_URL}post/${post_id}/`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }) // 세부포스트 정보 가져오기
-      .then((response) => {
-        // 세부포스트에서 원하는 정보 추출
-        getAudio(response.data.data.Audio);
-      })
-      .catch((error) => {
-        console.error("Error fetching post details:", error);
-      });
-  };
-
   const [audio, setAudio] = useState([]);
-  const getAudio = (audio_pk) => {
+  const getAudio = () => {
     axios
-      .get(`${BASE_URL}audio/${audio_pk}/${playlist_pk}/`, {
+      .get(`${BASE_URL}audio/${audio_id}/${playlist_id}/`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -87,6 +68,7 @@ const AudiobookPage = () => {
             setIsAudioPlaying={setIsAudioPlaying}
             audioRef={audioRef}
             audio={audio}
+            playlistPk={playlist_id}
           />
         </Background>
       </Container>

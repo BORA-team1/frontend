@@ -75,7 +75,7 @@ const ArticleHeader = ({postPk}) => {
         <AudioBookButton>
           <img
             onClick={() => {
-              navigate(`/article/${postPk}/${posts.Audio}`);
+              navigate(`/article/${posts.Audio}/0`);
             }}
             src={audioicon}
             alt='오디오 북 아이콘'

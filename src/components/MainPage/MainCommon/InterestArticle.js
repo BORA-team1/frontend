@@ -1,8 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
-const InterestArticle = ({ playlist }) => {
+const InterestArticle = ({playlist}) => {
+  const navigate = useNavigate();
   return (
-    <Box>
+    <Box
+      onClick={() => {
+        navigate(`/article/${playlist.first_audio}/${playlist.playlist_id}/`);
+      }}
+    >
       <Title>{playlist.title}</Title>
       <TagBox>
         {playlist.hashtag.map((tag, tagIndex) => (
@@ -38,7 +44,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -52,7 +58,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 10px;
   font-style: normal;
   font-weight: 600;
