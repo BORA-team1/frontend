@@ -85,9 +85,12 @@ const MyPage = () => {
           <BoxWrapper>
             {data.bookmarkPost &&
               data.bookmarkPost.map((article) => (
-                <BoxContainer>
-                  <TodayArticle key={article.post_id} article={article} />
-                </BoxContainer>
+                <TodayArticle
+                  key={article.post_id}
+                  article={article}
+                  width="95px"
+                  height="122px"
+                />
               ))}
           </BoxWrapper>
         </BookMarkList>
