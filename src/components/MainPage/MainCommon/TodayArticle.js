@@ -11,7 +11,7 @@ import bookmark_off from '../../../images/bookmark-off.svg';
 //api
 import {postBookMark} from '../../../api/bookmark';
 
-const TodayArticle = ({article, width, height}) => {
+const TodayArticle = ({article, width, height, BASE_URL}) => {
   const navigate = useNavigate();
 
   let difficulty;
@@ -43,7 +43,7 @@ const TodayArticle = ({article, width, height}) => {
     >
       <BookMark onClick={handleBookmarkClick} src={bookmarkSrc} />
 
-      <Picture src={article.post_image} />
+      <Picture src={`${BASE_URL}${article.post_image}`} />
 
       <TitleBox>
         <Title>{article.title}</Title>

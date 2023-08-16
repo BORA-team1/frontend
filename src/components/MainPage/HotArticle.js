@@ -9,7 +9,7 @@ import Difficulty from './../Common/Difficulty';
 import bookmark_on from '../../images/bookmark_on.svg';
 import bookmark_off from '../../images/bookmark-off.svg';
 
-const HotArticle = ({article}) => {
+const HotArticle = ({article, BASE_URL}) => {
   const navigate = useNavigate();
 
   let difficulty;
@@ -25,7 +25,7 @@ const HotArticle = ({article}) => {
     <Box onClick={() => navigate(`/article/${article.post_id}`)}>
       <BookMark src={article.is_booked ? bookmark_on : bookmark_off} />
 
-      <Picture src={article.post_image} />
+      <Picture src={`${BASE_URL}${article.post_image}`} />
 
       <TitleBox>
         <Title>{article.title}</Title>

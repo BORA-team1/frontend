@@ -81,6 +81,7 @@ const MainPage = () => {
                 <TodayArticle
                   key={article.post_id}
                   article={article}
+                  BASE_URL={BASE_URL}
                 ></TodayArticle>
               ))}
           </TodayArticleList>
@@ -116,7 +117,7 @@ const MainPage = () => {
               가 관심있는 아티클 엿보기
             </AgeGroupTitle>
             <PickedArticle>
-              <HotArticle article={posts.HotPost} />
+              <HotArticle article={posts.HotPost} BASE_URL={BASE_URL} />
               <div
                 style={{
                   display: 'flex',

@@ -12,12 +12,12 @@ import X from "../images/X.svg";
 const SignupPage = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
   const [interest, setInterest] = useState([]);
-  const [profile, setProfile] = useState("");
-  const [age, setAge] = useState("");
+  const [profile, setProfile] = useState('');
+  const [age, setAge] = useState('');
 
   // 리렌더링용 변수
   const { BASE_URL } = useAuth();
@@ -200,6 +200,7 @@ const SignupPage = () => {
     interest,
     profile,
   ]);
+
   return (
     <Wrapper>
       <Box>
