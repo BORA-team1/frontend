@@ -1,16 +1,16 @@
 //
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect, useRef} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import AudiobookTitleBox from "../components/AudiobookPage/AudiobookTitleBox";
-import PlayingBar from "../components/AudiobookPage/PlayingBar";
-import AudioContent from "../components/AudiobookPage/AudioContent";
+import AudiobookTitleBox from '../components/AudiobookPage/AudiobookTitleBox';
+import PlayingBar from '../components/AudiobookPage/PlayingBar';
+import AudioContent from '../components/AudiobookPage/AudioContent';
 
 //context
-import { useAuth } from "../contexts/AuthContext";
+import {useAuth} from '../contexts/AuthContext';
 
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
@@ -19,37 +19,18 @@ const AudiobookPage = () => {
   const path = window.location.pathname;
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
-  const { authToken, BASE_URL } = useAuth();
-  const { post_id } = useParams(); // 받아온 post_id
-  console.log(post_id);
-
-  const [audio_pk, setAudioPk] = useState(null);
-  const [playlist_pk, setPlaylistPk] = useState(0);
+  const {authToken, BASE_URL} = useAuth();
+  const {audio_id, playlist_id} = useParams(); // 받아온 post_id
+  console.log(audio_id, playlist_id);
 
   useEffect(() => {
-    getPosts();
+    getAudio();
   }, []);
 
-  const getPosts = () => {
-    axios
-      .get(`${BASE_URL}post/${post_id}/`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }) // 세부포스트 정보 가져오기
-      .then((response) => {
-        // 세부포스트에서 원하는 정보 추출
-        getAudio(response.data.data.Audio);
-      })
-      .catch((error) => {
-        console.error("Error fetching post details:", error);
-      });
-  };
-
   const [audio, setAudio] = useState([]);
-  const getAudio = (audio_pk) => {
+  const getAudio = () => {
     axios
-      .get(`${BASE_URL}audio/${audio_pk}/${playlist_pk}/`, {
+      .get(`${BASE_URL}audio/${audio_id}/${playlist_id}/`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -60,7 +41,7 @@ const AudiobookPage = () => {
       })
       .catch((error) => {
         console.error(
-          "오디오북 내용을 불러오는 중 오류가 발생했습니다.",
+          '오디오북 내용을 불러오는 중 오류가 발생했습니다.',
           error
         );
       });
@@ -86,7 +67,7 @@ const AudiobookPage = () => {
             isAudioPlaying={isAudioPlaying}
             setIsAudioPlaying={setIsAudioPlaying}
             audioRef={audioRef}
-            audio={audio}
+            playlistPk={playlist_id}
           />
         </Background>
       </Container>

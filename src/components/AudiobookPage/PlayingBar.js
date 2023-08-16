@@ -1,70 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, {useState, useEffect, useRef} from 'react';
+import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
 
 //components
-import WarningModal from "../AudiobookPage/WarningModal";
-import PlaylistBottomSheet from "../AudiobookPage/PlaylistBottomSheet";
+import WarningModal from '../AudiobookPage/WarningModal';
+import PlaylistBottomSheet from '../AudiobookPage/PlaylistBottomSheet';
 
 //img
-import playlisticon from "../../images/Audiobook/playlisticon.svg";
-import beforesecond from "../../images/Audiobook/beforesecond.svg";
-import start from "../../images/Audiobook/start.svg";
-import stop from "../../images/Audiobook/stop.svg";
-import aftersecond from "../../images/Audiobook/aftersecond.svg";
-import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
-import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
+import playlisticon from '../../images/Audiobook/playlisticon.svg';
+import beforesecond from '../../images/Audiobook/beforesecond.svg';
+import start from '../../images/Audiobook/start.svg';
+import stop from '../../images/Audiobook/stop.svg';
+import aftersecond from '../../images/Audiobook/aftersecond.svg';
+import bookmarkicon_on from '../../images/Audiobook/bookmarkicon_on.svg';
+import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
 
 //audio - 나중에 데이터 파일 만들어서 거기서 다루기
-import example from "../../audio/example.mp3";
+import example from '../../audio/example.mp3';
 
-const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef, audio }) => {
+const PlayingBar = ({
+  isAudioPlaying,
+  setIsAudioPlaying,
+  audioRef,
+  playlistPk,
+}) => {
   //bookmark
   const [bookmark, setBookmark] = useState(false);
   const reBookmark = () => {
     setBookmark(!bookmark);
   };
 
-  //playlist - 나중에 넘겨줘야 하는 거
-  // const [playlist, setPlaylist] = useState(playlist_pk !== "0"); //단일 아티클인지, 플레이리스트 있는지 판단
-  const playlist_pk = 1;
-
   // GET: 플레이리스트
-  const { authToken, BASE_URL } = useAuth();
+  const {authToken, BASE_URL} = useAuth();
   useEffect(() => {
     getPlaylist();
   }, []);
 
   const [playlist, setPlaylist] = useState([]);
   const getPlaylist = () => {
-    axios
-      .get(`${BASE_URL}audio/${playlist_pk}/`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        setPlaylist(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.error(
-          "세부포스트 내용을 불러오는 중 오류가 발생했습니다.",
-          error
-        );
-      });
+    {
+      playlistPk === 0 &&
+        axios
+          .get(`${BASE_URL}audio/${playlistPk}/`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          })
+          .then((response) => {
+            setPlaylist(response.data.data);
+            console.log(response.data.data);
+          })
+          .catch((error) => {
+            console.error('재생목록을 불러오는 중 오류가 발생했습니다.', error);
+          });
+    }
   };
 
-  const [bottomsheet, setBottomsheet] = useState(true);
-  const [warningmodal, setWarningModal] = useState(true);
-  const [OK, setOK] = useState(false); //클릭했는지 안했는지 판단
-  const reOK = () => {
-    setOK(true);
-  };
+  const [bottomsheet, setBottomsheet] = useState(false);
+  const [warningmodal, setWarningModal] = useState(false);
   const handleOpenBottomSheet = () => {
     setBottomsheet(true);
     setWarningModal(false);
@@ -81,10 +78,10 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef, audio }) => {
   };
 
   const handlePlaylistIconClick = () => {
-    reOK();
-    if (playlist.playlist_id === 0 && OK) {
+    console.log(playlistPk);
+    if (playlistPk == 0) {
       openWarningModal();
-    } else if (OK) {
+    } else {
       handleOpenBottomSheet();
     }
   };
@@ -133,14 +130,14 @@ const PlayingBar = ({ isAudioPlaying, setIsAudioPlaying, audioRef, audio }) => {
           src={bookmark ? bookmarkicon_on : bookmarkicon_off}
         />
       </Box>
-      {playlist && OK && bottomsheet ? (
+      {bottomsheet ? (
         <PlaylistBottomSheet
           handleOpenBottomSheet={handleOpenBottomSheet}
           handleCloseBottomSheet={handleCloseBottomSheet}
           playlist={playlist}
         />
       ) : null}
-      {!playlist && OK && warningmodal ? (
+      {warningmodal ? (
         <WarningModal
           openWarningModal={openWarningModal}
           closeWarningModal={closeWarningModal}

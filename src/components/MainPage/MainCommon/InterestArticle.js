@@ -1,8 +1,14 @@
 import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
 const InterestArticle = ({playlist}) => {
+  const navigate = useNavigate();
   return (
-    <Box>
+    <Box
+      onClick={() => {
+        navigate(`/article/${playlist.first_audio}/${playlist.playlist_id}/`);
+      }}
+    >
       <Title>{playlist.title}</Title>
       <TagBox>
         {playlist.hashtag.map((tag, tagIndex) => (
