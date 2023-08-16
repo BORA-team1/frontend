@@ -24,7 +24,6 @@ export default InterestArticle;
 const Box = styled.div`
   display: flex;
   padding: 13px 12px;
-  margin-right: 10px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
