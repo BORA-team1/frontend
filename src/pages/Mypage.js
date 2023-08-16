@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import BookmarkMini from "../components/MyPage/BookmarkMini";
-import Editer from "../components/MyPage/Editer";
-import SavedPlayList from "../components/MyPage/SavedPlaylist";
+import TopBar from '../components/Common/TopBar';
+import BookmarkMini from '../components/MyPage/BookmarkMini';
+import Editer from '../components/MyPage/Editer';
+import SavedPlayList from '../components/MyPage/SavedPlaylist';
 
 //images
-import vector from "../images/vector_btn.svg";
+import vector from '../images/vector_btn.svg';
 
 //임시 img
-import profile from "../images/profile.svg";
+import profile from '../images/profile.svg';
 
 //context
-import { useAuth } from "../contexts/AuthContext";
+import {useAuth} from '../contexts/AuthContext';
 
 const MyPage = () => {
   const navigate = useNavigate();
 
   // GET: 마이페이지 데이터
-  const { authToken, BASE_URL, logout } = useAuth();
+  const {authToken, BASE_URL, logout} = useAuth();
   useEffect(() => {
     getData();
   }, []);
@@ -42,7 +42,7 @@ const MyPage = () => {
       })
       .catch((error) => {
         console.error(
-          "마이페이지 데이터를 불러오는 중 오류가 발생했습니다.",
+          '마이페이지 데이터를 불러오는 중 오류가 발생했습니다.',
           error
         );
       });
@@ -57,7 +57,7 @@ const MyPage = () => {
           <img src={profile}></img>
           <UserInfo>
             <div>{userinfo.nickname}</div>
-            <div style={{ fontSize: "12px" }}>
+            <div style={{fontSize: '12px'}}>
               <span>선호 키워드</span>
               {userinfo.interest &&
                 userinfo.interest.map((interest, index) => (
@@ -70,15 +70,15 @@ const MyPage = () => {
         <BookMarkList>
           <TitleBox>
             <div>
-              북마크{" "}
-              <span style={{ color: "rgba(255, 255, 255, 0.50)" }}>
+              북마크{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
                 {data.book_num}
               </span>
             </div>
             <Btn
               src={vector}
               onClick={() => {
-                navigate("/detailbookmarkpage");
+                navigate('/detailbookmarkpage');
               }}
             />
           </TitleBox>
@@ -92,15 +92,15 @@ const MyPage = () => {
         <FollowingEditorList>
           <TitleBox>
             <div>
-              팔로우한 에디터{" "}
-              <span style={{ color: "rgba(255, 255, 255, 0.50)" }}>
+              팔로우한 에디터{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
                 {data.follows_num}
               </span>
             </div>
             <Btn
               src={vector}
               onClick={() => {
-                navigate("/detaileditorpage");
+                navigate('/detaileditorpage');
               }}
             />
           </TitleBox>
@@ -114,15 +114,15 @@ const MyPage = () => {
         <PlayList>
           <TitleBox>
             <div>
-              저장한 재생목록{" "}
-              <span style={{ color: "rgba(255, 255, 255, 0.50)" }}>
+              저장한 재생목록{' '}
+              <span style={{color: 'rgba(255, 255, 255, 0.50)'}}>
                 {data.mypli_num}
               </span>
             </div>
             <Btn
               src={vector}
               onClick={() => {
-                navigate("/detailplaylistpage");
+                navigate('/detailplaylistpage');
               }}
             />
           </TitleBox>
@@ -136,7 +136,7 @@ const MyPage = () => {
         <LogOut
           onClick={() => {
             logout();
-            navigate("/");
+            navigate('/');
           }}
         >
           로그아웃
@@ -159,7 +159,7 @@ const Container = styled.div`
   margin: 0 auto;
 
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 

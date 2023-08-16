@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -24,12 +24,7 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
   //POST: 투표 등록
   const {authToken, BASE_URL} = useAuth();
   const [debateTitle, setDebateTitle] = useState(''); //토론 타이틀
-  const [participants, setParticipants] = useState(4); //토론 인원
-
-  //토론 참여 인원 변경
-  const handleParticipantChange = (value) => {
-    setParticipants(value);
-  };
+  const [debateLink, setDebateLink] = useState(null);
 
   const handleSubmit = (lineId) => {
     if (debateTitle.trim() === '') return null;
@@ -38,7 +33,7 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
         `${BASE_URL}debate/${postPk}/`,
         {
           title: debateTitle,
-          num: participants,
+          link: debateLink,
           debate_line: lineId,
         },
         {
@@ -50,7 +45,7 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
       .then((response) => {
         closeModal();
         setDebateTitle('');
-        setParticipants(-1);
+        setDebateLink(null);
         setLineId(null);
         setRender(render + 1);
         console.log(response);
@@ -107,15 +102,12 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
             onChange={(e) => setDebateTitle(e.target.value)}
             placeholder='주제를 입력해 주세요'
           />
-          <Q>2. 토론에 참여할 인원을 정해주세요.</Q>
-          <TagBox
-            value={participants}
-            onChange={(e) => handleParticipantChange(parseInt(e.target.value))}
-          >
-            <Option value={4}>4명</Option>
-            <Option value={6}>6명</Option>
-            <Option value={8}>8명</Option>
-          </TagBox>
+          <Q>2. 토론을 진행할 오픈채팅방 링크를 입력해 주세요.</Q>
+          <Theme
+            value={debateLink}
+            onChange={(e) => setDebateLink(e.target.value)}
+            placeholder='링크를 복사해 붙여 넣어 주세요.'
+          />
         </div>
         {lineId ? (
           <Quoting style={{fontWeight: '400', fontSize: '12px'}}>
@@ -225,40 +217,6 @@ const Theme = styled.input`
   .input::placeholder {
     color: (255, 255, 255, 0.5);
   }
-`;
-
-const TagBox = styled.select`
-  display: flex;
-  flex-direction: row;
-
-  display: inline-flex;
-  padding: 6px 15px;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 40px;
-  margin-bottom: 20px;
-
-  width: 99.1px;
-  height: 30px;
-
-  border-radius: 5px;
-  background: #6a6881;
-
-  color: #fff;
-  font-family: 'Pretendard-Regular';
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 136.5%; /* 17.745px */
-  letter-spacing: -0.26px;
-`;
-
-const Option = styled.option`
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 136.5%; /* 17.745px */
-  letter-spacing: -0.26px;
 `;
 
 const Quoting = styled.div`

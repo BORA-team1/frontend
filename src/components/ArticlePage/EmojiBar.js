@@ -39,6 +39,11 @@ const EmojiBar = ({
         }
       )
       .then((response) => {
+        console.log(
+          selectedIndex.index,
+          selectedIndex.sentenceIndex,
+          selectedIndex.sentence
+        );
         setEmojiRender(emojiRender + 1);
         closeEmojiBar();
         if (!isBottomSheetOpen) {

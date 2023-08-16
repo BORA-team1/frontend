@@ -1,10 +1,6 @@
-import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
-//img
-import usericon from '../../images/willbedeleted/UserIcon.svg';
 
-const DabateBox = ({debate, postPk}) => {
-  const navigate = useNavigate();
+const DabateBox = ({debate, nickname, BASE_URL, handleDebateComplete}) => {
   return (
     <Box>
       <Title>
@@ -21,19 +17,27 @@ const DabateBox = ({debate, postPk}) => {
         }}
       >
         <TagBox>
+          <People>만든 이</People>
           <UserIcon>
-            <img></img>
+            <img src={`${BASE_URL}${debate.debate_user.profile}`} />
             <div>{debate.debate_user.nickname}</div>
           </UserIcon>
-          <People>모집중/{debate.num}명</People>
         </TagBox>
-        <JoinBtn
-          onClick={() => {
-            navigate(`/article/${postPk}/debate`);
-          }}
-        >
-          참여하기
-        </JoinBtn>
+        <BtnContainer>
+          <JoinBtn onClick={() => (window.location.href = debate.url)}>
+            참여하기
+          </JoinBtn>
+          {debate.debate_user.nickname === nickname && (
+            <JoinBtn
+              onClick={() => {
+                handleDebateComplete(debate.debate_id);
+              }}
+              style={{background: 'none', color: 'white'}}
+            >
+              토론 종료하기
+            </JoinBtn>
+          )}
+        </BtnContainer>
       </div>
     </Box>
   );
@@ -78,7 +82,7 @@ const UserIcon = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 10px;
+  gap: 1.83px;
 
   img {
     width: 26.9px;
@@ -96,6 +100,13 @@ const UserIcon = styled.div`
 const People = styled(Font)`
   font-size: 12px;
   font-weight: 600;
+  margin-right: 10px;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const JoinBtn = styled(Font)`
@@ -103,6 +114,7 @@ const JoinBtn = styled(Font)`
   align-items: flex-start;
   padding: 7px 14px;
   border-radius: 20px;
+  border: 1px solid #fff;
   background: #fff;
   cursor: pointer;
 

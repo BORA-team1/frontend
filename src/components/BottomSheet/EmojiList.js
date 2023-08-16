@@ -18,6 +18,7 @@ const EmojiList = ({openEmojiBar}) => {
   const {authToken, BASE_URL} = useAuth();
   const {postPk, selectedIndex, emojiRender, setEmojiRender} = usePost();
 
+  //GET: 감정표현 목록
   useEffect(() => {
     getEmoji();
   }, [emojiRender]);
@@ -51,6 +52,7 @@ const EmojiList = ({openEmojiBar}) => {
 
   //Delete: 감정표현 삭제
   const deleteEmoji = (isMy, emoji) => {
+    console.log(emoji);
     if (isMy) {
       axios
         .delete(
@@ -68,10 +70,10 @@ const EmojiList = ({openEmojiBar}) => {
         )
         .then((response) => {
           setEmojiRender(emojiRender + 1);
-          console.log(response);
+          console.log(response.data);
         })
         .catch((error) => {
-          console.error('질문을 삭제하는 중 오류가 발생했습니다.', error);
+          console.error('감정표현을 삭제하는 중 오류가 발생했습니다.', error);
         });
     }
   };
@@ -88,25 +90,28 @@ const EmojiList = ({openEmojiBar}) => {
   return (
     <Container>
       <EmojiContainer>
-        {emojiList.map((item) => (
-          <Emoji
-            key={item.content}
-            style={{
-              borderColor: item.is_my ? '#A397FF' : '#fff',
-              background: item.is_my ? '#1C154D' : 'none',
-            }}
-            onClick={() => deleteEmoji(item.is_my, item.content)}
-          >
-            <img src={emojiImages[item.content]} alt='Emoji' />
-            <span
-              style={{
-                color: item.is_my ? '#A397FF' : '#fff',
-              }}
-            >
-              {item.num}
-            </span>
-          </Emoji>
-        ))}
+        {emojiList.map(
+          (item) =>
+            item.num !== 0 && (
+              <Emoji
+                key={item.content}
+                style={{
+                  borderColor: item.is_my ? '#A397FF' : '#fff',
+                  background: item.is_my ? '#1C154D' : 'none',
+                }}
+                onClick={() => deleteEmoji(item.is_my, item.content)}
+              >
+                <img src={emojiImages[item.content]} alt='Emoji' />
+                <span
+                  style={{
+                    color: item.is_my ? '#A397FF' : '#fff',
+                  }}
+                >
+                  {item.num}
+                </span>
+              </Emoji>
+            )
+        )}
       </EmojiContainer>
       <CreateEmoji onClick={openEmojiBar}>
         <img src={createemoji} alt='createemoji' />
