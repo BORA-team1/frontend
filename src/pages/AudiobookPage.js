@@ -1,16 +1,16 @@
 //
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect, useRef} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import AudiobookTitleBox from "../components/AudiobookPage/AudiobookTitleBox";
-import PlayingBar from "../components/AudiobookPage/PlayingBar";
-import AudioContent from "../components/AudiobookPage/AudioContent";
+import AudiobookTitleBox from '../components/AudiobookPage/AudiobookTitleBox';
+import PlayingBar from '../components/AudiobookPage/PlayingBar';
+import AudioContent from '../components/AudiobookPage/AudioContent';
 
 //context
-import { useAuth } from "../contexts/AuthContext";
+import {useAuth} from '../contexts/AuthContext';
 
 // props로 받아올 posts 구조 분해 할당
 const AudiobookPage = () => {
@@ -19,8 +19,8 @@ const AudiobookPage = () => {
   const path = window.location.pathname;
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
-  const { authToken, BASE_URL } = useAuth();
-  const { audio_id, playlist_id } = useParams(); // 받아온 post_id
+  const {authToken, BASE_URL} = useAuth();
+  const {audio_id, playlist_id} = useParams(); // 받아온 post_id
   console.log(audio_id, playlist_id);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const AudiobookPage = () => {
       })
       .catch((error) => {
         console.error(
-          "오디오북 내용을 불러오는 중 오류가 발생했습니다.",
+          '오디오북 내용을 불러오는 중 오류가 발생했습니다.',
           error
         );
       });

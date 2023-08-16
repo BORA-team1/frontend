@@ -9,7 +9,11 @@ import dabateicon_off from '../../../images/DifficultyArticle/dabateicon-off.svg
 import QnAicon_on from '../../../images/DifficultyArticle/QnAicon-on.svg';
 import QnAicon_off from '../../../images/DifficultyArticle/QnAicon-off.svg';
 
+//context
+import {useAuth} from '..//../../contexts/AuthContext';
+
 const DifficultyArticle = ({article}) => {
+  const {BASE_URL} = useAuth();
   const navigate = useNavigate();
   return (
     <>
@@ -17,7 +21,7 @@ const DifficultyArticle = ({article}) => {
         key={article.post_id}
         onClick={() => navigate(`/article/${article.post_id}`)}
       >
-        <ArticleImage src={article.post_image} />
+        <ArticleImage src={`${BASE_URL}${article.post_image}`} />
         <TextContainer>
           <TagBox>
             {article.hashtag.map((tag, tagIndex) => (
@@ -66,7 +70,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
   color: var(--main-purple, #5a45f5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
@@ -81,7 +85,7 @@ const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 13px;
   font-style: normal;
   font-weight: 600;
@@ -89,7 +93,7 @@ const Title = styled.div`
 
 const ArticleAuthor = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 9px;
   font-style: normal;
   font-weight: 600;
