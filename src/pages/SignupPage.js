@@ -30,9 +30,11 @@ const SignupPage = () => {
       setAge(calculatedAgeGroup);
 
       const interestArray = interest
-        .split('#')
-        .slice(1)
-        .map((tag) => ({'hashtag': tag.trim()}));
+
+        .split("#")
+        .map((item) => item.trim())
+        .filter((item) => item !== "");
+
 
       console.log(interestArray);
       try {

@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
 import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
 import Audiobook from "../AudiobookPage/Audiobook";
+import { useParams } from "react-router-dom";
 
 const PlaylistBottomSheet = ({
   handleOpenBottomSheet,
@@ -30,16 +31,26 @@ const PlaylistBottomSheet = ({
 
   // 재생목록 삭제 리스트
   const [playlistItems, setPlaylistItems] = useState([]);
+  const [remainingAudioIds, setRemainingAudioIds] = useState([]);
+  const { playlist_id } = useParams();
+  console.log(playlist_id);
+
   useEffect(() => {
     setPlaylistItems(playlist?.playlist_audio);
+    const newRemainingAudioIds = playlist?.playlist_audio.map((audio) => ({
+      audio_id: audio.audio_id,
+    }));
+    setRemainingAudioIds(newRemainingAudioIds);
   }, [playlist?.playlist_audio]);
-
   // 삭제된 아이템 필터링하여 새로운 목록 설정
   const handleDeleteAudiobook = (index) => {
     const newPlaylistItems = playlistItems.filter((_, i) => i !== index);
     setPlaylistItems(newPlaylistItems);
-    // console.log(newPlaylistItems);
-    // console.log(playlistItems);
+
+    const newRemainingAudioIds = newPlaylistItems.map((audio) => ({
+      audio_id: audio.audio_id,
+    }));
+    setRemainingAudioIds(newRemainingAudioIds);
   };
 
   if (!handleOpenBottomSheet) return null;
@@ -82,6 +93,8 @@ const PlaylistBottomSheet = ({
             createModal={createModal}
             closeCreateModal={closeCreateModal}
             handleOpenCompleteModal={handleOpenCompleteModal}
+            remainingAudioIds={remainingAudioIds}
+            playlist_id={playlist_id}
           />
         )}
         {completeModal && (
@@ -204,6 +217,8 @@ const SaveBtn = styled.div`
   align-items: center;
   border-radius: 10px;
   background: var(--card-color, #2b2c3f);
+
+  cursor: pointer;
 `;
 
 const NoPlaylistText = styled.div`
