@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 //components
@@ -9,6 +10,9 @@ import more from "../../images/more.svg";
 import audiobookdetail from "../../images/Audiobook/audiobookdetail.svg";
 
 const AudiobookTitleBox = ({ audio }) => {
+  //보는 아티클로 이동 버튼
+  const navigate = useNavigate();
+  const post_id = audio?.audio_post?.post_id;
   //바텀시트
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
@@ -34,7 +38,7 @@ const AudiobookTitleBox = ({ audio }) => {
   return (
     <>
       <Box>
-        <ChangeBtn>
+        <ChangeBtn onClick={() => navigate(`/article/${post_id}`)}>
           보는 아티클로 읽기 <img src={more} alt="morereview" />
         </ChangeBtn>
         <div
@@ -104,11 +108,12 @@ const ChangeBtn = styled(Font)`
     margin-left: 5px;
     margin-top: 2px;
   }
+  cursor: pointer;
 `;
 
 const Title = styled(Font)`
   width: 271px;
-  height: 20px;
+  height: 22px;
   background: transparent;
 
   overflow: hidden;
@@ -116,6 +121,7 @@ const Title = styled(Font)`
   white-space: nowrap;
   font-size: 20px;
   font-weight: 700;
+  padding-bottom: 2px;
 `;
 
 const AudiobookDetail = styled.img`
