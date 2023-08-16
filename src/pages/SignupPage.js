@@ -31,7 +31,8 @@ const SignupPage = () => {
 
       const interestArray = interest
         .split("#")
-        .filter((item) => item.trim() !== "");
+        .map((item) => item.trim())
+        .filter((item) => item !== "");
 
       const interestObjects = interestArray.map((item) => ({ hashtag: item }));
       console.log(interestObjects);
