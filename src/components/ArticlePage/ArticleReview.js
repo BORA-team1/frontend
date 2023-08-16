@@ -93,6 +93,7 @@ const ArticleReview = ({handleBottomSheet, postPk}) => {
               reviewId={reviews[reviews.length - 1].han_id}
               reviewContent={reviews[reviews.length - 1].content}
               author={reviews[reviews.length - 1].han_user.nickname}
+              like={reviews[reviews.length - 1].like_num}
               handleDelete={handleDelete}
             ></Review>
           )}
@@ -196,6 +197,7 @@ const Inputbox = styled.input`
   background-color: #161524;
   padding-left: 16px;
 
+  color: white;
   font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;

@@ -45,8 +45,12 @@ const PlaylistCreateModal = ({closeCreateModal, handleOpenCompleteModal}) => {
 
   return (
     <>
-      <Wrapper>
-        <Container>
+      <Wrapper onClick={closeCreateModal}>
+        <Container
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <Title>새 재생목록 생성</Title>
           <Input
             value={title}

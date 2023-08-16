@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import HighlightingBottomSheet from "../BottomSheet/HighlightingBottomSheet";
-import FloatingBar from "./FloatingBar";
-import ContentPopup from "./ContentPopup";
+import HighlightingBottomSheet from '../BottomSheet/HighlightingBottomSheet';
+import FloatingBar from './FloatingBar';
+import ContentPopup from './ContentPopup';
 
 //images
-import comment from "../../images/sectionbar/commenticon.svg";
-import qna from "../../images/sectionbar/qnaicon.svg";
-import happy from "../../images/emoji/happy.svg";
+import comment from '../../images/sectionbar/commenticon.svg';
+import qna from '../../images/sectionbar/qnaicon.svg';
+import happy from '../../images/emoji/happy.svg';
 
 //context
 import {useAuth} from '../../contexts/AuthContext';
 import {PostProvider} from '../../contexts/PostContext';
 
-const ArticleContent = ({ isContentsOn, postPk }) => {
+const ArticleContent = ({isContentsOn, postPk}) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
-  const [expanded, setExpanded] = useState("close");
+  const [expanded, setExpanded] = useState('close');
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-  const [category, setCategory] = useState("A");
+  const [category, setCategory] = useState('A');
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -35,7 +35,7 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
       setSelectedSentence(null);
     }
     setBottomSheetOpen(false);
-    setExpanded("close");
+    setExpanded('close');
   };
 
   //이모지 바 오픈/클로즈
@@ -47,14 +47,15 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
   };
 
   //카테고리에 따른 리스트 띄우기
-  const showListA = () => setCategory("A");
-  const showListB = () => setCategory("B");
-  const showListC = () => setCategory("C");
+  const showListA = () => setCategory('A');
+  const showListB = () => setCategory('B');
+  const showListC = () => setCategory('C');
 
   //클릭한 문장의 글자 색 바뀌기
   const highlightText = (index, sentenceIndex, sentence) => {
     const textInfo = {index, sentenceIndex, sentence};
     setSelectedIndex(textInfo);
+    console.log(textInfo);
     setSelectedSentence((prevSelected) =>
       prevSelected === sentence ? null : sentence
     );
@@ -70,7 +71,7 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
   };
 
   // GET: 세부포스트
-  const { authToken, BASE_URL } = useAuth();
+  const {authToken, BASE_URL} = useAuth();
   useEffect(() => {
     getPosts();
   }, []);
@@ -89,7 +90,7 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
       })
       .catch((error) => {
         console.error(
-          "세부포스트 내용을 불러오는 중 오류가 발생했습니다.",
+          '세부포스트 내용을 불러오는 중 오류가 발생했습니다.',
           error
         );
       });
@@ -133,32 +134,37 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
       {posts.PostSec &&
         posts.PostSec.map((section) => {
           const paragraphs = section.content
-            .split("·")
-            .filter((paragraph) => paragraph.trim() !== "");
+            .split('·')
+            .filter((paragraph) => paragraph.trim() !== '');
 
           const sentencesIcon = paragraphs
-            .map((paragraph) => paragraph.split(/(?<=[?.·](?=\s|'))/))
+            .map((paragraph) => paragraph.split(/(?<=[?.:])(?=\s|')/))
             .reduce((acc, val) => {
               const flattened = val.filter(
-                (sentence) => sentence.trim() !== ""
+                (sentence) => sentence.trim() !== ''
               );
               return acc.concat(flattened);
             }, []);
 
           return (
             <>
-              <Section key={section.num} className="ebook-container">
+              <Section key={section.num} className='ebook-container'>
                 {section.title && <SectionTitle>{section.title}</SectionTitle>}
                 <SectionContent>
-                  <div style={{ width: isContentsOn ? "330px" : "345px" }}>
+                  <div style={{width: isContentsOn ? '330px' : '345px'}}>
                     {paragraphs.map((paragraph, paragraphIndex) => {
-                      const sentences = paragraph.split(/(?<=[?.](?=\s|'))/);
+                      const cleanedParagraph = paragraph
+                        .replace(/\r\n/g, '')
+                        .replace(/·/g, '');
+                      const sentences =
+                        cleanedParagraph.split(/(?<=[?.:])(?=\s|')/);
 
                       return (
                         <Paragraph key={`${section.num}-${paragraphIndex}`}>
                           {sentences.map((sentence, sentenceIndex) => {
                             const currentSentenceIndex =
                               cumulativeSentenceIndex++;
+
                             return (
                               <span
                                 key={`${section.num}-${paragraphIndex}-${sentenceIndex}`}
@@ -170,22 +176,22 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                                   )
                                 }
                                 style={{
-                                  cursor: "pointer",
+                                  cursor: 'pointer',
                                   color:
                                     selectedSentence === sentence ||
                                     hoveredIndex === sentence
-                                      ? "#A397FF"
-                                      : "white",
+                                      ? '#A397FF'
+                                      : 'white',
 
                                   backgroundColor: selectedSentence
-                                    ? "transparent"
+                                    ? 'transparent'
                                     : highlights.some(
                                         (highlight) =>
                                           highlight.sentenceIndex ===
                                           currentSentenceIndex
                                       )
-                                    ? "rgba(170, 158, 255, 0.35)"
-                                    : "transparent",
+                                    ? 'rgba(170, 158, 255, 0.35)'
+                                    : 'transparent',
                                 }}
                               >
                                 {sentence}
@@ -201,6 +207,19 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                       <SectionBar>
                         {sentencesIcon.map((sentence, sentenceIndex) => {
                           const currentIconIndex = cumulativeIconIndex++;
+
+                          const targetLine = section.Lines.find(
+                            (line) => line.sentence === currentIconIndex
+                          );
+                          const hasLineCom =
+                            targetLine &&
+                            targetLine.LineCom &&
+                            targetLine.LineCom.length > 0;
+
+                          const hasQuestion =
+                            targetLine &&
+                            targetLine.Question &&
+                            targetLine.Question.length > 0;
                           return (
                             <Icon
                               key={sentenceIndex}
@@ -208,7 +227,7 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                               onMouseLeave={offHover}
                               onClick={() => {
                                 highlightText(
-                                  section.sec_id,
+                                  section.num,
                                   currentIconIndex,
                                   sentence
                                 );
@@ -218,8 +237,12 @@ const ArticleContent = ({ isContentsOn, postPk }) => {
                                 height: `${500 / sentencesIcon.length}%`,
                               }}
                             >
+                              {hasLineCom && (
+                                <img src={comment} alt='comment'></img>
+                              )}
+                              {hasQuestion && <img src={qna} alt='qna'></img>}
                               {/* <div></div> */}
-                              <img src={comment} alt="comment"></img>
+                              {/* <img src={comment} alt='comment'></img> */}
                               {/* <img src={qna} alt='qna'></img>
                                     <img src={happy} alt='happy'></img> */}
                             </Icon>
@@ -277,7 +300,7 @@ const Wrapper = styled.div`
   margin-top: 37.4px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -332,7 +355,7 @@ const Icon = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  div {
+  /* div {
     position: relative;
     width: 3px;
     height: 3px;
@@ -340,7 +363,7 @@ const Icon = styled.div`
     border-radius: 50%;
     top: -1px;
     right: -1px;
-  }
+  } */
 
   img {
     width: 14x;
