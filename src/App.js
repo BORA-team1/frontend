@@ -54,8 +54,7 @@ function App() {
           {/* 세부 페이지 */}
           <Route path='/article/:post_id' element={<ArticlePage />}></Route>
           <Route
-            path={'/article/:post_id/:audio_id'}
-
+            path={'/article/:audio_id/:playlist_id'}
             element={<AudiobookPage />}
           ></Route>
           <Route

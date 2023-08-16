@@ -6,9 +6,6 @@ import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
 import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
 import Audiobook from "../AudiobookPage/Audiobook";
 
-//img
-import savebtn from "../../images/Audiobook/savebtn.svg";
-
 const PlaylistBottomSheet = ({
   handleOpenBottomSheet,
   handleCloseBottomSheet,
@@ -76,7 +73,7 @@ const PlaylistBottomSheet = ({
             )}
           </BookContatiner>
           <SaveContainer>
-            <SaveBtn src={savebtn} onClick={openCreateModal} />
+            <SaveBtn onClick={openCreateModal}>현재 재생목록 저장하기</SaveBtn>
           </SaveContainer>
         </BottomSheetContainer>
 
@@ -193,8 +190,20 @@ const HR = styled.div`
 
 const SaveContainer = styled.div``;
 
-const SaveBtn = styled.img`
+const SaveBtn = styled.div`
+  font-family: "Pretendard-Regular";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
   margin: 30px 21.5px;
+
+  display: flex;
+  width: 276px;
+  padding: 10px 35px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: var(--card-color, #2b2c3f);
 `;
 
 const NoPlaylistText = styled.div`
