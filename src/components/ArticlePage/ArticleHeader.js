@@ -61,7 +61,10 @@ const ArticleHeader = ({postPk}) => {
   return (
     <Wrapper>
       <BackgroundImg>
-        <img src={posts.post_image} alt='포스트 배경 이미지'></img>
+        <img
+          src={`${BASE_URL}${posts.post_image}`}
+          alt='포스트 배경 이미지'
+        ></img>
       </BackgroundImg>
       <GradientOverlay></GradientOverlay>
       <ButtonContainer>
@@ -187,7 +190,7 @@ const TitleContainer = styled.div`
   z-index: 1;
   width: 310px;
   padding: 20px;
-  margin-top: 109px;
+  margin-top: 76px;
   margin-left: 20px;
 
   display: flex;

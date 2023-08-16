@@ -11,6 +11,10 @@ import ContentPopup from './ContentPopup';
 import comment from '../../images/sectionbar/commenticon.svg';
 import qna from '../../images/sectionbar/qnaicon.svg';
 import happy from '../../images/emoji/happy.svg';
+import surprised from '../../images/emoji/surprised.svg';
+import anger from '../../images/emoji/anger.svg';
+import sad from '../../images/emoji/sad.svg';
+import curious from '../../images/emoji/curious.svg';
 
 //context
 import {useAuth} from '../../contexts/AuthContext';
@@ -129,6 +133,15 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   let cumulativeSentenceIndex = 0;
   let cumulativeIconIndex = 0;
 
+  //감정표현 이미지
+  const emojiImages = {
+    1: happy,
+    2: surprised,
+    3: anger,
+    4: sad,
+    5: curious,
+  };
+
   return (
     <Wrapper>
       {posts.PostSec &&
@@ -220,33 +233,57 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                             targetLine &&
                             targetLine.Question &&
                             targetLine.Question.length > 0;
-                          return (
-                            <Icon
-                              key={sentenceIndex}
-                              onMouseEnter={() => onHover(sentence)}
-                              onMouseLeave={offHover}
-                              onClick={() => {
-                                highlightText(
-                                  section.num,
-                                  currentIconIndex,
-                                  sentence
-                                );
-                                handleOpenBottomSheet();
-                              }}
-                              style={{
-                                height: `${500 / sentencesIcon.length}%`,
-                              }}
-                            >
-                              {hasLineCom && (
-                                <img src={comment} alt='comment'></img>
-                              )}
-                              {hasQuestion && <img src={qna} alt='qna'></img>}
-                              {/* <div></div> */}
-                              {/* <img src={comment} alt='comment'></img> */}
-                              {/* <img src={qna} alt='qna'></img>
-                                    <img src={happy} alt='happy'></img> */}
-                            </Icon>
-                          );
+
+                          if (targetLine && targetLine.Emotion) {
+                            const emotionData = targetLine.Emotion;
+
+                            let maxNum = -Infinity;
+                            let hasEmotion = null;
+
+                            emotionData.forEach((item) => {
+                              if (item.num > maxNum) {
+                                maxNum = item.num;
+                                hasEmotion = item.content;
+                              }
+                            });
+                            if (maxNum === 0) {
+                              hasEmotion = null;
+                            }
+                            if (hasEmotion !== null) {
+                              const emojiImage = emojiImages[hasEmotion];
+                            }
+
+                            return (
+                              <Icon
+                                key={sentenceIndex}
+                                onMouseEnter={() => onHover(sentence)}
+                                onMouseLeave={offHover}
+                                onClick={() => {
+                                  highlightText(
+                                    section.num,
+                                    currentIconIndex,
+                                    sentence
+                                  );
+                                  handleOpenBottomSheet();
+                                }}
+                                style={{
+                                  height: `${500 / sentencesIcon.length}%`,
+                                }}
+                              >
+                                {hasLineCom && (
+                                  <img src={comment} alt='comment'></img>
+                                )}
+                                {hasQuestion && <img src={qna} alt='qna'></img>}
+                                {hasEmotion !== null &&
+                                  emojiImages[hasEmotion] && (
+                                    <img
+                                      src={emojiImages[hasEmotion]}
+                                      alt='Emoji'
+                                    />
+                                  )}
+                              </Icon>
+                            );
+                          }
                         })}
                       </SectionBar>
                     </BarContainer>

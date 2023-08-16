@@ -14,23 +14,26 @@ const VoteBox = ({ingvote}) => {
   const [votedIndex, setVotedIndex] = useState(-1);
 
   const handleVote = (index) => {
-    axios
-      .post(
-        `${BASE_URL}vote/voting/${ingvote.vote_id}/`,
-        {content: index},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        setVotedIndex(index);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error('투표하는 중 오류가 발생했습니다.', error);
-      });
+    {
+      votedIndex === -1 &&
+        axios
+          .post(
+            `${BASE_URL}vote/voting/${ingvote.vote_id}/`,
+            {select: index},
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+          )
+          .then((response) => {
+            setVotedIndex(index);
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error('투표하는 중 오류가 발생했습니다.', error);
+          });
+    }
   };
 
   return (
