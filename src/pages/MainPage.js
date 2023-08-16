@@ -45,6 +45,15 @@ const MainPage = () => {
       });
   };
 
+  //토큰따라 화면이동
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/initial");
+    } else {
+      getPosts();
+    }
+  }, []);
+
   return (
     <Container>
       <TopBar />

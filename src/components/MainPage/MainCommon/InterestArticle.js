@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const InterestArticle = ({playlist}) => {
+const InterestArticle = ({ playlist }) => {
   return (
     <Box>
       <Title>{playlist.title}</Title>
@@ -18,7 +18,6 @@ export default InterestArticle;
 const Box = styled.div`
   display: flex;
   padding: 13px 12px;
-  margin-right: 10px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
@@ -39,7 +38,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -53,7 +52,7 @@ const TagBox = styled.div`
 
 const Tag = styled.div`
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-size: 10px;
   font-style: normal;
   font-weight: 600;
