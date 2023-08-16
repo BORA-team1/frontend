@@ -15,43 +15,14 @@ const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [interest, setInterest] = useState("");
+  const [interest, setInterest] = useState([]);
   const [profile, setProfile] = useState("");
-  // const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
 
   // 리렌더링용 변수
   const [render, setRender] = useState(0);
 
   const { BASE_URL } = useAuth();
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-
-    if (birthYear) {
-      const calculatedAgeGroup = calculateAgeGroup(Number(birthYear));
-      setAge(calculatedAgeGroup);
-
-      try {
-        const response = await axios.post(`${BASE_URL}account/signup/`, {
-          username: username,
-          password: password,
-          nickname: nickname,
-          interest: interest,
-          profile: profile,
-          age: calculatedAgeGroup,
-        });
-
-        // 회원가입 성공 시 처리
-        setAge("");
-        navigate(`/login`);
-        console.log(response);
-      } catch (error) {
-        // 오류 처리
-        console.error(error);
-      }
-    }
-  };
 
   //아이디 규격 확인
   const [usernameValid, setUsernameValid] = useState(true);
@@ -67,7 +38,6 @@ const SignupPage = () => {
     }
 
     setUsername(value);
-    console.log(username);
   };
 
   //아이디 중복 확인
@@ -166,12 +136,11 @@ const SignupPage = () => {
 
   //이미지 미리보기
   const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 파일
-
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
     setSelectedImage(URL.createObjectURL(imageFile));
     // 이미지 선택 시 setProfile 호출
-    setProfile(URL.createObjectURL(imageFile));
+    setProfile(imageFile);
   };
 
   //버튼 활성화
@@ -183,7 +152,7 @@ const SignupPage = () => {
       passwordMatch &&
       birthYear.length === 4 &&
       nickname.length > 0 &&
-      profile.length > 0;
+      profile;
 
     setRequiredFieldsValid(isRequiredFieldsValid);
   }, [
@@ -196,6 +165,46 @@ const SignupPage = () => {
     profile,
   ]);
 
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    if (birthYear) {
+      const calculatedAgeGroup = calculateAgeGroup(Number(birthYear));
+      setAge(calculatedAgeGroup);
+
+      // const userData = {
+      //   username: username,
+      //   password: password,
+      //   nickname: nickname,
+      //   interest: interest,
+      //   profile: profile,
+      //   age: calculatedAgeGroup,
+      // };
+
+      try {
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+        formData.append("nickname", nickname);
+        formData.append("interest", interest);
+        formData.append("profile", profile);
+        formData.append("age", age);
+
+        const response = await axios.post(
+          `${BASE_URL}account/signup/`,
+          formData
+        );
+
+        // 회원가입 성공 시 처리
+        setAge("");
+        navigate(`/login`);
+        console.log(response);
+      } catch (error) {
+        // 오류 처리
+        console.error(error);
+      }
+    }
+  };
   return (
     <Wrapper>
       <Box>
@@ -299,8 +308,8 @@ const SignupPage = () => {
           <InputI
             type="text"
             placeholder="예 : #라이프, #건강, #테크, #문화, #경제, #환경"
-            value={interest}
-            onChange={(e) => setInterest(e.target.value)}
+            value={interest.join(` `)}
+            onChange={(e) => setInterest(e.target.value.split(" "))}
           />
           <Condition>관심사 및 선호하는 주제를 '#'를 이용하여 입력</Condition>
         </div>
