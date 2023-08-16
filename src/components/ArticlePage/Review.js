@@ -92,14 +92,14 @@ const Review = ({
   const [clickIcon, setClickIcon] = useState(false);
   const handleClickIcon = () => {
     axios
-      .post(`${BASE_URL}han/like/${reviewId}/`, {
+      .post(`${BASE_URL}han/like/${reviewId}/`, null, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       })
       .then((response) => {
         setClickIcon(!clickIcon);
-        setRender(render + 1);
+        // setRender(render + 1);
         console.log(response);
       })
       .catch((error) => {

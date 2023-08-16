@@ -5,7 +5,7 @@ export const postBookMark = ({postId}) => {
   const BASE_URL = 'https://juliaheo.pythonanywhere.com/';
   const authToken = localStorage.getItem('authToken');
   axios
-    .post(`${BASE_URL}post/${postId}/bookmark/`, {
+    .post(`${BASE_URL}post/${postId}/bookmark/`, null, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },

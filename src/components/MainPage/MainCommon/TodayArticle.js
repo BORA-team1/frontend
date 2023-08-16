@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,7 +11,7 @@ import bookmark_off from '../../../images/bookmark-off.svg';
 //api
 import {postBookMark} from '../../../api/bookmark';
 
-const TodayArticle = ({ article, width, height }) => {
+const TodayArticle = ({article, width, height}) => {
   const navigate = useNavigate();
 
   let difficulty;
@@ -23,19 +23,25 @@ const TodayArticle = ({ article, width, height }) => {
     difficulty = 'heavy';
   }
 
+  //북마크 여부에 따른 이미지 띄우기, 여부 변경하기
+  const [bookmarkSrc, setBookmarkSrc] = useState(
+    article.is_booked ? bookmark_on : bookmark_off
+  );
+  const handleBookmarkClick = (e) => {
+    e.stopPropagation();
+    const newBookmarkSrc =
+      bookmarkSrc === bookmark_on ? bookmark_off : bookmark_on;
+    setBookmarkSrc(newBookmarkSrc);
+    postBookMark({postId: article.post_id});
+  };
+
   return (
     <Box
       width={width}
       height={height}
       onClick={() => navigate(`/article/${article.post_id}`)}
     >
-      <BookMark
-        onClick={(e) => {
-          e.stopPropagation();
-          postBookMark({postId: article.post_id});
-        }}
-        src={article.is_booked ? bookmark_on : bookmark_off}
-      />
+      <BookMark onClick={handleBookmarkClick} src={bookmarkSrc} />
 
       <Picture src={article.post_image} />
 
@@ -67,8 +73,8 @@ export default TodayArticle;
 
 const Box = styled.div`
   position: relative;
-  width: ${({ width }) => width || "133px"};
-  height: ${({ height }) => height || "171px"};
+  width: ${({width}) => width || '133px'};
+  height: ${({height}) => height || '171px'};
   overflow: hidden;
 
   border-radius: 10px;
