@@ -6,7 +6,12 @@ export function PostProvider({children, postPk, selectedIndex}) {
   const [emojiRender, setEmojiRender] = useState(1);
   return (
     <PostContext.Provider
-      value={{postPk, selectedIndex, emojiRender, setEmojiRender}}
+      value={{
+        postPk,
+        selectedIndex,
+        emojiRender,
+        setEmojiRender,
+      }}
     >
       {children}
     </PostContext.Provider>

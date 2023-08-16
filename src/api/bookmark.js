@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 //POST: 북마크 여부
-export const postBookMark = ({postId, authToken, BASE_URL}) => {
+export const postBookMark = ({postId}) => {
+  const BASE_URL = 'https://juliaheo.pythonanywhere.com/';
+  const authToken = localStorage.getItem('authToken');
   axios
     .post(`${BASE_URL}post/${postId}/bookmark/`, {
       headers: {
