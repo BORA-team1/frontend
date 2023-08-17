@@ -16,12 +16,22 @@ const VoteResult = ({ donevote }) => {
   const handleAgeGroupClick = (ageGroup, result1, result2, result3) => {
     setSelectedAgeGroup(ageGroup);
     const total = result1 + result2 + result3;
-    const newPercentages = {
-      result1: (result1 / total) * 100,
-      result2: (result2 / total) * 100,
-      result3: (result3 / total) * 100,
-    };
-    setPercentages(newPercentages);
+    console.log(result1, result2, result3, total, donevote);
+    if (total !== 0) {
+      const newPercentages = {
+        result1: (result1 / total) * 100,
+        result2: (result2 / total) * 100,
+        result3: (result3 / total) * 100,
+      };
+      setPercentages(newPercentages);
+    } else {
+      const newPercentages = {
+        result1: 0,
+        result2: 0,
+        result3: 0,
+      };
+      setPercentages(newPercentages);
+    }
   };
 
   return (

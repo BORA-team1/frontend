@@ -9,6 +9,7 @@ import PlaylistDetailBottomSheet from "../../components/AudiobookPage/PlaylistDe
 //img
 import more from "../../images/more.svg";
 import audiobookdetail from "../../images/Audiobook/audiobookdetail.svg";
+import CLOVA_dubbing from "../../images/Audiobook/CLOVA_dubbing.svg";
 
 const AudiobookTitleBox = ({ audio }) => {
   //보는 아티클로 이동 버튼
@@ -46,10 +47,20 @@ const AudiobookTitleBox = ({ audio }) => {
         <div
           style={{
             display: "flex",
+            flexDirection: "row",
             alignItems: "flex-start",
           }}
         >
-          <Title>{audio?.audio_post?.title}</Title>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <Clova src={CLOVA_dubbing} />
+            <Title>{audio?.audio_post?.title}</Title>
+          </div>
           <AudiobookDetail
             src={audiobookdetail}
             onClick={handleOpenBottomSheet}
@@ -114,6 +125,12 @@ const ChangeBtn = styled(Font)`
   cursor: pointer;
 `;
 
+const Clova = styled.img`
+  width: 88px;
+  height: 11.297px;
+  margin-bottom: 7px;
+`;
+
 const Title = styled(Font)`
   width: 271px;
   height: 22px;
@@ -132,6 +149,7 @@ const AudiobookDetail = styled.img`
   height: 30px;
   background: transparent;
   margin-left: 40px;
+  margin-top: 15px;
 `;
 
 const TagBox = styled.div`
