@@ -4,36 +4,56 @@ import VoteResult from './VoteResult';
 import DebateNow from './DebateNow';
 import more from '../../images/more.svg';
 
-const ContentPopup = () => {
-  const [isOpen, setOpen] = useState('true');
-  const handlePopup = () => {
-    setOpen(!isOpen);
+const ContentPopup = ({line, lineContent}) => {
+  const [isVoteOpen, setVoteOpen] = useState('true');
+  const handleVotePopup = () => {
+    setVoteOpen(!isVoteOpen);
+  };
+
+  const [isDebateOpen, setDebateOpen] = useState('true');
+  const handleDebatePopup = () => {
+    setDebateOpen(!isDebateOpen);
   };
 
   return (
-    <Container>
-      <Triangle></Triangle>
-      <Sentence>
-        “킬러 문항을 없앤다고 수능 사교육이 줄어들진 않는다는 거예요.”
-      </Sentence>
-      {isOpen && (
-        <ContentContainer>
-          <VoteResult></VoteResult>
-          {/* <DebateNow></DebateNow> */}
-        </ContentContainer>
+    <>
+      {line.DoneVote && line.DoneVote.length > 0 ? (
+        <Container>
+          <Triangle></Triangle>
+          <Sentence>“{lineContent}”</Sentence>
+          {isVoteOpen && (
+            <ContentContainer>
+              <VoteResult donevote={line.DoneVote[0]}></VoteResult>
+            </ContentContainer>
+          )}
+          <Popup onClick={handleVotePopup} isopen={isVoteOpen}>
+            <img src={more} alt='popupbutton'></img>
+          </Popup>
+        </Container>
+      ) : null}
+      {line.Debate && line.Debate.length > 0 && (
+        <Container>
+          <Triangle></Triangle>
+          <Sentence>“{lineContent}”</Sentence>
+          {isDebateOpen && (
+            <ContentContainer>
+              {<DebateNow debate={line.Debate[0]}></DebateNow>}
+            </ContentContainer>
+          )}
+          <Popup onClick={handleDebatePopup} isopen={isDebateOpen}>
+            <img src={more} alt='popupbutton'></img>
+          </Popup>
+        </Container>
       )}
-      <Popup onClick={handlePopup} isopen={isOpen}>
-        <img src={more} alt='popupbutton'></img>
-      </Popup>
-    </Container>
+    </>
   );
 };
 
 export default ContentPopup;
 
 const Container = styled.div`
-  margin-top: 30px;
-  margin-bottom: 10px;
+  margin-top: 0px;
+  margin-bottom: 20px;
   width: 390px;
   display: flex;
   flex-direction: column;

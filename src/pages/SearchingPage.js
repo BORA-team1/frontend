@@ -75,7 +75,7 @@ const SearchingPage = () => {
             posts.map((article, index) => (
               <>
                 <ResultNum>검색 결과 </ResultNum>
-                <DifficultyBox key={index} article={article} />{' '}
+                <DifficultyBox key={index} article={article} />
               </>
             ))
           ) : (

@@ -15,7 +15,7 @@ const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const [interest, setInterest] = useState([]);
+  const [interest, setInterest] = useState('');
   const [profile, setProfile] = useState('');
   const [age, setAge] = useState('');
 
@@ -25,18 +25,22 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    // const hashtagsData = {
+    //   interest: [{hashtag: '라이프'}, {hashtag: '운동'}],
+    // };
+
     if (birthYear) {
       const calculatedAgeGroup = calculateAgeGroup(Number(birthYear));
       setAge(calculatedAgeGroup);
 
       const interestArray = interest
-
-        .split("#")
+        .split('#')
         .map((item) => item.trim())
-        .filter((item) => item !== "");
+        .filter((item) => item !== '');
 
-
+      console.log(interest);
       console.log(interestArray);
+
       try {
         const formData = new FormData();
         formData.append('username', username);
@@ -44,19 +48,38 @@ const SignupPage = () => {
         formData.append('nickname', nickname);
         formData.append('profile', profile);
         formData.append('age', calculatedAgeGroup);
+        const interestData = interestArray.map((interest) => ({
+          hashtag: interest,
+        }));
+        // const hashtagsData = {
+        //   interest: [{hashtag: '라이프'}, {hashtag: '운동'}],
+        // };
+        formData.append('interest', JSON.stringify(interestData));
 
-        interestArray.forEach((interest, index) => {
-          formData.append(`interest[${index}]`, JSON.stringify(interest));
-          console.log(interest);
-        });
+        //데이터 확인용 콘솔
+        // const dataObject = {
+        //   username: username,
+        //   password: password,
+        //   nickname: nickname,
+        //   profile: profile,
+        //   age: calculatedAgeGroup,
+        //   interest: interestData,
+        // };
+        // console.log(dataObject);
 
         const response = await axios.post(
           `${BASE_URL}account/signup/`,
-          formData
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         );
 
         // 회원가입 성공 시 처리
         setAge('');
+        setInterest('');
         navigate(`/login`);
         console.log(response);
       } catch (error) {

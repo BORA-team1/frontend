@@ -19,6 +19,7 @@ const Review = ({
   reviewContent,
   author,
   like,
+  doLIke,
   handleDelete,
   replies,
   render,
@@ -89,7 +90,7 @@ const Review = ({
   };
 
   //POST: 추천 여부 변경
-  const [clickIcon, setClickIcon] = useState(false);
+  const [clickIcon, setClickIcon] = useState(doLIke);
   const handleClickIcon = () => {
     axios
       .post(`${BASE_URL}han/like/${reviewId}/`, null, {
@@ -99,7 +100,7 @@ const Review = ({
       })
       .then((response) => {
         setClickIcon(!clickIcon);
-        // setRender(render + 1);
+        setRender(render + 1);
         console.log(response);
       })
       .catch((error) => {

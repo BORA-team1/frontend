@@ -13,13 +13,11 @@ const DebateNow = ({debate, BASE_URL}) => {
         <Subtitle>
           <div>주제로</div>
           <Member>
-            <div>
-              <img
-                src={`${BASE_URL}${debate.debate_user.profile}`}
-                alt='profile'
-              />
-              <span>{debate.debate_user.nickname}</span>
-            </div>
+            <img
+              src={`${BASE_URL}${debate.debate_user.profile}`}
+              alt='profile'
+            />
+            <div>{debate.debate_user.nickname}</div>
           </Member>
           <div>님이 토론을 주최했어요!</div>
         </Subtitle>
@@ -32,9 +30,11 @@ const DebateNow = ({debate, BASE_URL}) => {
 export default DebateNow;
 
 const Container = styled.div`
+  width: 326px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   font-family: 'Pretendard-Regular';
   font-style: normal;
   gap: 13px;
@@ -64,24 +64,17 @@ const Subtitle = styled.div`
 
 const Member = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-left: 5px;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.83px;
 
-  div {
-    margin-left: -5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.83px;
-  }
-
-  div > img {
+  img {
     width: 27px;
     height: 27px;
-    border-radius: 13.5px;
+    border-radius: 50%;
   }
 
-  div > span {
+  div {
     font-size: 6px; //사이즈 오류?
     line-height: normal;
   }
