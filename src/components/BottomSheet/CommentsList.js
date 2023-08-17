@@ -31,7 +31,7 @@ const CommentsList = () => {
       .then((response) => {
         const postData = response.data.data.PostSec;
         const targetSection = postData.find(
-          (section) => section.sec_id === selectedIndex.index
+          (section) => section.num === selectedIndex.index
         );
         if (targetSection) {
           const targetLine = targetSection.Lines.find(
@@ -105,6 +105,7 @@ const CommentsList = () => {
             commentLike={comment.likenum}
             doLike={comment.do_like}
             author={comment.linecom_user.nickname}
+            profile={comment.linecom_user.profile}
             handleDelete={handleDelete}
             replies={comment.LineComCom}
             render={render}

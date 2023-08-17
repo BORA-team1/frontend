@@ -1,29 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, {useState, useEffect, useRef} from 'react';
+import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
 
 //components
-import WarningModal from "../AudiobookPage/WarningModal";
-import PlaylistBottomSheet from "../AudiobookPage/PlaylistBottomSheet";
+import WarningModal from '../AudiobookPage/WarningModal';
+import PlaylistBottomSheet from '../AudiobookPage/PlaylistBottomSheet';
 
 //img
-import playlisticon from "../../images/Audiobook/playlisticon.svg";
-import beforesecond from "../../images/Audiobook/beforesecond.svg";
-import start from "../../images/Audiobook/start.svg";
-import stop from "../../images/Audiobook/stop.svg";
-import aftersecond from "../../images/Audiobook/aftersecond.svg";
-import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
-import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
+import playlisticon from '../../images/Audiobook/playlisticon.svg';
+import beforesecond from '../../images/Audiobook/beforesecond.svg';
+import start from '../../images/Audiobook/start.svg';
+import stop from '../../images/Audiobook/stop.svg';
+import aftersecond from '../../images/Audiobook/aftersecond.svg';
+import bookmarkicon_on from '../../images/Audiobook/bookmarkicon_on.svg';
+import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
 
 //api
-import { postBookMark } from "../../api/bookmark";
-
-//audio - 나중에 데이터 파일 만들어서 거기서 다루기
-import example from "../../audio/example.mp3";
+import {postBookMark} from '../../api/bookmark';
 
 const PlayingBar = ({
   isAudioPlaying,
@@ -34,19 +31,20 @@ const PlayingBar = ({
 }) => {
   //bookmark
   const [bookmarkSrc, setBookmarkSrc] = useState(
-    audio.is_booked ? bookmarkicon_off : bookmarkicon_on
+    audio.is_booked ? bookmarkicon_on : bookmarkicon_off
   );
 
   const handleBookmarkClick = (e) => {
+    console.log(audio.is_booked);
     e.stopPropagation();
     const newBookmarkSrc =
       bookmarkSrc === bookmarkicon_on ? bookmarkicon_off : bookmarkicon_on;
     setBookmarkSrc(newBookmarkSrc);
-    postBookMark({ postId: audio.audio_post.post_id });
+    postBookMark({postId: audio.audio_post.post_id});
   };
 
   // GET: 플레이리스트
-  const { authToken, BASE_URL } = useAuth();
+  const {authToken, BASE_URL} = useAuth();
   useEffect(() => {
     getPlaylist();
   }, []);
@@ -65,7 +63,7 @@ const PlayingBar = ({
           console.log(response.data.data);
         })
         .catch((error) => {
-          console.error("재생목록을 불러오는 중 오류가 발생했습니다.", error);
+          console.error('재생목록을 불러오는 중 오류가 발생했습니다.', error);
         });
     }
   };

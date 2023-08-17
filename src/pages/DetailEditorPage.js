@@ -55,7 +55,9 @@ const DetailEditorPage = () => {
       </Box>
       <EditorList>
         {data &&
-          data.map((editer) => <Editer key={editer.id} editer={editer} />)}
+          data.map((editer) => (
+            <Editer key={editer.id} BASE_URL={BASE_URL} editer={editer} />
+          ))}
       </EditorList>
     </Container>
   );

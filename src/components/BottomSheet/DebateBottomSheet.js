@@ -11,7 +11,12 @@ import addBtn from '../../images/addbutton.png';
 import {useAuth} from '../../contexts/AuthContext';
 import DebateResult from '../ArticlePage/DebateResult';
 
-const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
+const DebateBottomSheet = ({
+  handleCloseBottomSheet,
+  postPk,
+  allRender,
+  setAllRender,
+}) => {
   const [category, setCategory] = useState('A');
   const showListA = () => setCategory('A');
   const showListB = () => setCategory('B');
@@ -65,6 +70,7 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
       })
       .then((response) => {
         setRender(render + 1);
+        setAllRender(allRender + 1);
         console.log(response);
       })
       .catch((error) => {
@@ -165,7 +171,6 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
               ) : (
                 <ListNum>토론 {debates.length}개</ListNum>
               )}
-
               {debates.map((line, index) => (
                 <div key={index}>
                   <SentenceBox lineContent={line.content}></SentenceBox>
@@ -189,6 +194,8 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                 postPk={postPk}
                 render={render}
                 setRender={setRender}
+                allRender={allRender}
+                setAllRender={setAllRender}
               ></DebateCreateModal>
             )}
           </>
@@ -204,12 +211,14 @@ const DebateBottomSheet = ({handleCloseBottomSheet, postPk}) => {
               doneDebates.map((debate, index) => (
                 <div key={index}>
                   <SentenceBox lineContent={debate.content}></SentenceBox>
-                  <BoxContainer key={index}>
-                    <DebateResult
-                      doneDebate={debate.Debate[0]}
-                      BASE_URL={BASE_URL}
-                    ></DebateResult>
-                  </BoxContainer>
+                  {debate.Debate.map((debate, index) => (
+                    <BoxContainer key={index}>
+                      <DebateResult
+                        doneDebate={debate}
+                        BASE_URL={BASE_URL}
+                      ></DebateResult>
+                    </BoxContainer>
+                  ))}
                 </div>
               ))}
           </ListContatiner>

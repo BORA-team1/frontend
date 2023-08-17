@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import profile from '../../images/profile.svg';
-
-const Editer = ({editer}) => {
+const Editer = ({BASE_URL, editer}) => {
   return (
     <Profile>
-      <img src={profile}></img>
+      <img src={`${BASE_URL}${editer.profile}`} alt='editer'></img>
       <span>{editer.nickname}</span>
     </Profile>
   );
@@ -31,6 +29,7 @@ const Profile = styled.div`
 
   span {
     color: #fff;
+    white-space: nowrap;
     text-overflow: ellipsis;
     font-family: 'Pretendard-Regular';
     font-size: 9px;

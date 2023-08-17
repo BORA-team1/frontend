@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useParams} from 'react-router-dom';
+import axios from 'axios';
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
 
 //data
-import { timeIntervalsData } from "../../data/timeIntervalsData";
+import {timeIntervalsData} from '../../data/timeIntervalsData';
 
-const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
+const AudioContent = ({isAudioPlaying, audioRef, audio}) => {
   const [highlightedSectionIndex, setHighlightedSectionIndex] = useState(0);
 
-  const { PostSec: sections } = audio;
+  const {PostSec: sections} = audio;
 
   const timeIntervals = timeIntervalsData[audio.audio_id - 1];
   console.log(timeIntervalsData[audio.audio_id - 1]);
@@ -34,12 +34,12 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
     };
 
     if (audioRef.current) {
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
       }
     };
   }, [isAudioPlaying, audioRef, timeIntervals]);
@@ -64,20 +64,20 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
         sections.length > 0 &&
         sections.map((sec, sectionIndex) => {
           const sentences = sec.content
-            .split("·")
-            .filter((paragraph) => paragraph.trim() !== "");
+            .split('·')
+            .filter((paragraph) => paragraph.trim() !== '');
           return (
             <Gap key={sec.sec_id}>
               <Section
                 id={`section-${sectionIndex}`}
-                className="ebook-container"
+                className='ebook-container'
               >
                 {sec.title && (
                   <SectionTitle
                     className={
                       sectionIndex === highlightedSectionIndex
-                        ? "highlighted"
-                        : ""
+                        ? 'highlighted'
+                        : ''
                     }
                   >
                     {sec.title}
@@ -113,7 +113,7 @@ const Wrapper = styled.div`
   gap: 50px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -143,7 +143,8 @@ const TextContainer = styled.div`
 
 const HighlightedSpan = styled.div`
   cursor: pointer;
-  color: ${(props) => (props.isHighlighted ? "#A397FF" : "white")};
+  margin-bottom: 20px;
+  color: ${(props) => (props.isHighlighted ? '#A397FF' : 'white')};
 `;
 
 const SectionTitle = styled.div`

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
-import Reply from "../BottomSheet/Reply";
-import profile from "../../images/profile.svg";
-import heart from "../../images/heart.svg";
-import heartclick from "../../images/heartclick.svg";
-import submiticon from "../../images/submiticon.svg";
+import Reply from '../BottomSheet/Reply';
+import profile from '../../images/profile.svg';
+import heart from '../../images/heart.svg';
+import heartclick from '../../images/heartclick.svg';
+import submiticon from '../../images/submiticon.svg';
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
 
 const CommentBox = ({
   commentId,
@@ -17,20 +17,21 @@ const CommentBox = ({
   commentLike,
   doLike,
   author,
+  profile,
   handleDelete,
   replies,
   render,
   setRender,
 }) => {
   //POST: 댓글 답글
-  const { authToken, BASE_URL, nickname } = useAuth();
-  const [replyText, setReplyText] = useState("");
+  const {authToken, BASE_URL, nickname} = useAuth();
+  const [replyText, setReplyText] = useState('');
   const handleReplyClick = () => {
-    if (replyText.trim() === "") return null;
+    if (replyText.trim() === '') return null;
     axios
       .post(
         `${BASE_URL}line/comcom/${commentId}/`,
-        { content: replyText, mention: mentionedUser },
+        {content: replyText, mention: mentionedUser},
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -39,17 +40,17 @@ const CommentBox = ({
       )
       .then((response) => {
         setRender(render + 1);
-        setReplyText("");
+        setReplyText('');
         setShowReplyForm(false);
         console.log(response);
       })
       .catch((error) => {
-        console.error("댓글의 답글을 등록하는 중 오류가 발생했습니다.", error);
+        console.error('댓글의 답글을 등록하는 중 오류가 발생했습니다.', error);
       });
   };
 
   const handleReply = (event) => {
-    if (event.key === "Enter" && event.shiftKey === false) {
+    if (event.key === 'Enter' && event.shiftKey === false) {
       event.preventDefault();
       handleReplyClick();
     }
@@ -68,13 +69,13 @@ const CommentBox = ({
         console.log(response);
       })
       .catch((error) => {
-        console.error("댓글의 답글 삭제하는 중 오류가 발생했습니다.", error);
+        console.error('댓글의 답글 삭제하는 중 오류가 발생했습니다.', error);
       });
   };
 
   //답글 입력창 관리, 언급할 사용자 설정
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const [mentionedUser, setMentionedUser] = useState("");
+  const [mentionedUser, setMentionedUser] = useState('');
   const handleButtonClick = (author) => {
     setShowReplyForm(!showReplyForm);
     setMentionedUser(author);
@@ -91,12 +92,12 @@ const CommentBox = ({
         },
       })
       .then((response) => {
-        console.log("밑줄 댓글을 좋아요했습니다.", response);
+        console.log('밑줄 댓글을 좋아요했습니다.', response);
         setRender(render + 1);
         setClickIcon(!clickIcon);
       })
       .catch((error) => {
-        console.error("밑줄 댓글 좋아요 중 오류가 발생했습니다.", error);
+        console.error('밑줄 댓글 좋아요 중 오류가 발생했습니다.', error);
       });
   };
 
@@ -109,12 +110,12 @@ const CommentBox = ({
         },
       })
       .then((response) => {
-        console.log("밑줄 댓글을 좋아요 취소했습니다.", response);
+        console.log('밑줄 댓글을 좋아요 취소했습니다.', response);
         setRender(render - 1);
         setClickIcon(!clickIcon);
       })
       .catch((error) => {
-        console.error("밑줄 댓글 좋아요 취소 중 오류가 발생했습니다.", error);
+        console.error('밑줄 댓글 좋아요 취소 중 오류가 발생했습니다.', error);
       });
   };
 
@@ -122,7 +123,7 @@ const CommentBox = ({
     <>
       <Container>
         <ProfileContainer>
-          <img src={profile} alt="profileimg"></img>
+          <img src={`${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{author}</Id>
@@ -131,21 +132,20 @@ const CommentBox = ({
             {clickIcon ? (
               <img
                 src={heartclick}
-                alt="heartclick"
+                alt='heartclick'
                 onClick={handleLIkeDelete}
               ></img>
             ) : (
-              <img src={heart} alt="heart" onClick={handleLIkeClick}></img>
+              <img src={heart} alt='heart' onClick={handleLIkeClick}></img>
             )}
             <div
               style={{
-                color: clickIcon ? "#A397FF" : "rgba(255, 255, 255, 0.7)",
+                color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
               }}
             >
               {commentLike}
             </div>
             {clickIcon ? (
-
               <div
                 onClick={handleLIkeDelete}
                 style={{
@@ -154,7 +154,6 @@ const CommentBox = ({
               >
                 좋아요 취소
               </div>
-
             ) : (
               <div onClick={handleLIkeClick}>좋아요</div>
             )}
@@ -199,7 +198,7 @@ const CommentBox = ({
             <img
               onClick={() => handleReplyClick()}
               src={submiticon}
-              alt="submiticon"
+              alt='submiticon'
             ></img>
           </InputBoxPosition>
         </>
@@ -222,6 +221,8 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 
   img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
   }
@@ -232,7 +233,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -289,7 +290,7 @@ const InputBoxPosition = styled.div`
   background-color: #161524;
   gap: 6px;
 
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 
   img {
@@ -348,7 +349,7 @@ const Inputbox = styled.div`
     padding-left: 10px;
     color: white;
 
-    font-family: "Pretendard-Regular";
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-size: 12px;
     font-weight: 500;

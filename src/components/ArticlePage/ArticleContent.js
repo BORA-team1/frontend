@@ -19,9 +19,8 @@ import curious from '../../images/emoji/curious.svg';
 //context
 import {useAuth} from '../../contexts/AuthContext';
 import {PostProvider} from '../../contexts/PostContext';
-import AllContentsPage from '../../pages/AllContentsPage';
 
-const ArticleContent = ({isContentsOn, postPk}) => {
+const ArticleContent = ({isContentsOn, postPk, allRender}) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [expanded, setExpanded] = useState('close');
   const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
@@ -81,7 +80,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   useEffect(() => {
     getPosts();
     getLines();
-  }, [render]);
+  }, [render, allRender]);
 
   const [posts, setPosts] = useState([]);
   const getPosts = () => {
@@ -93,7 +92,6 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       })
       .then((response) => {
         setPosts(response.data.data);
-        // console.log(response.data.data);
       })
       .catch((error) => {
         console.error(
@@ -164,7 +162,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   const user_id = posts.author_id;
   const followUser = (user_pk) => {
     axios
-      .post(`${BASE_URL}mypage/following/${user_pk}`, null, {
+      .post(`${BASE_URL}mypage/following/${user_pk}/`, null, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -192,7 +190,8 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                 (sentence) => sentence.trim() !== ''
               );
               return acc.concat(flattened);
-            }, []);
+            }, [])
+            .map((sentence) => sentence.replace(/\r\n/g, ''));
 
           return (
             <>
@@ -459,16 +458,6 @@ const Icon = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-  /* div {
-    position: relative;
-    width: 3px;
-    height: 3px;
-    background: #ff5e2b;
-    border-radius: 50%;
-    top: -1px;
-    right: -1px;
-  } */
 
   img {
     width: 14x;

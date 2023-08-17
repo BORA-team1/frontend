@@ -12,9 +12,6 @@ import SavedPlayList from '../components/MyPage/SavedPlaylist';
 //images
 import vector from '../images/vector_btn.svg';
 
-//임시 img
-import profile from '../images/profile.svg';
-
 //context
 import {useAuth} from '../contexts/AuthContext';
 
@@ -54,7 +51,7 @@ const MyPage = () => {
       <Scroll>
         {/* 유저 아이콘 부분 */}
         <UserProfile>
-          <img src={profile}></img>
+          <img src={`${BASE_URL}${userinfo.profile}`} alt='profile'></img>
           <UserInfo>
             <div>{userinfo.nickname}</div>
             <div style={{fontSize: '12px'}}>
@@ -107,7 +104,7 @@ const MyPage = () => {
           <BoxWrapper>
             {data.follows &&
               data.follows.map((editer, index) => (
-                <Editer key={index} editer={editer} />
+                <Editer key={index} BASE_URL={BASE_URL} editer={editer} />
               ))}
           </BoxWrapper>
         </FollowingEditorList>
@@ -230,11 +227,6 @@ const UserInfo = styled.div`
 
 const BookMarkList = styled(DetailBox)`
   height: 151px;
-`;
-
-const BoxContainer = styled.div`
-  width: 95px;
-  height: 122px;
 `;
 
 const Btn = styled.img`

@@ -18,6 +18,7 @@ const Review = ({
   reviewId,
   reviewContent,
   author,
+  profile,
   like,
   doLIke,
   handleDelete,
@@ -115,7 +116,7 @@ const Review = ({
     <>
       <Container>
         <ProfileContainer>
-          <img src={profile} alt='profileimg'></img>
+          <img src={`${BASE_URL}${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{author}</Id>
@@ -180,11 +181,13 @@ const Review = ({
             mention={reply.mention}
             content={reply.content}
             author={reply.hancom_user.nickname}
+            profile={reply.hancom_user.profile}
             showReplyForm={showReplyForm}
             setShowReplyForm={setShowReplyForm}
             setMention={setMentionedUser}
             handleReplyDelete={handleReplyDelete}
             nickname={nickname}
+            BASE_URL={BASE_URL}
           ></Reply>
         ))}
       {showReplyForm && (
@@ -225,6 +228,8 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 
   img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
   }

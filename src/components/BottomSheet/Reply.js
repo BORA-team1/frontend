@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile from '../../images/profile.svg';
 
 const Reply = ({
   replyId,
   mention,
   content,
   author,
+  profile,
   showReplyForm,
   setShowReplyForm,
   setMention,
   handleReplyDelete,
   nickname,
+  BASE_URL,
 }) => {
   return (
     <>
       <Container>
         <ProfileContainer>
-          <img src={profile} alt='profileimg'></img>
+          <img src={`${BASE_URL}${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{author}</Id>
@@ -67,6 +68,8 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 
   img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
   }

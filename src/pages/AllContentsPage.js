@@ -35,7 +35,7 @@ const AllContentsPage = () => {
     if (sectionElement) {
       const yOffset =
         sectionElement.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({top: yOffset, behavior: 'smooth'});
+      window.scrollTo({top: yOffset - 170, behavior: 'smooth'});
     }
   };
 
@@ -46,6 +46,7 @@ const AllContentsPage = () => {
   }, [render]);
 
   const [sections, setSections] = useState([]);
+  const [title, setTitle] = useState('');
   const getSection = () => {
     axios
       .get(`${BASE_URL}post/${post_id}/contents/`, {
@@ -55,6 +56,7 @@ const AllContentsPage = () => {
       })
       .then((response) => {
         setSections(response.data.data.PostSec);
+        setTitle(response.data.data);
         console.log(response.data.data.PostSec);
       })
       .catch((error) => {
@@ -84,7 +86,7 @@ const AllContentsPage = () => {
         >
           닫기
         </ClosePage>
-        사교육비 대책과 수능 킬러 문항
+        {title.title}
       </ArticleTitle>
       <SectionBar>
         {sections.map((section, index) => (
@@ -106,105 +108,109 @@ const AllContentsPage = () => {
           </div>
         ))}
       </SectionBar>
+      <SectionContainer>
+        {sections.map((section, index) => (
+          <Section key={index} id={`section-${index}`}>
+            <SectionNum>섹션 {index + 1}</SectionNum>
 
-      {sections.map((section, index) => (
-        <Section key={index} id={`section-${index}`}>
-          <SectionNum>섹션 {index + 1}</SectionNum>
-
-          {section.Lines.map((line) => (
-            <div key={line.sentence}>
-              {/* 밑줄 내용 출력 */}
-              {(line.IngVote.length !== 0 ||
-                line.DoneVote.length !== 0 ||
-                line.Debate.length !== 0 ||
-                line.Question.length !== 0 ||
-                line.LineCom.length !== 0 ||
-                line.Emotion.some((emotion) => emotion.num !== 0)) && (
-                <>
-                  <Sentence>“ {line.content} ”</Sentence>
-                  {/* 밑줄 투표 출력 */}
-                  {(line.IngVote.length !== 0 ||
-                    line.DoneVote.length !== 0) && (
-                    <Content>
-                      <Category>투표</Category>
-                      {line.IngVote.map((vote) => (
-                        <VoteNow
-                          key={vote.vote_id}
-                          vote={vote}
-                          BASE_URL={BASE_URL}
-                          handleBottomSheet={handleBottomSheet}
-                        />
-                      ))}
-                      {line.DoneVote.map((vote) => (
-                        <div style={{marginLeft: '22px'}}>
-                          <VoteResult key={vote.vote_id} donevote={vote} />
-                        </div>
-                      ))}
-                    </Content>
-                  )}
-                  {/* 밑줄 토론 출력 */}
-                  {line.Debate.length !== 0 && (
-                    <Content>
-                      <Category>토론</Category>
-                      {line.Debate.map((debate) => (
-                        <DebateNow
-                          key={debate.debate_id}
-                          debate={debate}
-                          BASE_URL={BASE_URL}
-                        ></DebateNow>
-                      ))}
-                    </Content>
-                  )}
-                  {/* 밑줄 질문 출력 */}
-                  {line.Question.length !== 0 && (
-                    <Content>
-                      <Category>Q&A</Category>
-                      {line.Question.map((question) => (
-                        <QnAContainer key={question.que_id}>
-                          <QBox question={question}></QBox>
-                          {question.Answer.map((answer) => (
-                            <>
-                              <Connect src={qnaconnect}></Connect>
-                              <ABox key={answer.ans_id} answer={answer}></ABox>
-                            </>
-                          ))}
-                        </QnAContainer>
-                      ))}
-                    </Content>
-                  )}
-                  {/* 밑줄에 대한 댓글 출력 */}
-                  {line.LineCom.length !== 0 && (
-                    <Content>
-                      <Category>댓글</Category>
-                      {line.LineCom.map((comment) => (
-                        <>
-                          <ComBox
-                            key={comment.linecom_id}
-                            comment={comment}
+            {section.Lines.map((line) => (
+              <div key={line.sentence}>
+                {/* 밑줄 내용 출력 */}
+                {(line.IngVote.length !== 0 ||
+                  line.DoneVote.length !== 0 ||
+                  line.Debate.length !== 0 ||
+                  line.Question.length !== 0 ||
+                  line.LineCom.length !== 0 ||
+                  line.Emotion.some((emotion) => emotion.num !== 0)) && (
+                  <>
+                    <Sentence>“ {line.content} ”</Sentence>
+                    {/* 밑줄 투표 출력 */}
+                    {(line.IngVote.length !== 0 ||
+                      line.DoneVote.length !== 0) && (
+                      <Content>
+                        <Category>투표</Category>
+                        {line.IngVote.map((vote) => (
+                          <VoteNow
+                            key={vote.vote_id}
+                            vote={vote}
                             BASE_URL={BASE_URL}
-                            authToken={authToken}
-                            nickname={nickname}
-                            render={render}
-                            setRender={setRender}
+                            handleBottomSheet={handleBottomSheet}
                           />
-                        </>
-                      ))}
-                    </Content>
-                  )}
-                  {/* 밑줄에 대한 감정표현 출력 */}
-                  {line.Emotion.some((emotion) => emotion.num !== 0) && (
-                    <Content>
-                      <Category>감정표현</Category>
-                      <EmojiBox emoji={line.Emotion} />
-                    </Content>
-                  )}
-                </>
-              )}
-              <HR></HR>
-            </div>
-          ))}
-        </Section>
-      ))}
+                        ))}
+                        {line.DoneVote.map((vote) => (
+                          <div style={{marginLeft: '22px'}}>
+                            <VoteResult key={vote.vote_id} donevote={vote} />
+                          </div>
+                        ))}
+                      </Content>
+                    )}
+                    {/* 밑줄 토론 출력 */}
+                    {line.Debate.length !== 0 && (
+                      <Content>
+                        <Category>토론</Category>
+                        {line.Debate.map((debate) => (
+                          <DebateNow
+                            key={debate.debate_id}
+                            debate={debate}
+                            BASE_URL={BASE_URL}
+                          ></DebateNow>
+                        ))}
+                      </Content>
+                    )}
+                    {/* 밑줄 질문 출력 */}
+                    {line.Question.length !== 0 && (
+                      <Content>
+                        <Category>Q&A</Category>
+                        {line.Question.map((question) => (
+                          <QnAContainer key={question.que_id}>
+                            <QBox question={question}></QBox>
+                            {question.Answer.map((answer) => (
+                              <>
+                                <Connect src={qnaconnect}></Connect>
+                                <ABox
+                                  key={answer.ans_id}
+                                  answer={answer}
+                                ></ABox>
+                              </>
+                            ))}
+                          </QnAContainer>
+                        ))}
+                      </Content>
+                    )}
+                    {/* 밑줄에 대한 댓글 출력 */}
+                    {line.LineCom.length !== 0 && (
+                      <Content>
+                        <Category>댓글</Category>
+                        {line.LineCom.map((comment) => (
+                          <>
+                            <ComBox
+                              key={comment.linecom_id}
+                              comment={comment}
+                              BASE_URL={BASE_URL}
+                              authToken={authToken}
+                              nickname={nickname}
+                              render={render}
+                              setRender={setRender}
+                            />
+                          </>
+                        ))}
+                      </Content>
+                    )}
+                    {/* 밑줄에 대한 감정표현 출력 */}
+                    {line.Emotion.some((emotion) => emotion.num !== 0) && (
+                      <Content>
+                        <Category>감정표현</Category>
+                        <EmojiBox emoji={line.Emotion} />
+                      </Content>
+                    )}
+                  </>
+                )}
+                <HR></HR>
+              </div>
+            ))}
+          </Section>
+        ))}
+      </SectionContainer>
       {bottomSheetOpen && (
         <VoteBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}
@@ -230,10 +236,13 @@ const Wrapper = styled.div`
 `;
 
 const ArticleTitle = styled.div`
+  background: var(--background, #161524);
+  z-index: 1;
+  position: fixed;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 100%;
+  width: 390px;
   padding-top: 81px;
   padding-bottom: 28px;
   color: #fff;
@@ -253,12 +262,18 @@ const ClosePage = styled.div`
 `;
 
 const SectionBar = styled.div`
+  background: var(--background, #161524);
+  z-index: 1;
+  position: fixed;
+  top: 124px;
+  width: 370px;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 15px 0 15px 20px;
   gap: 7px;
-  border: 1px solid #353646;
+  border-top: 1px solid #353646;
+  border-bottom: 1px solid #353646;
 
   div {
     color: rgba(255, 255, 255, 0.6);
@@ -273,13 +288,22 @@ const SectionBar = styled.div`
   }
 `;
 
+const SectionContainer = styled.div`
+  position: absolute;
+  top: 182px;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Section = styled.div`
   display: flex;
   flex-direction: column;
+  width: 390px;
   padding-left: 20px;
   padding-right: 20px;
   box-sizing: border-box;
   color: #fff;
+  background: var(--background, #161524);
 `;
 
 const SectionNum = styled.div`
