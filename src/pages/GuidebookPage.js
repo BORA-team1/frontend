@@ -139,6 +139,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
@@ -155,7 +156,7 @@ const Title = styled.div`
   font-family: "Pretendard-Regular";
   font-size: 19px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 14.4px;
   span {
     color: var(--main-purple, #5a45f5);
@@ -168,7 +169,7 @@ const Intro = styled.div`
   text-align: center;
   font-size: 12px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100;
   line-height: 20px;
   opacity: 0.7;
 
@@ -182,13 +183,12 @@ const Intro = styled.div`
 const Introducing = styled.img`
   width: 246px;
   height: 342px;
-  margin-top: 347px;
+  margin-top: 80px;
   margin-bottom: 80px;
 `;
 
 const Radio = styled.div`
-  margin-top: 70px;
-  margin-bottom: 20px;
+  margin: 70px 0 20px 20px;
   font-family: "Pretendard-Regular";
   font-size: 18px;
   font-style: normal;
@@ -199,6 +199,8 @@ const Radio = styled.div`
 `;
 
 const RadioTitle = styled.div`
+  position: absolute;
+  top: 30px;
   font-family: "Pretendard-Regular";
   font-size: 18px;
   font-style: normal;
@@ -213,6 +215,12 @@ const GrayBox = styled.div`
   height: 407px;
   background: var(--card-color, #2b2c3f);
   margin-bottom: 40px;
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Box2 = styled.div`
@@ -220,20 +228,26 @@ const Box2 = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 `;
 
 const RadioImgList = styled.div`
   display: flex;
+  margin-top: 2dvh;
 `;
 
 const RadioImg = styled.img``;
 
 const Next = styled.img`
+  position: absolute;
+  right: 20px;
   width: 30.455px;
   height: 30.455px;
 `;
 
 const Prev = styled.img`
+  position: absolute;
+  left: 20px;
   width: 30.455px;
   height: 30.455px;
 `;

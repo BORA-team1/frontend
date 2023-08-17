@@ -34,8 +34,9 @@ const PlayingBar = ({
 }) => {
   //bookmark
   const [bookmarkSrc, setBookmarkSrc] = useState(
-    audio.is_booked ? bookmarkicon_off : bookmarkicon_on
+    audio.is_booked ? bookmarkicon_on : bookmarkicon_off
   );
+  console.log(audio.is_booked);
 
   const handleBookmarkClick = (e) => {
     e.stopPropagation();

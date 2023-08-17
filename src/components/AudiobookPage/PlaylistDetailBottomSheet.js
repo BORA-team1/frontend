@@ -24,7 +24,7 @@ const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
   //POST: 에디터 팔로우
   const followUser = (user_pk, authToken) => {
     axios
-      .post(`${BASE_URL}mypage/following/${user_pk}`, null, {
+      .post(`${BASE_URL}mypage/following/${user_pk}/`, null, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
