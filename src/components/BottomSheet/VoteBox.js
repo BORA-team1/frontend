@@ -1,17 +1,19 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
 
 //images
-import profile from '../../images/profile.svg';
-import votedicon from '../../images/votedicon.svg';
+import profile from "../../images/profile.svg";
+import votedicon from "../../images/votedicon.svg";
 
 //context
-import {useAuth} from '../../contexts/AuthContext';
+import { useAuth } from "../../contexts/AuthContext";
 
-const VoteBox = ({ingvote}) => {
-  const {authToken, BASE_URL} = useAuth();
-  const [votedIndex, setVotedIndex] = useState(-1);
+const VoteBox = ({ ingvote }) => {
+  const { authToken, BASE_URL } = useAuth();
+  const [votedIndex, setVotedIndex] = useState(
+    ingvote.my_select !== 0 ? ingvote.my_select : -1
+  );
 
   const handleVote = (index) => {
     {
@@ -19,7 +21,7 @@ const VoteBox = ({ingvote}) => {
         axios
           .post(
             `${BASE_URL}vote/voting/${ingvote.vote_id}/`,
-            {select: index},
+            { select: index },
             {
               headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -31,7 +33,7 @@ const VoteBox = ({ingvote}) => {
             console.log(response);
           })
           .catch((error) => {
-            console.error('투표하는 중 오류가 발생했습니다.', error);
+            console.error("투표하는 중 오류가 발생했습니다.", error);
           });
     }
   };
@@ -40,7 +42,7 @@ const VoteBox = ({ingvote}) => {
     <Container>
       <Header>
         <ProfileContainer>
-          <img src={profile} alt='profileimg'></img>
+          <img src={profile} alt="profileimg"></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{ingvote.vote_user.nickname}</Id>
@@ -51,29 +53,29 @@ const VoteBox = ({ingvote}) => {
         <div
           onClick={() => handleVote(1)}
           style={{
-            backgroundColor: votedIndex === 1 ? '#5A45F5' : '#6a6881',
+            backgroundColor: votedIndex === 1 ? "#5A45F5" : "#6a6881",
           }}
         >
           {ingvote.item1}
-          {votedIndex === 1 && <img src={votedicon} alt='투표 완료'></img>}
+          {votedIndex === 1 && <img src={votedicon} alt="투표 완료"></img>}
         </div>
         <div
           onClick={() => handleVote(2)}
           style={{
-            backgroundColor: votedIndex === 2 ? '#5A45F5' : '#6a6881',
+            backgroundColor: votedIndex === 2 ? "#5A45F5" : "#6a6881",
           }}
         >
           {ingvote.item2}
-          {votedIndex === 2 && <img src={votedicon} alt='투표 완료'></img>}
+          {votedIndex === 2 && <img src={votedicon} alt="투표 완료"></img>}
         </div>
         <div
           onClick={() => handleVote(3)}
           style={{
-            backgroundColor: votedIndex === 3 ? '#5A45F5' : '#6a6881',
+            backgroundColor: votedIndex === 3 ? "#5A45F5" : "#6a6881",
           }}
         >
           {ingvote.item3}
-          {votedIndex === 3 && <img src={votedicon} alt='투표 완료'></img>}
+          {votedIndex === 3 && <img src={votedicon} alt="투표 완료"></img>}
         </div>
       </List>
     </Container>
@@ -86,7 +88,7 @@ const Container = styled.div`
   width: 350px;
   display: flex;
   flex-direction: column;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
   color: white;
 `;
