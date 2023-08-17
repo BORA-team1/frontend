@@ -17,7 +17,7 @@ import DebateBottomSheet from '../components/BottomSheet/DebateBottomSheet';
 const ArticlePage = () => {
   //post_id
   const {post_id} = useParams();
-  console.log(post_id);
+  const [allRender, setAllRender] = useState(1);
 
   //콘텐츠 켜짐/꺼짐
   const [isContentsOn, setContentsOn] = useState(true);
@@ -51,12 +51,16 @@ const ArticlePage = () => {
       <VoteBottomSheet
         handleCloseBottomSheet={handleCloseBottomSheet}
         postPk={post_id}
+        allRender={allRender}
+        setAllRender={setAllRender}
       />
     ),
     debate: (
       <DebateBottomSheet
         handleCloseBottomSheet={handleCloseBottomSheet}
         postPk={post_id}
+        allRender={allRender}
+        setAllRender={setAllRender}
       />
     ),
   };
@@ -69,6 +73,8 @@ const ArticlePage = () => {
         <ArticleContent
           isContentsOn={isContentsOn}
           postPk={post_id}
+          allRender={allRender}
+          setAllRender={setAllRender}
         ></ArticleContent>
         <ArticleReview
           handleBottomSheet={handleBottomSheet}

@@ -11,7 +11,12 @@ import addbutton from '../../images/addbutton.png';
 //context
 import {useAuth} from '../../contexts/AuthContext';
 
-const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
+const VoteBottomSheet = ({
+  handleCloseBottomSheet,
+  postPk,
+  allRender,
+  setAllRender,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [category, setCategory] = useState('A');
 
@@ -70,6 +75,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
       })
       .then((response) => {
         setRender(render + 1);
+        setAllRender(allRender + 1);
         console.log(response);
       })
       .catch((error) => {
@@ -176,18 +182,18 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                 votes.map((vote) => (
                   <div key={vote.vote_id}>
                     <SentenceBox lineContent={vote.content}></SentenceBox>
-                    <VoteBoxContainer>
-                      <VoteBox ingvote={vote.IngVote[0]}></VoteBox>
-                      {vote.IngVote[0].vote_user.nickname === nickname && (
-                        <VoteEnd
-                          onClick={() =>
-                            handleVoteComplete(vote.IngVote[0].vote_id)
-                          }
-                        >
-                          투표 종료하기
-                        </VoteEnd>
-                      )}
-                    </VoteBoxContainer>
+                    {vote.IngVote.map((ingvote) => (
+                      <VoteBoxContainer key={ingvote.vote_id}>
+                        <VoteBox ingvote={ingvote}></VoteBox>
+                        {ingvote.vote_user.nickname === nickname && (
+                          <VoteEnd
+                            onClick={() => handleVoteComplete(ingvote.vote_id)}
+                          >
+                            투표 종료하기
+                          </VoteEnd>
+                        )}
+                      </VoteBoxContainer>
+                    ))}
                   </div>
                 ))}
             </ListContatiner>
@@ -209,9 +215,11 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
               doneVotes.map((vote, index) => (
                 <div key={index}>
                   <SentenceBox lineContent={vote.content}></SentenceBox>
-                  <VoteResultContainer>
-                    <VoteResult donevote={vote.DoneVote[0]}></VoteResult>
-                  </VoteResultContainer>
+                  {vote.DoneVote.map((donevote) => (
+                    <VoteResultContainer>
+                      <VoteResult donevote={donevote}></VoteResult>
+                    </VoteResultContainer>
+                  ))}
                 </div>
               ))}
           </ListContatiner>
@@ -226,19 +234,26 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
             {myVotes.map((vote, index) => (
               <div key={index}>
                 <SentenceBox lineContent={vote.content}></SentenceBox>
-                {vote.IngVote[0] && (
-                  <VoteBoxContainer>
-                    <VoteBox ingvote={vote.IngVote[0]}></VoteBox>
+                {vote.IngVote.map((ingvote) => (
+                  <VoteBoxContainer key={ingvote.vote_id}>
+                    <VoteBox ingvote={ingvote}></VoteBox>
+                    {ingvote.vote_user.nickname === nickname && (
+                      <VoteEnd
+                        onClick={() => handleVoteComplete(ingvote.vote_id)}
+                      >
+                        투표 종료하기
+                      </VoteEnd>
+                    )}
                   </VoteBoxContainer>
-                )}
-                {vote.DoneVote[0] && (
+                ))}
+                {vote.DoneVote.map((donevote) => (
                   <VoteResultContainer>
                     <VoteResult
-                      user={vote.DoneVote.vote_user}
-                      donevote={vote.DoneVote[0]}
+                      user={donevote.vote_user}
+                      donevote={donevote}
                     ></VoteResult>
                   </VoteResultContainer>
-                )}
+                ))}
               </div>
             ))}
           </ListContatiner>

@@ -8,7 +8,14 @@ import more from '../../images/more.svg';
 //context
 import {useAuth} from '../../contexts/AuthContext';
 
-const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
+const DebateCreateModal = ({
+  closeModal,
+  postPk,
+  render,
+  setRender,
+  allRender,
+  setAllRender,
+}) => {
   //인용 바텀시트 띄우기
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const openBottomSheet = () => {
@@ -50,6 +57,7 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
         setDebateLink(null);
         setLineId(null);
         setRender(render + 1);
+        setAllRender(allRender + 1);
       })
       .catch((error) => {
         console.error('투표를 등록하는 중 오류가 발생했습니다.', error);
@@ -154,7 +162,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 20px;
+  padding: 0px 20px 20px 20px;
 
   border-radius: 10px;
   border: 1px solid var(--unnamed, #353646);

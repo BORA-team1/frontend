@@ -21,30 +21,39 @@ const ContentPopup = ({line, lineContent}) => {
         <Container>
           <Triangle></Triangle>
           <Sentence>“{lineContent}”</Sentence>
-          {isVoteOpen && (
-            <ContentContainer>
-              <VoteResult donevote={line.DoneVote[0]}></VoteResult>
-            </ContentContainer>
-          )}
+          {isVoteOpen &&
+            line.DoneVote.map((donevote) => (
+              <ContentContainer>
+                <VoteResult
+                  // user={donevote.vote_user}
+                  donevote={donevote}
+                ></VoteResult>
+              </ContentContainer>
+            ))}
           <Popup onClick={handleVotePopup} isopen={isVoteOpen}>
             <img src={more} alt='popupbutton'></img>
           </Popup>
         </Container>
       ) : null}
-      {line.Debate && line.Debate.length > 0 && (
-        <Container>
-          <Triangle></Triangle>
-          <Sentence>“{lineContent}”</Sentence>
-          {isDebateOpen && (
-            <ContentContainer>
-              {<DebateNow debate={line.Debate[0]}></DebateNow>}
-            </ContentContainer>
-          )}
-          <Popup onClick={handleDebatePopup} isopen={isDebateOpen}>
-            <img src={more} alt='popupbutton'></img>
-          </Popup>
-        </Container>
-      )}
+      {line.Debate &&
+        line.Debate.length > 0 &&
+        line.Debate.map(
+          (debate, index) =>
+            debate.cond === 1 && (
+              <Container key={index}>
+                <Triangle></Triangle>
+                <Sentence>“{lineContent}”</Sentence>
+                {isDebateOpen && (
+                  <ContentContainer>
+                    <DebateNow debate={debate}></DebateNow>
+                  </ContentContainer>
+                )}
+                <Popup onClick={handleDebatePopup} isopen={isDebateOpen}>
+                  <img src={more} alt='popupbutton'></img>
+                </Popup>
+              </Container>
+            )
+        )}
     </>
   );
 };
@@ -52,8 +61,8 @@ const ContentPopup = ({line, lineContent}) => {
 export default ContentPopup;
 
 const Container = styled.div`
-  margin-top: 0px;
-  margin-bottom: 20px;
+  margin-top: -20px;
+  margin-bottom: 40px;
   width: 390px;
   display: flex;
   flex-direction: column;

@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+
 //images
-import profile from '../../images/profile.svg';
 import submiticon from '../../images/submiticon.svg';
 
 const QnABox = ({
   comment,
   commentContent,
   nickname,
+  profile,
   addReply,
   handleDelete,
 }) => {
@@ -35,7 +36,7 @@ const QnABox = ({
     <>
       <Container>
         <ProfileContainer>
-          <img src={profile} alt='profileimg'></img>
+          <img src={`${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{nickname}</Id>
@@ -96,6 +97,8 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 
   img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
   }

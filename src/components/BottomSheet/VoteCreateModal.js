@@ -63,6 +63,7 @@ const VoteCreateModal = ({closeModal, postPk, render, setRender}) => {
         setOptions(['', '', '']);
         setLineId(null);
         setRender(render + 1);
+
         console.log(response);
       })
       .catch((error) => {

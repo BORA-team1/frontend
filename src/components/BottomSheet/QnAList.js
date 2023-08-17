@@ -31,7 +31,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
       .then((response) => {
         const postData = response.data.data.PostSec;
         const targetSection = postData.find(
-          (section) => section.sec_id === selectedIndex.index
+          (section) => section.num === selectedIndex.index
         );
         if (targetSection) {
           const targetLine = targetSection.Lines.find(
@@ -140,6 +140,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
                   comment={comment}
                   commentContent={comment.content}
                   nickname={comment.que_user.nickname}
+                  profile={comment.que_user.profile}
                   addReply={addReply}
                   handleDelete={handleDelete}
                 ></QnABox>
@@ -156,6 +157,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
                         comment={comment.Answer[0]}
                         commentContent={comment.Answer[0].content}
                         nickname={comment.Answer[0].ans_user.nickname}
+                        profile={comment.Answer[0].ans_user.profile}
                       ></QnABox>
                     </AContainer>
                     {!expandedQuestions[comment.que_id] && (
@@ -194,6 +196,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
                           comment={comment}
                           commentContent={comment.content}
                           nickname={comment.ans_user.nickname}
+                          profile={comment.ans_user.profile}
                         ></QnABox>
                       </AContainer>
                     ))}
@@ -214,6 +217,7 @@ const QnAList = ({expanded, openExpandSpace}) => {
                 comment={comments[comments.length - 1]}
                 commentContent={comments[comments.length - 1].content}
                 nickname={comments[comments.length - 1].que_user.nickname}
+                profile={comments[comments.length - 1].que_user.profile}
               ></QnABox>
             </QContainer>
           )}

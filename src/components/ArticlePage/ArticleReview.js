@@ -93,6 +93,7 @@ const ArticleReview = ({handleBottomSheet, postPk}) => {
               reviewId={reviews[reviews.length - 1].han_id}
               reviewContent={reviews[reviews.length - 1].content}
               author={reviews[reviews.length - 1].han_user.nickname}
+              profile={reviews[reviews.length - 1].han_user.profile}
               like={reviews[reviews.length - 1].like_num}
               doLIke={reviews[reviews.length - 1].do_like}
               handleDelete={handleDelete}

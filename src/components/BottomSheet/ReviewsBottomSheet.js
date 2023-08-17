@@ -104,6 +104,7 @@ const ReviewsBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                   reviewId={review.han_id}
                   reviewContent={review.content}
                   author={review.han_user.nickname}
+                  profile={review.han_user.profile}
                   like={review.like_num}
                   doLIke={review.do_like}
                   handleDelete={handleDelete}
