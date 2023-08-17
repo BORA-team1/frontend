@@ -12,7 +12,7 @@ export const timeIntervalsData = [
     { start: 35, end: 80, sectionId: 2 },
     { start: 80, end: 123, sectionId: 3 },
     { start: 123, end: 173, sectionId: 4 },
-    { start: 173, end: 233, sectionId: 4 },
+    { start: 173, end: 233, sectionId: 5 },
   ],
   [
     //id : 3 - 만 나이
