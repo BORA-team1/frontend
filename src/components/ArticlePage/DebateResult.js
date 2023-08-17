@@ -20,7 +20,7 @@ const DebateResult = ({doneDebate, BASE_URL}) => {
         <TagBox>
           <People>만든 이</People>
           <UserIcon>
-            <img src={`${BASE_URL}${doneDebate.debate_user.profile}`} />
+            <img src={`${doneDebate.debate_user.profile}`} />
             <div>{doneDebate.debate_user.nickname}</div>
           </UserIcon>
         </TagBox>

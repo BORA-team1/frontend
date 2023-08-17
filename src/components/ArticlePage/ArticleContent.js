@@ -19,6 +19,7 @@ import curious from '../../images/emoji/curious.svg';
 //context
 import {useAuth} from '../../contexts/AuthContext';
 import {PostProvider} from '../../contexts/PostContext';
+import AllContentsPage from '../../pages/AllContentsPage';
 
 const ArticleContent = ({isContentsOn, postPk}) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
@@ -28,7 +29,6 @@ const ArticleContent = ({isContentsOn, postPk}) => {
 
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [highlights, setHighlights] = useState([]);
 
   //하이라이팅 바텀시트 오픈/클로즈
   const handleOpenBottomSheet = () => {
@@ -76,9 +76,12 @@ const ArticleContent = ({isContentsOn, postPk}) => {
 
   // GET: 세부포스트
   const {authToken, BASE_URL} = useAuth();
+  const [render, setRender] = useState(1);
+
   useEffect(() => {
     getPosts();
-  }, []);
+    getLines();
+  }, [render]);
 
   const [posts, setPosts] = useState([]);
   const getPosts = () => {
@@ -90,7 +93,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       })
       .then((response) => {
         setPosts(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       })
       .catch((error) => {
         console.error(
@@ -101,7 +104,6 @@ const ArticleContent = ({isContentsOn, postPk}) => {
   };
 
   //POST: 밑줄 긋기
-  const [render, setRender] = useState(1);
   const addToHighlights = () => {
     axios
       .post(
@@ -119,14 +121,30 @@ const ArticleContent = ({isContentsOn, postPk}) => {
       )
       .then((response) => {
         setRender(render + 1);
-        setHighlights([...highlights, selectedIndex]);
-        console.log(highlights);
         setSelectedIndex(null);
         setSelectedSentence(null);
         console.log(response);
       })
       .catch((error) => {
         console.error('밑줄을 등록하는 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  // GET: 내 밑줄
+  const [highlights, setHighlights] = useState([]);
+  const getLines = () => {
+    axios
+      .get(`${BASE_URL}line/${postPk}/`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setHighlights(response.data.data.Lines);
+        console.log(response.data.data.Lines);
+      })
+      .catch((error) => {
+        console.error('내 밑줄을 불러오는 중 오류가 발생했습니다.', error);
       });
   };
 
@@ -144,7 +162,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
 
   //POST: 에디터 팔로우
   const user_id = posts.author_id;
-  const followUser = (user_pk, authToken) => {
+  const followUser = (user_pk) => {
     axios
       .post(`${BASE_URL}mypage/following/${user_pk}`, null, {
         headers: {
@@ -217,8 +235,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                                     ? 'transparent'
                                     : highlights.some(
                                         (highlight) =>
-                                          highlight.sentenceIndex ===
-                                          currentSentenceIndex
+                                          highlight.content === sentence
                                       )
                                     ? 'rgba(170, 158, 255, 0.35)'
                                     : 'transparent',
@@ -241,6 +258,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                           const targetLine = section.Lines.find(
                             (line) => line.sentence === currentIconIndex
                           );
+
                           const hasLineCom =
                             targetLine &&
                             targetLine.LineCom &&
@@ -281,7 +299,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                                   handleOpenBottomSheet();
                                 }}
                                 style={{
-                                  height: `${500 / sentencesIcon.length}%`,
+                                  height: `${100 / sentencesIcon.length}%`,
                                 }}
                               >
                                 {hasLineCom && (
@@ -308,6 +326,21 @@ const ArticleContent = ({isContentsOn, postPk}) => {
                                   )}
                               </Icon>
                             );
+                          } else {
+                            return (
+                              <Icon
+                                key={sentenceIndex}
+                                style={{
+                                  height: `${100 / sentencesIcon.length}%`,
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    height: `${100 / sentencesIcon.length}%`,
+                                  }}
+                                />
+                              </Icon>
+                            );
                           }
                         })}
                       </SectionBar>
@@ -327,7 +360,7 @@ const ArticleContent = ({isContentsOn, postPk}) => {
           );
         })}
 
-      <EditerFollow onClick={() => followUser(user_id, authToken)}>
+      <EditerFollow onClick={() => followUser(user_id)}>
         이 포스트의 에디터 팔로우하기
       </EditerFollow>
       <PostProvider selectedIndex={selectedIndex} postPk={postPk}>
@@ -343,6 +376,8 @@ const ArticleContent = ({isContentsOn, postPk}) => {
             isEmojiBarOpen={isEmojiBarOpen}
             openEmojiBar={openEmojiBar}
             closeEmojiBar={closeEmojiBar}
+            render={render}
+            setRender={setRender}
           ></FloatingBar>
         )}
         {isBottomSheetOpen && (
@@ -364,7 +399,6 @@ const ArticleContent = ({isContentsOn, postPk}) => {
 };
 
 export default ArticleContent;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

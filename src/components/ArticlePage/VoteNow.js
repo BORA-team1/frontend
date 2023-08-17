@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const VoteNow = ({vote}) => {
+const VoteNow = ({vote, handleBottomSheet}) => {
   return (
     <Container>
       <DebateContent>
@@ -21,7 +21,7 @@ const VoteNow = ({vote}) => {
           <div>님이 생성한 투표 진행 중!</div>
         </Subtitle>
       </DebateContent>
-      <EnterButton>투표하기</EnterButton>
+      <EnterButton onClick={handleBottomSheet}>투표하기</EnterButton>
     </Container>
   );
 };
@@ -29,9 +29,11 @@ const VoteNow = ({vote}) => {
 export default VoteNow;
 
 const Container = styled.div`
+  width: 326px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   font-family: 'Pretendard-Regular';
   font-style: normal;
   gap: 13px;
@@ -96,4 +98,5 @@ const EnterButton = styled.div`
   font-size: 14px;
   font-weight: 600;
   line-height: normal;
+  cursor: pointer;
 `;

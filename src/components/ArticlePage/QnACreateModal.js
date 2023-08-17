@@ -10,6 +10,8 @@ const QnACreateModal = ({
   closeQnACreateModal,
   handleOpenBottomSheet,
   showListB,
+  render,
+  setRender,
 }) => {
   //질문 입력창 높이 조절
   const textRef = useRef();
@@ -42,6 +44,7 @@ const QnACreateModal = ({
       )
       .then((response) => {
         setQuestion('');
+        setRender(render + 1);
         console.log(response);
       })
       .catch((error) => {

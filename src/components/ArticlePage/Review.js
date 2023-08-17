@@ -142,9 +142,22 @@ const Review = ({
             >
               {like}
             </div>
-            <span>·</span>
+            <span
+              style={{
+                color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              ·
+            </span>
             {clickIcon ? (
-              <div onClick={handleClickIcon}>추천 취소</div>
+              <div
+                onClick={handleClickIcon}
+                style={{
+                  color: '#A397FF',
+                }}
+              >
+                추천 취소
+              </div>
             ) : (
               <div onClick={handleClickIcon}>추천해요</div>
             )}
@@ -259,6 +272,11 @@ const Plus = styled.div`
     width: 9px;
     height: 9.212px;
     cursor: pointer;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.7);
+    padding-top: 0px;
   }
 
   div {

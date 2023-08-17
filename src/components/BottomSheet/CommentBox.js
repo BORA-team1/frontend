@@ -145,7 +145,16 @@ const CommentBox = ({
               {commentLike}
             </div>
             {clickIcon ? (
-              <div onClick={handleLIkeDelete}>좋아요 취소</div>
+
+              <div
+                onClick={handleLIkeDelete}
+                style={{
+                  color: '#A397FF',
+                }}
+              >
+                좋아요 취소
+              </div>
+
             ) : (
               <div onClick={handleLIkeClick}>좋아요</div>
             )}

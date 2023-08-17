@@ -24,9 +24,10 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
   //POST: 투표 등록
   const {authToken, BASE_URL} = useAuth();
   const [debateTitle, setDebateTitle] = useState(''); //토론 타이틀
-  const [debateLink, setDebateLink] = useState(null);
+  const [debateLink, setDebateLink] = useState('');
 
   const handleSubmit = (lineId) => {
+    console.log(debateLink);
     if (debateTitle.trim() === '') return null;
     axios
       .post(
@@ -43,12 +44,12 @@ const DebateCreateModal = ({closeModal, postPk, render, setRender}) => {
         }
       )
       .then((response) => {
+        console.log(response);
         closeModal();
         setDebateTitle('');
         setDebateLink(null);
         setLineId(null);
         setRender(render + 1);
-        console.log(response);
       })
       .catch((error) => {
         console.error('투표를 등록하는 중 오류가 발생했습니다.', error);

@@ -31,7 +31,7 @@ const ArticleHeader = ({postPk}) => {
       .then((response) => {
         setPosts(response.data.data);
         setDate(response.data.data.date);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       })
       .catch((error) => {
         console.error(

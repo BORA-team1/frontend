@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-const DabateBox = ({debate, nickname, BASE_URL, handleDebateComplete}) => {
+const DabateBox = ({debate, nickname, handleDebateComplete}) => {
+  console.log(debate.link);
   return (
     <Box>
       <Title>
@@ -19,24 +20,29 @@ const DabateBox = ({debate, nickname, BASE_URL, handleDebateComplete}) => {
         <TagBox>
           <People>만든 이</People>
           <UserIcon>
-            <img src={`${BASE_URL}${debate.debate_user.profile}`} />
+            <img src={`${debate.debate_user.profile}`} />
             <div>{debate.debate_user.nickname}</div>
           </UserIcon>
         </TagBox>
         <BtnContainer>
-          <JoinBtn onClick={() => (window.location.href = debate.url)}>
-            참여하기
-          </JoinBtn>
-          {debate.debate_user.nickname === nickname && (
-            <JoinBtn
-              onClick={() => {
-                handleDebateComplete(debate.debate_id);
-              }}
-              style={{background: 'none', color: 'white'}}
-            >
-              토론 종료하기
-            </JoinBtn>
+          {debate.cond === 1 && (
+            <>
+              <JoinBtn onClick={() => (window.location.href = debate.link)}>
+                참여하기
+              </JoinBtn>
+              {debate.debate_user.nickname === nickname && (
+                <JoinBtn
+                  onClick={() => {
+                    handleDebateComplete(debate.debate_id);
+                  }}
+                  style={{background: 'none', color: 'white'}}
+                >
+                  토론 종료하기
+                </JoinBtn>
+              )}
+            </>
           )}
+          {debate.cond === 2 && <EndBtn>토론종료</EndBtn>}
         </BtnContainer>
       </div>
     </Box>
@@ -119,6 +125,19 @@ const JoinBtn = styled(Font)`
   cursor: pointer;
 
   color: var(--main-black, #1a1920);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const EndBtn = styled(Font)`
+  display: flex;
+  align-items: flex-start;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  color: rgba(255, 255, 255, 0.5);
   text-align: center;
   font-size: 14px;
   font-weight: 600;
