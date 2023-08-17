@@ -5,7 +5,14 @@ import axios from 'axios';
 import heart from '../../images/heart.svg';
 import heartclick from '../../images/heartclick.svg';
 
-const ComBox = ({comment, BASE_URL, authToken, nickname}) => {
+const ComBox = ({
+  comment,
+  BASE_URL,
+  authToken,
+  nickname,
+  render,
+  setRender,
+}) => {
   //Delete: 댓글 삭제
   const handleDelete = (id) => {
     axios
@@ -24,8 +31,41 @@ const ComBox = ({comment, BASE_URL, authToken, nickname}) => {
 
   //좋아요/좋아요취소
   const [clickIcon, setClickIcon] = useState(comment.do_like);
-  const handleClickIcon = () => {
-    setClickIcon(!clickIcon);
+
+  //POST: 좋아요
+  const handleLIkeClick = () => {
+    axios
+      .post(`${BASE_URL}line/com/like/${comment.linecom_id}/`, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        console.log('밑줄 댓글을 좋아요했습니다.', response);
+        setRender(render + 1);
+        setClickIcon(!clickIcon);
+      })
+      .catch((error) => {
+        console.error('밑줄 댓글 좋아요 중 오류가 발생했습니다.', error);
+      });
+  };
+
+  //DELETE: 좋아요 취소
+  const handleLIkeDelete = () => {
+    axios
+      .patch(`${BASE_URL}line/com/like/${comment.linecom_id}/`, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        console.log('밑줄 댓글을 좋아요 취소했습니다.', response);
+        setRender(render + 1);
+        setClickIcon(!clickIcon);
+      })
+      .catch((error) => {
+        console.error('밑줄 댓글 좋아요 취소 중 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -41,10 +81,10 @@ const ComBox = ({comment, BASE_URL, authToken, nickname}) => {
             <img
               src={heartclick}
               alt='heartclick'
-              onClick={handleClickIcon}
+              onClick={handleLIkeDelete}
             ></img>
           ) : (
-            <img src={heart} alt='heart' onClick={handleClickIcon}></img>
+            <img src={heart} alt='heart' onClick={handleLIkeClick}></img>
           )}
           <div
             style={{
@@ -54,10 +94,18 @@ const ComBox = ({comment, BASE_URL, authToken, nickname}) => {
             {comment.likenum}
           </div>
           {clickIcon ? (
-            <div onClick={handleClickIcon}>좋아요 취소</div>
+            <div
+              onClick={handleLIkeDelete}
+              style={{
+                color: clickIcon ? '#A397FF' : 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              좋아요 취소
+            </div>
           ) : (
-            <div onClick={handleClickIcon}>좋아요</div>
+            <div onClick={handleLIkeClick}>좋아요</div>
           )}
+
           {comment.linecom_user.nickname === nickname && (
             <>
               <span>·</span>

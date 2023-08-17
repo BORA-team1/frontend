@@ -15,6 +15,8 @@ const FloatingBar = ({
   isEmojiBarOpen,
   openEmojiBar,
   closeEmojiBar,
+  render,
+  setRender,
 }) => {
   //QnA 모달 오픈/클로즈
   const [isQnAOpen, setIsQnAOpen] = useState(false);
@@ -49,6 +51,8 @@ const FloatingBar = ({
           closeQnACreateModal={closeQnACreateModal}
           handleOpenBottomSheet={handleOpenBottomSheet}
           showListB={showListB}
+          render={render}
+          setRender={setRender}
         ></QnACreateModal>
       )}
       {isInputOpen && (
@@ -56,6 +60,8 @@ const FloatingBar = ({
           closeInputBox={closeInputBox}
           handleOpenBottomSheet={handleOpenBottomSheet}
           showListA={showListA}
+          render={render}
+          setRender={setRender}
         ></CommentInput>
       )}
       {isEmojiBarOpen && (
@@ -64,6 +70,8 @@ const FloatingBar = ({
           isBottomSheetOpen={isBottomSheetOpen}
           handleOpenBottomSheet={handleOpenBottomSheet}
           showListC={showListC}
+          render={render}
+          setRender={setRender}
         ></EmojiBar>
       )}
     </Wrapper>

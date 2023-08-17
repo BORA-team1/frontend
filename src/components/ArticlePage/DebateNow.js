@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const DebateNow = ({debate, BASE_URL}) => {
+const DebateNow = ({debate}) => {
   return (
     <Container>
       <DebateContent>
@@ -13,16 +13,15 @@ const DebateNow = ({debate, BASE_URL}) => {
         <Subtitle>
           <div>주제로</div>
           <Member>
-            <img
-              src={`${BASE_URL}${debate.debate_user.profile}`}
-              alt='profile'
-            />
+            <img src={`${debate.debate_user.profile}`} alt='profile' />
             <div>{debate.debate_user.nickname}</div>
           </Member>
           <div>님이 토론을 주최했어요!</div>
         </Subtitle>
       </DebateContent>
-      <EnterButton>참여하기</EnterButton>
+      <EnterButton onClick={() => (window.location.href = debate.link)}>
+        참여하기
+      </EnterButton>
     </Container>
   );
 };

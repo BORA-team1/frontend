@@ -8,7 +8,13 @@ import submiticon from '../../images/submiticon.svg';
 import {useAuth} from '../../contexts/AuthContext';
 import {usePost} from '../../contexts/PostContext';
 
-const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
+const CommentInput = ({
+  closeInputBox,
+  handleOpenBottomSheet,
+  showListA,
+  render,
+  setRender,
+}) => {
   //플로팅 바에서 import된 컴포넌트
 
   //POST: 댓글
@@ -38,6 +44,7 @@ const CommentInput = ({closeInputBox, handleOpenBottomSheet, showListA}) => {
         closeInputBox();
         handleOpenBottomSheet();
         showListA();
+        setRender(render + 1);
         console.log(response);
       })
       .catch((error) => {

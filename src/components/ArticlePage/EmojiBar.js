@@ -18,6 +18,8 @@ const EmojiBar = ({
   isBottomSheetOpen,
   handleOpenBottomSheet,
   showListC,
+  render,
+  setRender,
 }) => {
   //POST: 댓글
   const {authToken, BASE_URL} = useAuth();
@@ -39,11 +41,7 @@ const EmojiBar = ({
         }
       )
       .then((response) => {
-        console.log(
-          selectedIndex.index,
-          selectedIndex.sentenceIndex,
-          selectedIndex.sentence
-        );
+        setRender(render + 1);
         setEmojiRender(emojiRender + 1);
         closeEmojiBar();
         if (!isBottomSheetOpen) {

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Pie from "./Pie";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import Pie from './Pie';
 
-const VoteResult = ({ donevote }) => {
+const VoteResult = ({donevote}) => {
   const selectedVote = donevote;
   const initialPercentages = {
     result1: 0,
@@ -10,18 +10,29 @@ const VoteResult = ({ donevote }) => {
     result3: 0,
   };
 
-  const [selectedAgeGroup, setSelectedAgeGroup] = useState("10대");
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState('10대');
   const [percentages, setPercentages] = useState(initialPercentages);
 
   const handleAgeGroupClick = (ageGroup, result1, result2, result3) => {
     setSelectedAgeGroup(ageGroup);
+
     const total = result1 + result2 + result3;
-    const newPercentages = {
-      result1: (result1 / total) * 100,
-      result2: (result2 / total) * 100,
-      result3: (result3 / total) * 100,
-    };
-    setPercentages(newPercentages);
+
+    if (total !== 0) {
+      const newPercentages = {
+        result1: (result1 / total) * 100,
+        result2: (result2 / total) * 100,
+        result3: (result3 / total) * 100,
+      };
+      setPercentages(newPercentages);
+    } else {
+      const newPercentages = {
+        result1: 0,
+        result2: 0,
+        result3: 0,
+      };
+      setPercentages(newPercentages);
+    }
   };
 
   return (
@@ -31,78 +42,78 @@ const VoteResult = ({ donevote }) => {
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "10대",
-              selectedVote.result.result1_10,
-              selectedVote.result.result2_10,
-              selectedVote.result.result3_10
+              '10대',
+              donevote.result.result1_1,
+              donevote.result.result2_1,
+              donevote.result.result3_1
             )
           }
-          isSelected={selectedAgeGroup === "10대"}
+          isSelected={selectedAgeGroup === '10대'}
         >
           10대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "20대",
-              selectedVote.result.result1_20,
-              selectedVote.result.result2_20,
-              selectedVote.result.result3_20
+              '20대',
+              donevote.result.result1_2,
+              donevote.result.result2_2,
+              donevote.result.result3_2
             )
           }
-          isSelected={selectedAgeGroup === "20대"}
+          isSelected={selectedAgeGroup === '20대'}
         >
           20대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "30대",
-              selectedVote.result.result1_30,
-              selectedVote.result.result2_30,
-              selectedVote.result.result3_30
+              '30대',
+              donevote.result.result1_3,
+              donevote.result.result2_3,
+              donevote.result.result3_3
             )
           }
-          isSelected={selectedAgeGroup === "30대"}
+          isSelected={selectedAgeGroup === '30대'}
         >
           30대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "40대",
-              selectedVote.result.result1_40,
-              selectedVote.result.result2_40,
-              selectedVote.result.result3_40
+              '40대',
+              donevote.result.result1_4,
+              donevote.result.result2_4,
+              donevote.result.result3_4
             )
           }
-          isSelected={selectedAgeGroup === "40대"}
+          isSelected={selectedAgeGroup === '40대'}
         >
           40대
         </AgeGroup>
         <AgeGroup
           onClick={() =>
             handleAgeGroupClick(
-              "50대",
-              selectedVote.result.result1_50,
-              selectedVote.result.result2_50,
-              selectedVote.result.result3_50
+              '50대',
+              donevote.result.result1_5,
+              donevote.result.result2_5,
+              donevote.result.result3_5
             )
           }
-          isSelected={selectedAgeGroup === "50대"}
+          isSelected={selectedAgeGroup === '50대'}
         >
           50대
         </AgeGroup>
       </Age>
       <Result>
         <Percent>
-          <div style={{ color: "#2B99FF" }}>
+          <div style={{color: '#2B99FF'}}>
             {percentages.result1.toFixed(1)}%
           </div>
-          <div style={{ color: "#FFDD2B" }}>
+          <div style={{color: '#FFDD2B'}}>
             {percentages.result2.toFixed(1)}%
           </div>
-          <div style={{ color: "#FF5E2B" }}>
+          <div style={{color: '#FF5E2B'}}>
             {percentages.result3.toFixed(1)}%
           </div>
         </Percent>
@@ -135,7 +146,7 @@ const Container = styled.div`
   width: 310px;
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 `;
 
@@ -156,17 +167,17 @@ const Age = styled.div`
 
 const AgeGroup = styled.div`
   cursor: pointer;
-  color: ${({ isSelected }) =>
-    isSelected ? "#1A1920" : "rgba(255, 255, 255, 0.5)"};
+  color: ${({isSelected}) =>
+    isSelected ? '#1A1920' : 'rgba(255, 255, 255, 0.5)'};
   font-size: 9.504px;
   font-weight: 600;
   line-height: normal;
   padding: 4.752px 9.504px;
   border-radius: 13.578px;
   border: 0.679px solid
-    ${({ isSelected }) => (isSelected ? "#ffffff" : "rgba(255, 255, 255, 0.5)")};
-  background-color: ${({ isSelected }) =>
-    isSelected ? "#ffffff" : "transparency"};
+    ${({isSelected}) => (isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.5)')};
+  background-color: ${({isSelected}) =>
+    isSelected ? '#ffffff' : 'transparency'};
 `;
 
 const Result = styled.div`

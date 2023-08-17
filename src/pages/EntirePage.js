@@ -62,7 +62,7 @@ const Container = styled.div`
 
 const Scroll = styled.div`
   overflow-y: scroll;
-  height: 730px;
+  height: 844px;
 
   &::-webkit-scrollbar {
     display: none;

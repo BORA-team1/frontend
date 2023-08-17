@@ -103,7 +103,7 @@ const CommentBox = ({
   //DELETE: 좋아요 취소
   const handleLIkeDelete = () => {
     axios
-      .delete(`${BASE_URL}line/com/like/${commentId}/`, null, {
+      .patch(`${BASE_URL}line/com/like/${commentId}/`, null, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -145,7 +145,14 @@ const CommentBox = ({
               {commentLike}
             </div>
             {clickIcon ? (
-              <div onClick={handleReplyDelete}>좋아요 취소</div>
+              <div
+                onClick={handleLIkeDelete}
+                style={{
+                  color: '#A397FF',
+                }}
+              >
+                좋아요 취소
+              </div>
             ) : (
               <div onClick={handleLIkeClick}>좋아요</div>
             )}

@@ -14,10 +14,12 @@ import EmojiBox from '../components/AllContentPage/EmojiBox';
 
 //context
 import {useAuth} from '../contexts/AuthContext';
+import VoteBottomSheet from '../components/BottomSheet/VoteBottomSheet';
 
 const AllContentsPage = () => {
   const {post_id} = useParams();
   const navigate = useNavigate();
+  const [render, setRender] = useState(1);
 
   const [selectedSection, setSelectedSection] = useState(1);
   const handleSectionClick = (sec_id) => {
@@ -41,7 +43,7 @@ const AllContentsPage = () => {
 
   useEffect(() => {
     getSection();
-  }, []);
+  }, [render]);
 
   const [sections, setSections] = useState([]);
   const getSection = () => {
@@ -61,6 +63,15 @@ const AllContentsPage = () => {
           error
         );
       });
+  };
+
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+
+  const handleBottomSheet = () => {
+    setBottomSheetOpen(true);
+  };
+  const handleCloseBottomSheet = () => {
+    setBottomSheetOpen(false);
   };
 
   return (
@@ -109,94 +120,97 @@ const AllContentsPage = () => {
                 line.Question.length !== 0 ||
                 line.LineCom.length !== 0 ||
                 line.Emotion.some((emotion) => emotion.num !== 0)) && (
-                <Sentence>“ {line.content} ”</Sentence>
-              )}
-
-              {/* 밑줄 투표 출력 */}
-              {(line.IngVote.length !== 0 || line.DoneVote.length !== 0) && (
-                <Content>
-                  <Category>투표</Category>
-                  {line.IngVote.map((vote) => (
-                    <VoteNow
-                      key={vote.vote_id}
-                      vote={vote}
-                      BASE_URL={BASE_URL}
-                    />
-                  ))}
-                  {line.DoneVote.map((vote) => (
-                    <div style={{marginLeft: '22px'}}>
-                      <VoteResult key={vote.vote_id} donevote={vote} />
-                    </div>
-                  ))}
-                </Content>
-              )}
-
-              {/* 밑줄 토론 출력 */}
-              {line.Debate.length !== 0 && (
-                <Content>
-                  <Category>토론</Category>
-                  {line.Debate.map((debate) => (
-                    <DebateNow
-                      key={debate.debate_id}
-                      debate={debate}
-                      BASE_URL={BASE_URL}
-                    ></DebateNow>
-                  ))}
-                </Content>
-              )}
-
-              {/* 밑줄 질문 출력 */}
-              {line.Question.length !== 0 && (
-                <Content>
-                  <Category>Q&A</Category>
-                  {line.Question.map((question) => (
-                    <QnAContainer key={question.que_id}>
-                      <QBox question={question}></QBox>
-                      {question.Answer.map((answer) => (
+                <>
+                  <Sentence>“ {line.content} ”</Sentence>
+                  {/* 밑줄 투표 출력 */}
+                  {(line.IngVote.length !== 0 ||
+                    line.DoneVote.length !== 0) && (
+                    <Content>
+                      <Category>투표</Category>
+                      {line.IngVote.map((vote) => (
+                        <VoteNow
+                          key={vote.vote_id}
+                          vote={vote}
+                          BASE_URL={BASE_URL}
+                          handleBottomSheet={handleBottomSheet}
+                        />
+                      ))}
+                      {line.DoneVote.map((vote) => (
+                        <div style={{marginLeft: '22px'}}>
+                          <VoteResult key={vote.vote_id} donevote={vote} />
+                        </div>
+                      ))}
+                    </Content>
+                  )}
+                  {/* 밑줄 토론 출력 */}
+                  {line.Debate.length !== 0 && (
+                    <Content>
+                      <Category>토론</Category>
+                      {line.Debate.map((debate) => (
+                        <DebateNow
+                          key={debate.debate_id}
+                          debate={debate}
+                          BASE_URL={BASE_URL}
+                        ></DebateNow>
+                      ))}
+                    </Content>
+                  )}
+                  {/* 밑줄 질문 출력 */}
+                  {line.Question.length !== 0 && (
+                    <Content>
+                      <Category>Q&A</Category>
+                      {line.Question.map((question) => (
+                        <QnAContainer key={question.que_id}>
+                          <QBox question={question}></QBox>
+                          {question.Answer.map((answer) => (
+                            <>
+                              <Connect src={qnaconnect}></Connect>
+                              <ABox key={answer.ans_id} answer={answer}></ABox>
+                            </>
+                          ))}
+                        </QnAContainer>
+                      ))}
+                    </Content>
+                  )}
+                  {/* 밑줄에 대한 댓글 출력 */}
+                  {line.LineCom.length !== 0 && (
+                    <Content>
+                      <Category>댓글</Category>
+                      {line.LineCom.map((comment) => (
                         <>
-                          <Connect src={qnaconnect}></Connect>
-                          <ABox key={answer.ans_id} answer={answer}></ABox>
+                          <ComBox
+                            key={comment.linecom_id}
+                            comment={comment}
+                            BASE_URL={BASE_URL}
+                            authToken={authToken}
+                            nickname={nickname}
+                            render={render}
+                            setRender={setRender}
+                          />
                         </>
                       ))}
-                    </QnAContainer>
-                  ))}
-                </Content>
+                    </Content>
+                  )}
+                  {/* 밑줄에 대한 감정표현 출력 */}
+                  {line.Emotion.some((emotion) => emotion.num !== 0) && (
+                    <Content>
+                      <Category>감정표현</Category>
+                      <EmojiBox emoji={line.Emotion} />
+                    </Content>
+                  )}
+                </>
               )}
-
-              {/* 밑줄에 대한 댓글 출력 */}
-              {line.LineCom.length !== 0 && (
-                <Content>
-                  <Category>댓글</Category>
-                  {line.LineCom.map((comment) => (
-                    <>
-                      <ComBox
-                        key={comment.linecom_id}
-                        comment={comment}
-                        BASE_URL={BASE_URL}
-                        authToken={authToken}
-                        nickname={nickname}
-                      />
-                      {/* {comment.LineComCom.map((reply) => (
-                      <CommentBox key={reply.linecomcom_id} reply={reply} />
-                    ))} */}
-                    </>
-                  ))}
-                </Content>
-              )}
-
-              {/* 밑줄에 대한 감정표현 출력 */}
-              {line.Emotion.some((emotion) => emotion.num !== 0) && (
-                <Content>
-                  <Category>감정표현</Category>
-                  <EmojiBox emoji={line.Emotion} />
-                </Content>
-              )}
-
               <HR></HR>
             </div>
           ))}
         </Section>
       ))}
+      {bottomSheetOpen && (
+        <VoteBottomSheet
+          handleCloseBottomSheet={handleCloseBottomSheet}
+          postPk={post_id}
+        ></VoteBottomSheet>
+      )}
     </Wrapper>
   );
 };
@@ -255,6 +269,7 @@ const SectionBar = styled.div`
     border-radius: 20px;
     border: 1px solid;
     backdrop-filter: blur(5px);
+    cursor: pointer;
   }
 `;
 
