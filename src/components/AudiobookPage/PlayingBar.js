@@ -132,7 +132,7 @@ const PlayingBar = ({
       <Box>
         <PlayListIcon src={playlisticon} onClick={handlePlaylistIconClick} />
         <BeforeSecond onClick={handleSkipBackward} src={beforesecond} />
-        <audio ref={audioRef} src={example} />
+        <audio ref={audioRef} src={`${BASE_URL}${audio.audiofile}`} />
         <StopnGo onClick={handlePlayPause} src={isPlaying ? stop : start} />
         <AfterSecond onClick={handleSkipForward} src={aftersecond} />
         <BookmarkIcon onClick={handleBookmarkClick} src={bookmarkSrc} />

@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 //img
 import share from "../../images/Audiobook/share.svg";
 import follow from "../../images/Audiobook/follow.svg";
+import check from "../../images/Audiobook/check.svg";
 
 const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
   const [showInstruction, setShowInstruction] = useState(false);
@@ -89,12 +90,14 @@ const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
 
       {showInstruction && (
         <InstructionContainer>
+          <Check src={check} />
           <InstructionText>URL 복사가 완료되었습니다!</InstructionText>
         </InstructionContainer>
       )}
 
       {followInstruction && (
         <InstructionContainer disappear>
+          <Check src={check} />
           <InstructionText>해당 에디터를 팔로우했습니다!</InstructionText>
         </InstructionContainer>
       )}
@@ -206,14 +209,15 @@ const InstructionContainer = styled.div`
   left: 50%; /* Instruction 수평 중앙 */
   transform: translateX(-50%); /* Instruction 수평 중앙 */
   z-index: 10;
-  width: 257px;
-  height: 35px;
+  width: 260px;
+  height: 54px;
   padding: 0px 31px;
-  justify-content: center;
+  display: flex;
   align-items: center;
 
-  border-radius: 20px;
-  background: var(--main-purple, #5a45f5);
+  border-radius: 10px;
+  background: #595584;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5);
 
   /* Instruction이 나타날 때의 애니메이션 적용 */
   ${(props) =>
@@ -234,13 +238,20 @@ const InstructionText = styled.div`
   color: #fff;
   text-align: center;
   font-family: "Pretendard-Regular";
-  font-size: 15px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 600;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
+  text-align: center;
 
   margin: 10px 11.5px;
+`;
+
+const Check = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 `;
 
 const appearAnimation = keyframes`

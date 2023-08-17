@@ -89,10 +89,7 @@ const GuidebookPage = () => {
                   }
                 />
                 <RadioImgList>
-                  <div>
-                    <p>첫번째, 듣고 싶은 아티클을 선택해주세요.</p>
-                    <RadioImg src={imageArray2[currentImageIndex2]} />
-                  </div>
+                  <RadioImg src={imageArray2[currentImageIndex2]} />
                 </RadioImgList>
                 <Next
                   src={next}
@@ -229,10 +226,7 @@ const RadioImgList = styled.div`
   display: flex;
 `;
 
-const RadioImg = styled.img`
-  width: 209px;
-  height: 317px;
-`;
+const RadioImg = styled.img``;
 
 const Next = styled.img`
   width: 30.455px;
