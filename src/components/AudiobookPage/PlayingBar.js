@@ -1,26 +1,26 @@
-import React, {useState, useEffect, useRef} from 'react';
-import styled from 'styled-components';
-import {useParams} from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //components
-import WarningModal from '../AudiobookPage/WarningModal';
-import PlaylistBottomSheet from '../AudiobookPage/PlaylistBottomSheet';
+import WarningModal from "../AudiobookPage/WarningModal";
+import PlaylistBottomSheet from "../AudiobookPage/PlaylistBottomSheet";
 
 //img
-import playlisticon from '../../images/Audiobook/playlisticon.svg';
-import beforesecond from '../../images/Audiobook/beforesecond.svg';
-import start from '../../images/Audiobook/start.svg';
-import stop from '../../images/Audiobook/stop.svg';
-import aftersecond from '../../images/Audiobook/aftersecond.svg';
-import bookmarkicon_on from '../../images/Audiobook/bookmarkicon_on.svg';
-import bookmarkicon_off from '../../images/Audiobook/bookmarkicon_off.svg';
+import playlisticon from "../../images/Audiobook/playlisticon.svg";
+import beforesecond from "../../images/Audiobook/beforesecond.svg";
+import start from "../../images/Audiobook/start.svg";
+import stop from "../../images/Audiobook/stop.svg";
+import aftersecond from "../../images/Audiobook/aftersecond.svg";
+import bookmarkicon_on from "../../images/Audiobook/bookmarkicon_on.svg";
+import bookmarkicon_off from "../../images/Audiobook/bookmarkicon_off.svg";
 
 //context
-import {useAuth} from '../../contexts/AuthContext';
+import { useAuth } from "../../contexts/AuthContext";
 
 //api
-import {postBookMark} from '../../api/bookmark';
+import { postBookMark } from "../../api/bookmark";
 
 const PlayingBar = ({
   isAudioPlaying,
@@ -33,7 +33,6 @@ const PlayingBar = ({
   const [bookmarkSrc, setBookmarkSrc] = useState(
     audio.is_booked ? bookmarkicon_on : bookmarkicon_off
   );
-  console.log(audio.is_booked);
 
   const handleBookmarkClick = (e) => {
     console.log(audio.is_booked);
@@ -41,11 +40,11 @@ const PlayingBar = ({
     const newBookmarkSrc =
       bookmarkSrc === bookmarkicon_on ? bookmarkicon_off : bookmarkicon_on;
     setBookmarkSrc(newBookmarkSrc);
-    postBookMark({postId: audio.audio_post.post_id});
+    postBookMark({ postId: audio.audio_post.post_id });
   };
 
   // GET: 플레이리스트
-  const {authToken, BASE_URL} = useAuth();
+  const { authToken, BASE_URL } = useAuth();
   useEffect(() => {
     getPlaylist();
   }, []);
@@ -64,13 +63,58 @@ const PlayingBar = ({
           console.log(response.data.data);
         })
         .catch((error) => {
-          console.error('재생목록을 불러오는 중 오류가 발생했습니다.', error);
+          console.error("재생목록을 불러오는 중 오류가 발생했습니다.", error);
+        });
+    }
+  };
+
+  // GET: 다음 곡 조회
+
+  const [nextAudio, setNextAudio] = useState();
+  const navigate = useNavigate();
+  const { audio_id, playlist_id } = useParams();
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.addEventListener("ended", handleAudioEnded);
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("ended", handleAudioEnded);
+      }
+    };
+  }, [audioRef]);
+
+  const handleAudioEnded = () => {
+    getNextAudio(); // 다음 곡 정보 가져오기
+  };
+  const getNextAudio = () => {
+    {
+      axios
+        .get(`${BASE_URL}audio/next/${audio_id}/${playlist_id}/`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then((response) => {
+          setNextAudio(response);
+          console.log(response.data.audio);
+          // 다음 곡으로 이동
+          if (response.data) {
+            navigate(`/article/${response.data.audio}/${playlist_id}`);
+          }
+          window.location.reload(); // 페이지 새로고침
+        })
+        .catch((error) => {
+          console.error("재생목록을 불러오는 중 오류가 발생했습니다.", error);
         });
     }
   };
 
   const [bottomsheet, setBottomsheet] = useState(false);
   const [warningmodal, setWarningModal] = useState(false);
+  const [playlistLoaded, setPlaylistLoaded] = useState(false);
   const handleOpenBottomSheet = () => {
     setBottomsheet(true);
     setWarningModal(false);
@@ -92,6 +136,10 @@ const PlayingBar = ({
       openWarningModal();
     } else {
       handleOpenBottomSheet();
+      if (!playlistLoaded) {
+        getPlaylist(); // 플레이리스트를 처음 클릭할 때만 불러옴
+        setPlaylistLoaded(true);
+      }
     }
   };
 
@@ -120,10 +168,11 @@ const PlayingBar = ({
   const handleSkipForward = () => {
     if (audioRef.current) {
       const newTime = audioRef.current.currentTime + 30;
-      audioRef.current.currentTime = Math.min(
-        newTime,
-        audioRef.current.duration
-      );
+      if (newTime < audioRef.current.duration) {
+        audioRef.current.currentTime = newTime;
+      } else {
+        audioRef.current.currentTime = audioRef.current.duration;
+      }
     }
   };
   return (

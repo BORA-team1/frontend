@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Audiobook = ({ audio_post, long, onDelete }) => {
+const Audiobook = ({ audio_post, long, onDelete, onClick }) => {
   //난이도 판단
   const getDifficultyText = (difficulty) => {
     if (difficulty === 1) {
@@ -14,7 +14,7 @@ const Audiobook = ({ audio_post, long, onDelete }) => {
     }
   };
   return (
-    <Box>
+    <Box onClick={onClick}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Title>{audio_post?.title}</Title>
         <Del onClick={onDelete}>삭제</Del>
@@ -53,6 +53,7 @@ const Box = styled.div`
   height: 37px;
 
   border-bottom: 0.7px solid rgba(252, 252, 252, 0.3);
+  cursor: pointer;
 `;
 
 const Font = styled.div`
