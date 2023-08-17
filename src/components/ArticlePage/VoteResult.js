@@ -26,9 +26,7 @@ const VoteResult = ({donevote}) => {
 
   return (
     <Container>
-      <Title>
-        정말 학교 수업만 듣고 수능을 잘 보는게 가능하다고 생각하시나요?
-      </Title>
+      <Title>{donevote.title}</Title>
       <Age>
         <AgeGroup
           onClick={() =>
@@ -122,7 +120,7 @@ const VoteResult = ({donevote}) => {
         />
       </Result>
       <Plus>
-        <div>2023.07.03 ~ 2023.07.09 · 총 197명</div>
+        <div />
         <div>
           제작 <span>{donevote.vote_user.nickname}</span>
         </div>

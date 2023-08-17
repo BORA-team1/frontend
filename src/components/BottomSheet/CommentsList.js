@@ -102,6 +102,8 @@ const CommentsList = () => {
             key={comment.linecom_id}
             commentId={comment.linecom_id}
             commentContent={comment.content}
+            commentLike={comment.likenum}
+            doLike={comment.do_like}
             author={comment.linecom_user.nickname}
             handleDelete={handleDelete}
             replies={comment.LineComCom}

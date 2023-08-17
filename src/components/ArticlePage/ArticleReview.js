@@ -94,7 +94,10 @@ const ArticleReview = ({handleBottomSheet, postPk}) => {
               reviewContent={reviews[reviews.length - 1].content}
               author={reviews[reviews.length - 1].han_user.nickname}
               like={reviews[reviews.length - 1].like_num}
+              doLIke={reviews[reviews.length - 1].do_like}
               handleDelete={handleDelete}
+              render={render}
+              setRender={setRender}
             ></Review>
           )}
           {reviews.length === 0 && <span>아직 남겨진 한마디가 없습니다.</span>}

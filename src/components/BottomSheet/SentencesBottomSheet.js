@@ -223,6 +223,8 @@ const SentencesBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                       key={com.linecom_id}
                       comId={com.linecom_id}
                       comContent={com.content}
+                      comLike={com.likenum}
+                      doLike={com.do_like}
                       user={com.linecom_user.nickname}
                       render={render}
                       setRender={setRender}
