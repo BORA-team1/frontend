@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import styled, {keyframes} from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+import axios from "axios";
 
-import VoteCreateModal from './VoteCreateModal';
-import SentenceBox from './SentenceBox';
-import VoteBox from './VoteBox';
-import VoteResult from '../ArticlePage/VoteResult';
-import addbutton from '../../images/addbutton.png';
+import VoteCreateModal from "./VoteCreateModal";
+import SentenceBox from "./SentenceBox";
+import VoteBox from "./VoteBox";
+import VoteResult from "../ArticlePage/VoteResult";
+import addbutton from "../../images/addbutton.png";
 
 //context
-import {useAuth} from '../../contexts/AuthContext';
+import { useAuth } from "../../contexts/AuthContext";
 
-const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
+const VoteBottomSheet = ({ handleCloseBottomSheet, postPk }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [category, setCategory] = useState('A');
+  const [category, setCategory] = useState("A");
 
   //투표 생성 모달 띄우기
   const openModal = () => {
@@ -24,17 +24,20 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
   };
 
   //카테고리
-  const showListA = () => setCategory('A');
-  const showListB = () => setCategory('B');
-  const showListC = () => setCategory('C');
+  const showListA = () => setCategory("A");
+  const showListB = () => setCategory("B");
+  const showListC = () => setCategory("C");
 
   // GET: 진행중인 투표 조회
-  const {authToken, BASE_URL, nickname} = useAuth();
+  const { authToken, BASE_URL, nickname } = useAuth();
   const [render, setRender] = useState(1);
   useEffect(() => {
     getVotes();
+    console.log(votes);
     getDoneVotes();
+    console.log(doneVotes);
     getMyVotes();
+    console.log(myVotes);
   }, [render]);
 
   const [votes, setVotes] = useState([]);
@@ -51,7 +54,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
       })
       .catch((error) => {
         console.error(
-          '진행중인 투표를 불러오는 중 오류가 발생했습니다.',
+          "진행중인 투표를 불러오는 중 오류가 발생했습니다.",
           error
         );
       });
@@ -70,7 +73,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
         console.log(response);
       })
       .catch((error) => {
-        console.error('투표 종료 중 오류가 발생했습니다.', error);
+        console.error("투표 종료 중 오류가 발생했습니다.", error);
       });
   };
 
@@ -88,7 +91,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
         console.log(response.data.data.Lines);
       })
       .catch((error) => {
-        console.error('완료된 투표를 불러오는 중 오류가 발생했습니다.', error);
+        console.error("완료된 투표를 불러오는 중 오류가 발생했습니다.", error);
       });
   };
 
@@ -107,16 +110,16 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
       })
       .catch((error) => {
         console.error(
-          '내가 만든 투표를 불러오는 중 오류가 발생했습니다.',
+          "내가 만든 투표를 불러오는 중 오류가 발생했습니다.",
           error
         );
       });
   };
 
   const barPosition = {
-    A: '0',
-    B: '130px',
-    C: '260px',
+    A: "0",
+    B: "130px",
+    C: "260px",
   };
 
   return (
@@ -133,7 +136,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
           <Category>
             <div>
               <span
-                className={category === 'A' ? 'active' : ''}
+                className={category === "A" ? "active" : ""}
                 onClick={showListA}
               >
                 진행중
@@ -141,7 +144,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
             </div>
             <div>
               <span
-                className={category === 'B' ? 'active' : ''}
+                className={category === "B" ? "active" : ""}
                 onClick={showListB}
               >
                 완료된
@@ -149,18 +152,18 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
             </div>
             <div>
               <span
-                className={category === 'C' ? 'active' : ''}
+                className={category === "C" ? "active" : ""}
                 onClick={showListC}
               >
                 내가만든
               </span>
             </div>
           </Category>
-          <Bar style={{left: barPosition[category]}} />
+          <Bar style={{ left: barPosition[category] }} />
         </BottomSheetHeader>
 
         {/* 카테고리 별 리스트*/}
-        {category === 'A' && (
+        {category === "A" && (
           <>
             <ListContatiner>
               {votes.length === 0 ? (
@@ -199,7 +202,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
             )}
           </>
         )}
-        {category === 'B' && (
+        {category === "B" && (
           <ListContatiner>
             <ListNum>투표 {doneVotes.length}개</ListNum>
             {doneVotes &&
@@ -213,7 +216,7 @@ const VoteBottomSheet = ({handleCloseBottomSheet, postPk}) => {
               ))}
           </ListContatiner>
         )}
-        {category === 'C' && (
+        {category === "C" && (
           <ListContatiner>
             {myVotes.length === 0 ? (
               <ListNum>아직 생성된 투표가 없습니다.</ListNum>
@@ -277,7 +280,7 @@ const BottomSheetContainer = styled.div`
   box-shadow: 0 0 0 1px #353646 inset;
   background: var(--background, #161524);
   overflow-y: auto;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
 
   &::-webkit-scrollbar {

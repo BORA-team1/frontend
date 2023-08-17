@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 //components
 import PlaylistDetailBottomSheet from "../../components/AudiobookPage/PlaylistDetailBottomSheet";
@@ -35,6 +36,7 @@ const AudiobookTitleBox = ({ audio }) => {
       return "";
     }
   };
+  const user_id = audio?.author_id;
   return (
     <>
       <Box>
@@ -65,6 +67,7 @@ const AudiobookTitleBox = ({ audio }) => {
       {showBottomSheet && (
         <PlaylistDetailBottomSheet
           handleCloseBottomSheet={handleCloseBottomSheet}
+          user_id={user_id}
         />
       )}
     </>
