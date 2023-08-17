@@ -33,6 +33,7 @@ const PlayingBar = ({
   const [bookmarkSrc, setBookmarkSrc] = useState(
     audio.is_booked ? bookmarkicon_on : bookmarkicon_off
   );
+  console.log(audio.is_booked);
 
   const handleBookmarkClick = (e) => {
     console.log(audio.is_booked);

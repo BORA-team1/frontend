@@ -48,7 +48,7 @@ const PlaylistCreateModal = ({
     };
 
     try {
-      const response = await axios.post(`${BASE_URL}audio/new`, playlistData, {
+      const response = await axios.post(`${BASE_URL}audio/new/`, playlistData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

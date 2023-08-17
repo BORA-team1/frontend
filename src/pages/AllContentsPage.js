@@ -1,23 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import styled from 'styled-components';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
 
-import VoteNow from '../components/ArticlePage/VoteNow';
-import VoteResult from '../components/ArticlePage/VoteResult';
-import DebateNow from '../components/ArticlePage/DebateNow';
-import QBox from '../components/AllContentPage/QBox';
-import ABox from '../components/AllContentPage/ABox';
-import qnaconnect from '../images/qnaconnect.svg';
-import ComBox from '../components/AllContentPage/ComBox';
-import EmojiBox from '../components/AllContentPage/EmojiBox';
+import VoteNow from "../components/ArticlePage/VoteNow";
+import VoteResult from "../components/ArticlePage/VoteResult";
+import DebateNow from "../components/ArticlePage/DebateNow";
+import QBox from "../components/AllContentPage/QBox";
+import ABox from "../components/AllContentPage/ABox";
+import qnaconnect from "../images/qnaconnect.svg";
+import ComBox from "../components/AllContentPage/ComBox";
+import EmojiBox from "../components/AllContentPage/EmojiBox";
 
 //context
-import {useAuth} from '../contexts/AuthContext';
-import VoteBottomSheet from '../components/BottomSheet/VoteBottomSheet';
+import { useAuth } from "../contexts/AuthContext";
+import VoteBottomSheet from "../components/BottomSheet/VoteBottomSheet";
 
 const AllContentsPage = () => {
-  const {post_id} = useParams();
+  const { post_id } = useParams();
   const navigate = useNavigate();
   const [render, setRender] = useState(1);
 
@@ -36,10 +36,11 @@ const AllContentsPage = () => {
       const yOffset =
         sectionElement.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({top: yOffset - 170, behavior: 'smooth'});
+
     }
   };
 
-  const {authToken, BASE_URL, nickname} = useAuth();
+  const { authToken, BASE_URL, nickname } = useAuth();
 
   useEffect(() => {
     getSection();
@@ -61,7 +62,7 @@ const AllContentsPage = () => {
       })
       .catch((error) => {
         console.error(
-          '콘텐츠 모아보기를 불러오는 중 오류가 발생했습니다.',
+          "콘텐츠 모아보기를 불러오는 중 오류가 발생했습니다.",
           error
         );
       });
@@ -96,12 +97,12 @@ const AllContentsPage = () => {
             style={{
               color:
                 selectedSection === section.sec_id
-                  ? '#A397FF'
-                  : ' rgba(255, 255, 255, 0.6)',
+                  ? "#A397FF"
+                  : " rgba(255, 255, 255, 0.6)",
               borderColor:
                 selectedSection === section.sec_id
-                  ? '#A397FF'
-                  : ' rgba(255, 255, 255, 0.6)',
+                  ? "#A397FF"
+                  : " rgba(255, 255, 255, 0.6)",
             }}
           >
             섹션 {index + 1}
@@ -112,7 +113,7 @@ const AllContentsPage = () => {
         {sections.map((section, index) => (
           <Section key={index} id={`section-${index}`}>
             <SectionNum>섹션 {index + 1}</SectionNum>
-
+            
             {section.Lines.map((line) => (
               <div key={line.sentence}>
                 {/* 밑줄 내용 출력 */}
@@ -229,7 +230,7 @@ const Wrapper = styled.div`
   background: var(--background, #161524);
   display: flex;
   flex-direction: column;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-style: normal;
   padding-bottom: 33.32px;
   margin: 0px auto;
@@ -244,6 +245,7 @@ const ArticleTitle = styled.div`
   justify-content: center;
   width: 390px;
   padding-top: 81px;
+
   padding-bottom: 28px;
   color: #fff;
   font-size: 15px;
@@ -274,6 +276,7 @@ const SectionBar = styled.div`
   gap: 7px;
   border-top: 1px solid #353646;
   border-bottom: 1px solid #353646;
+
 
   div {
     color: rgba(255, 255, 255, 0.6);
