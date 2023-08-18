@@ -14,9 +14,9 @@ const Audiobook = ({ audio_post, long, onDelete, onClick }) => {
     }
   };
   return (
-    <Box onClick={onClick}>
+    <Box>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title>{audio_post?.title}</Title>
+        <Title onClick={onClick}>{audio_post?.title}</Title>
         <Del onClick={onDelete}>삭제</Del>
       </div>
       <div
