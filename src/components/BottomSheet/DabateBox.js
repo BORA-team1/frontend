@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const DabateBox = ({debate, nickname, handleDebateComplete}) => {
-  console.log(debate.link);
   return (
     <Box>
       <Title>

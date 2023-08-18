@@ -52,8 +52,23 @@ const DetailPlaylistPage = () => {
       <PlaylistList>
         {data &&
           data.map((playlist) => (
-            <PlaylistBox key={playlist.playlist_id}>
-              <Picture>{/* 나중에 이미지 4개 넣기 */}</Picture>
+            <PlaylistBox
+              key={playlist.playlist_id}
+              onClick={() => {
+                navigate(
+                  `/article/${playlist.first_audio}/${playlist.playlist_id}/`
+                );
+              }}
+            >
+              <Picture>
+                {playlist.img.slice(0, 4).map((image, index) => (
+                  <img
+                    key={index}
+                    src={`${BASE_URL}${image}`}
+                    alt={`playlist image ${index + 1}`}
+                  />
+                ))}
+              </Picture>
               <TitleBox>
                 <PlaylistTitle>{playlist.title}</PlaylistTitle>
                 <SubTitle>{playlist.des}</SubTitle>
@@ -131,18 +146,19 @@ const PlaylistBox = styled.div`
 `;
 
 const Picture = styled.div`
-  width: 145.615px;
-  height: 111.893px;
+  border: none;
+  display: grid;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 72.8075px);
+  grid-template-rows: repeat(2, 55.9465px);
+  overflow: hidden;
 
   img {
     width: 100%;
-    background-color: white;
+    height: 100%;
     object-fit: cover;
+    overflow: hidden;
   }
 `;
 
@@ -154,6 +170,8 @@ const TitleBox = styled.div`
   box-sizing: border-box;
   gap: 4.598px;
   background: #2b2c3f;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 `;
 
 const PlaylistTitle = styled.div`

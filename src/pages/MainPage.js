@@ -109,7 +109,6 @@ const MainPage = () => {
         {posts.HotLine && (
           <OtherAgeGroupArticle>
             <AgeGroupTitle>
-              우리 부모님
               <span style={{height: '460px'}}>
                 {' '}
                 #{posts.HotLine.hot_age}0대

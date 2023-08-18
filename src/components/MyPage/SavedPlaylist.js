@@ -1,10 +1,25 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
-const SavedPlayList = ({playlist}) => {
+const SavedPlayList = ({playlist, BASE_URL}) => {
+  const navigate = useNavigate();
+  console.log(playlist);
   return (
-    <Box>
-      <Picture>{/* 나중에 이미지 4개 넣기 */}</Picture>
+    <Box
+      onClick={() => {
+        navigate(`/article/${playlist.first_audio}/${playlist.playlist_id}/`);
+      }}
+    >
+      <Picture>
+        {playlist.img.slice(0, 4).map((image, index) => (
+          <img
+            key={index}
+            src={`${BASE_URL}${image}`}
+            alt={`playlist image ${index + 1}`}
+          />
+        ))}
+      </Picture>
       <TitleBox>
         <Title>{playlist.title}</Title>
         <SubTitle>{playlist.des}</SubTitle>
@@ -23,10 +38,20 @@ const Box = styled.div`
 `;
 
 const Picture = styled.div`
-  width: 95px;
-  height: 73px;
-  object-fit: cover;
   border: none;
+  display: grid;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  grid-template-columns: repeat(2, 47.5px);
+  grid-template-rows: repeat(2, 36.5px);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -36,8 +61,10 @@ const TitleBox = styled.div`
   height: 49px;
   padding: 7px;
   box-sizing: border-box;
-  gap: 3px;
+  gap: 5px;
   background: #2b2c3f;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 
   font-family: 'Pretendard-Regular';
   font-style: normal;

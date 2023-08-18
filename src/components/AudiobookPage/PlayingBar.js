@@ -28,19 +28,13 @@ const PlayingBar = ({
   audioRef,
   audio,
   playlistPk,
+  isBooked,
+  setIsBooked,
 }) => {
   //bookmark
-  const [bookmarkSrc, setBookmarkSrc] = useState(
-    audio.is_booked ? bookmarkicon_on : bookmarkicon_off
-  );
-
-  const handleBookmarkClick = (e) => {
-    console.log(audio.is_booked);
-    e.stopPropagation();
-    const newBookmarkSrc =
-      bookmarkSrc === bookmarkicon_on ? bookmarkicon_off : bookmarkicon_on;
-    setBookmarkSrc(newBookmarkSrc);
-    postBookMark({ postId: audio.audio_post.post_id });
+  const handleBookmarkClick = () => {
+    setIsBooked(!isBooked);
+    postBookMark({postId: audio.audio_post.post_id});
   };
 
   // GET: 플레이리스트
@@ -183,7 +177,11 @@ const PlayingBar = ({
         <audio ref={audioRef} src={`${BASE_URL}${audio.audiofile}`} />
         <StopnGo onClick={handlePlayPause} src={isPlaying ? stop : start} />
         <AfterSecond onClick={handleSkipForward} src={aftersecond} />
-        <BookmarkIcon onClick={handleBookmarkClick} src={bookmarkSrc} />
+        <BookmarkIcon
+          onClick={handleBookmarkClick}
+          src={isBooked ? bookmarkicon_on : bookmarkicon_off}
+          alt='Bookmark Icon'
+        />
       </Box>
       {bottomsheet ? (
         <PlaylistBottomSheet

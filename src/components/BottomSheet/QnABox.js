@@ -11,7 +11,9 @@ const QnABox = ({
   profile,
   addReply,
   handleDelete,
+  // BASE_URL,
 }) => {
+  console.log(profile);
   //답글 등록 함수들
   const [replyText, setReplyText] = useState('');
   const [showReplyForm, setShowReplyForm] = useState(false);
