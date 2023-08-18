@@ -176,6 +176,7 @@ const CommentBox = ({
             mention={reply.mention}
             content={reply.content}
             author={reply.linecomcom_user.nickname}
+            profile={reply.linecomcom_user.profile}
             showReplyForm={showReplyForm}
             setShowReplyForm={setShowReplyForm}
             setMention={setMentionedUser}

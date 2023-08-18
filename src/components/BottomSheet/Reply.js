@@ -14,11 +14,12 @@ const Reply = ({
   nickname,
   BASE_URL,
 }) => {
+  console.log(profile);
   return (
     <>
       <Container>
         <ProfileContainer>
-          <img src={`${BASE_URL}${profile}`} alt='profileimg'></img>
+          <img src={`${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{author}</Id>

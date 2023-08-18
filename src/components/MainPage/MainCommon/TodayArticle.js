@@ -111,11 +111,12 @@ const TitleBox = styled.div`
 
   display: flex;
   width: 113.2px;
-  height: 48.4px;
+  height: 50px;
   padding: 10px;
   flex-direction: column;
   align-items: flex-start;
   background: #2b2c3f;
+  gap: 3px;
 `;
 
 const Title = styled.div`
