@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const VoteNow = ({vote, handleBottomSheet}) => {
+const VoteNow = ({vote, BASE_URL, handleBottomSheet}) => {
   return (
     <Container>
       <DebateContent>
@@ -14,7 +14,7 @@ const VoteNow = ({vote, handleBottomSheet}) => {
           <div>주제로</div>
           <Member>
             <div>
-              <img src={`${vote.vote_user.profile}`} alt='profile' />
+              <img src={`${BASE_URL}${vote.vote_user.profile}`} alt='profile' />
               <span>{vote.vote_user.nickname}</span>
             </div>
           </Member>

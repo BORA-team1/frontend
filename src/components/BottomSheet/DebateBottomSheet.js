@@ -156,7 +156,7 @@ const DebateBottomSheet = ({
                 className={category === 'C' ? 'active' : ''}
                 onClick={showListC}
               >
-                내가참여한
+                내가만든
               </span>
             </div>
           </Category>
@@ -285,6 +285,9 @@ const BottomSheetContainer = styled.div`
   background: var(--background, #161524);
   overflow-y: auto;
 
+  font-family: 'Pretendard-Regular';
+  font-style: normal;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -297,9 +300,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: 'Pretendard-Regular';
   font-size: 15px;
-  font-style: normal;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
 
@@ -330,9 +331,7 @@ const Category = styled.div`
   display: flex;
   flex-direction: row;
 
-  font-family: 'Pretendard-Regular';
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
   line-height: 18px;
   letter-spacing: -0.28px;
@@ -375,9 +374,7 @@ const ListContatiner = styled.div`
 const ListNum = styled.div`
   margin: 20px 21px;
   color: #fff;
-  font-family: 'Pretendard-Regular';
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
   line-height: 16px;
   letter-spacing: -0.24px;
