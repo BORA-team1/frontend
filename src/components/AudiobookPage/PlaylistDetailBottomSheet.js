@@ -208,6 +208,7 @@ const InstructionContainer = styled.div`
   position: absolute;
   bottom: 50px;
   left: 30px;
+
   z-index: 10;
   width: 260px;
   height: 54px;
