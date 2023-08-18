@@ -1,32 +1,33 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const Audiobook = ({ audio_post, long, onDelete, onClick }) => {
+const Audiobook = ({audio_post, long, onDelete, onClick}) => {
   //난이도 판단
   const getDifficultyText = (difficulty) => {
     if (difficulty === 1) {
-      return "Light";
+      return 'Light';
     } else if (difficulty === 2) {
-      return "Medium";
+      return 'Medium';
     } else if (difficulty === 3) {
-      return "Heavy";
+      return 'Heavy';
     } else {
-      return "";
+      return '';
     }
   };
   return (
     <Box>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Title onClick={onClick}>{audio_post?.title}</Title>
+
         <Del onClick={onDelete}>삭제</Del>
       </div>
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: "10px",
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: '10px',
         }}
       >
-        <div style={{ display: "flex" }}>
+        <div style={{display: 'flex'}}>
           <Difficulty>{getDifficultyText(audio_post?.diff)}</Difficulty>
           <TagBox>
             {audio_post?.hashtag &&
@@ -58,7 +59,7 @@ const Box = styled.div`
 
 const Font = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
   line-height: normal;
   letter-spacing: -0.22px;

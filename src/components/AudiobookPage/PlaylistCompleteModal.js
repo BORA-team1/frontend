@@ -18,11 +18,6 @@ const PlaylistCompleteModal = ({handleCloseCompleteModal}) => {
 
   const containerRef = useRef(null);
 
-  //   const handleClickOutside = (event) => {
-  //     if (containerRef.current && !containerRef.current.contains(event.target)) {
-  //       closeCompleteModal();
-  //     }
-  //   };
   return (
     <>
       <Wrapper>

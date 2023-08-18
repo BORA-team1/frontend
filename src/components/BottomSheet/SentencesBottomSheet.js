@@ -226,6 +226,7 @@ const SentencesBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                       comLike={com.likenum}
                       doLike={com.do_like}
                       user={com.linecom_user.nickname}
+                      profile={com.linecom_user.profile}
                       render={render}
                       setRender={setRender}
                     ></MyCommentBox>
@@ -235,6 +236,7 @@ const SentencesBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                         comId={com.linecomcom_id}
                         comContent={com.content}
                         user={com.linecomcom_user.nickname}
+                        profile={com.linecomcom_user.profile}
                         mention={com.mention}
                         render={render}
                         setRender={setRender}

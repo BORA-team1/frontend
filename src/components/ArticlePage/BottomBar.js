@@ -58,7 +58,13 @@ const BottomBar = ({handleBottomSheet, isContentsOn, handleContentsOn}) => {
               alt='콘텐츠꺼짐'
               onClick={handleContentsOn}
             ></img>
-            <span>콘텐츠꺼짐</span>
+            <span
+              style={{
+                color: 'rgba(255, 255, 255, 0.5)',
+              }}
+            >
+              콘텐츠꺼짐
+            </span>
           </>
         )}
       </div>
