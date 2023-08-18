@@ -4,7 +4,7 @@ import VoteResult from './VoteResult';
 import DebateNow from './DebateNow';
 import more from '../../images/more.svg';
 
-const ContentPopup = ({line, lineContent}) => {
+const ContentPopup = ({line, lineContent, onHover, offHover}) => {
   const [isVoteOpen, setVoteOpen] = useState('true');
   const handleVotePopup = () => {
     setVoteOpen(!isVoteOpen);
@@ -15,12 +15,31 @@ const ContentPopup = ({line, lineContent}) => {
     setDebateOpen(!isDebateOpen);
   };
 
+  const [isHoveredV, setHoveredV] = useState(false);
+  const [isHoveredD, setHoveredD] = useState(false);
+
   return (
     <>
       {line.DoneVote && line.DoneVote.length > 0 ? (
         <Container>
           <Triangle></Triangle>
-          <Sentence>“{lineContent}”</Sentence>
+          <Sentence>
+            <div
+              onMouseEnter={() => {
+                onHover(lineContent);
+                setHoveredV(true);
+              }}
+              onMouseLeave={() => {
+                offHover();
+                setHoveredV(false);
+              }}
+              style={{
+                color: isHoveredV ? '#A397FF' : 'white',
+              }}
+            >
+              “{lineContent}”
+            </div>
+          </Sentence>
           {isVoteOpen &&
             line.DoneVote.map((donevote) => (
               <ContentContainer>
@@ -35,6 +54,7 @@ const ContentPopup = ({line, lineContent}) => {
           </Popup>
         </Container>
       ) : null}
+
       {line.Debate &&
         line.Debate.length > 0 &&
         line.Debate.map(
@@ -42,7 +62,23 @@ const ContentPopup = ({line, lineContent}) => {
             debate.cond === 1 && (
               <Container key={index}>
                 <Triangle></Triangle>
-                <Sentence>“{lineContent}”</Sentence>
+                <Sentence>
+                  <div
+                    onMouseEnter={() => {
+                      onHover(lineContent);
+                      setHoveredD(true);
+                    }}
+                    onMouseLeave={() => {
+                      offHover();
+                      setHoveredD(false);
+                    }}
+                    style={{
+                      color: isHoveredD ? '#A397FF' : 'white',
+                    }}
+                  >
+                    “{lineContent}”
+                  </div>
+                </Sentence>
                 {isDebateOpen && (
                   <ContentContainer>
                     <DebateNow debate={debate}></DebateNow>

@@ -16,6 +16,7 @@ const MyCommentBox = ({
   comLike,
   doLike,
   user,
+  profile,
   mention,
   render,
   setRender,
@@ -98,7 +99,7 @@ const MyCommentBox = ({
     <>
       <Container>
         <ProfileContainer>
-          <img src={profile} alt='profileimg'></img>
+          <img src={`${profile}`} alt='profileimg'></img>
         </ProfileContainer>
         <ContentContainer>
           <Id>{user}</Id>
@@ -163,6 +164,8 @@ const ProfileContainer = styled.div`
   border-radius: 50%;
 
   img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
   }
