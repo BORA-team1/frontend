@@ -54,6 +54,7 @@ const ContentPopup = ({line, lineContent, onHover, offHover}) => {
           </Popup>
         </Container>
       ) : null}
+
       {line.Debate &&
         line.Debate.length > 0 &&
         line.Debate.map(
