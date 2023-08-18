@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 //components
 import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
@@ -12,6 +13,7 @@ const PlaylistBottomSheet = ({
   handleCloseBottomSheet,
   playlist,
 }) => {
+  const navigate = useNavigate();
   const [createModal, setcreateModal] = useState(false);
   const [completeModal, setCompleteModal] = useState(false);
   const openCreateModal = () => {
@@ -29,11 +31,16 @@ const PlaylistBottomSheet = ({
     setCompleteModal(false);
   };
 
+  const handleAudiobookClick = (audioId) => {
+    console.log(audioId, playlist.playlist_id);
+    navigate(`/article/${audioId}/${playlist.playlist_id}`);
+    window.location.reload(); // 페이지 새로고침
+  };
+
   // 재생목록 삭제 리스트
   const [playlistItems, setPlaylistItems] = useState([]);
   const [remainingAudioIds, setRemainingAudioIds] = useState([]);
   const { playlist_id } = useParams();
-  console.log(playlist_id);
 
   useEffect(() => {
     setPlaylistItems(playlist?.playlist_audio);
@@ -42,15 +49,18 @@ const PlaylistBottomSheet = ({
     }));
     setRemainingAudioIds(newRemainingAudioIds);
   }, [playlist?.playlist_audio]);
+  console.log(remainingAudioIds);
   // 삭제된 아이템 필터링하여 새로운 목록 설정
   const handleDeleteAudiobook = (index) => {
     const newPlaylistItems = playlistItems.filter((_, i) => i !== index);
     setPlaylistItems(newPlaylistItems);
+    console.log(playlistItems);
 
     const newRemainingAudioIds = newPlaylistItems.map((audio) => ({
       audio_id: audio.audio_id,
     }));
     setRemainingAudioIds(newRemainingAudioIds);
+    console.log(remainingAudioIds);
   };
 
   if (!handleOpenBottomSheet) return null;
@@ -77,6 +87,7 @@ const PlaylistBottomSheet = ({
                   audio_post={audio.audio_post}
                   long={audio.long}
                   onDelete={() => handleDeleteAudiobook(index)}
+                  onClick={() => handleAudiobookClick(audio.audio_id)}
                 />
               ))
             ) : (
