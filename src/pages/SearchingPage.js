@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 //components
-import TopBar from "../components/Common/TopBar";
-import DifficultyBox from "../components/MainPage/MainCommon/DifficultyBox";
+import TopBar from '../components/Common/TopBar';
+import DifficultyBox from '../components/MainPage/MainCommon/DifficultyBox';
 
 //images
-import app_explaination from "../images/app_explain.svg";
-import picked_keyword from "../images/picked_keyword.svg";
-import serching_btn from "../images/TopBar/serching_btn.svg";
+import app_explaination from '../images/app_explain.svg';
+import picked_keyword from '../images/picked_keyword.svg';
+import serching_btn from '../images/TopBar/serching_btn.svg';
 
 //context
-import { useAuth } from "../contexts/AuthContext";
+import {useAuth} from '../contexts/AuthContext';
 
 const SearchingPage = () => {
   const [searchKeyword, setSearchKeyword] = useState();
   const [isSearchOn, setSearchOn] = useState(false);
 
   // GET: 검색 결과
-  const { authToken, BASE_URL } = useAuth();
+  const {authToken, BASE_URL} = useAuth();
   const [posts, setPosts] = useState([]);
   const getResult = () => {
     if (searchKeyword) {
@@ -35,7 +35,7 @@ const SearchingPage = () => {
           console.log(response.data.data);
         })
         .catch((error) => {
-          console.error("검색 결과를 불러오는 중 오류가 발생했습니다.", error);
+          console.error('검색 결과를 불러오는 중 오류가 발생했습니다.', error);
         });
     }
     console.log(posts?.data?.POST);
@@ -48,7 +48,7 @@ const SearchingPage = () => {
         <>
           <SearchingBox>
             <SearchingBar
-              placeholder="검색어를 입력하세요"
+              placeholder='검색어를 입력하세요'
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
@@ -57,8 +57,8 @@ const SearchingPage = () => {
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <PickedKeyword src={picked_keyword}></PickedKeyword>
@@ -99,7 +99,7 @@ const Container = styled.div`
 
   background-color: #161524;
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
 
   &::-webkit-scrollbar {
@@ -137,7 +137,7 @@ const SearchingBar = styled.input`
   padding-left: 10px;
 
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -200,13 +200,3 @@ const Explaination = styled.img`
   width: 280px;
   height: 75px;
 `;
-
-const DifficultyArticleList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  margin: 0px 20px;
-`;
-
-const NoneSearching = styled.div``;
