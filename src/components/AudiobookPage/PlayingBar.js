@@ -34,7 +34,7 @@ const PlayingBar = ({
   //bookmark
   const handleBookmarkClick = () => {
     setIsBooked(!isBooked);
-    postBookMark({postId: audio.audio_post.post_id});
+    postBookMark({ postId: audio.audio_post.post_id });
   };
 
   // GET: 플레이리스트
@@ -180,7 +180,7 @@ const PlayingBar = ({
         <BookmarkIcon
           onClick={handleBookmarkClick}
           src={isBooked ? bookmarkicon_on : bookmarkicon_off}
-          alt='Bookmark Icon'
+          alt="Bookmark Icon"
         />
       </Box>
       {bottomsheet ? (
