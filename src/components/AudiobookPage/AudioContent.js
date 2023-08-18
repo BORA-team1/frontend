@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
 //context
@@ -55,9 +54,21 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
   };
 
   //스크롤 관련 함수
+  const contentWrapperRef = useRef(null); // 스크롤을 조정할 요소를 참조
+  useEffect(() => {
+    // 하이라이트된 섹션이 변경될 때마다 스크롤 조정
+    if (contentWrapperRef.current) {
+      const sectionElement = contentWrapperRef.current.querySelector(
+        `#section-${highlightedSectionIndex}`
+      );
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [highlightedSectionIndex]);
 
   return (
-    <Wrapper>
+    <Wrapper ref={contentWrapperRef}>
       {sections &&
         sections.length > 0 &&
         sections.map((sec, sectionIndex) => {
