@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 const SavedPlayList = ({playlist, BASE_URL}) => {
   const navigate = useNavigate();
-  console.log(playlist);
   return (
     <Box
       onClick={() => {
