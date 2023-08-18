@@ -478,13 +478,15 @@ const Icon = styled.div`
 
 const EditerFollow = styled.div`
   display: flex;
-  width: fit-content;
-  padding: 10px 35px;
+  align-items: center;
+  padding: 0px 35px;
+  height: 37px;
   margin: 20px 76px 40px 76px;
 
   border-radius: 20px;
   background: #5a45f5;
 
+  white-space: nowrap;
   font-family: 'Pretendard-Regular';
   font-style: normal;
   font-size: 14px;
