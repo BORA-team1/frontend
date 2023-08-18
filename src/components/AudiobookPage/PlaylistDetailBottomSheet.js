@@ -207,7 +207,7 @@ const InstructionContainer = styled.div`
   position: absolute;
   bottom: 50px;
   left: 50%; /* Instruction 수평 중앙 */
-  transform: translateX(-50%); /* Instruction 수평 중앙 */
+  transform: translateX(-50%);
   z-index: 10;
   width: 260px;
   height: 54px;
