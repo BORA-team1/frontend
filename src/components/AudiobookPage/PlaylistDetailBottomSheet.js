@@ -207,12 +207,12 @@ const FollowBtn = styled.img`
 const InstructionContainer = styled.div`
   position: absolute;
   bottom: 50px;
-  left: 50%; /* Instruction 수평 중앙 */
-  transform: translateX(-50%);
+  left: 30px;
+
   z-index: 10;
   width: 260px;
   height: 54px;
-  padding: 0px 31px;
+  padding: 0px 30px;
   display: flex;
   align-items: center;
 

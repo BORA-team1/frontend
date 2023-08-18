@@ -403,9 +403,7 @@ const ArticleContent = ({ isContentsOn, postPk, allRender }) => {
           ></HighlightingBottomSheet>
         )}
       </PostProvider>
-      {warningmodal ? (
-        <FollowModal closeWarningModal={closeWarningModal} />
-      ) : null}
+      {warningmodal && <FollowModal closeWarningModal={closeWarningModal} />}
     </Wrapper>
   );
 };

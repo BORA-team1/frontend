@@ -24,6 +24,7 @@ const MainPage = () => {
 
   //GET: 메인페이지 데이터
   const {authToken, BASE_URL, nickname} = useAuth();
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -155,7 +156,7 @@ const Container = styled.div`
 
   position: relative;
   max-width: 390px;
-  max-height: 844px;
+  height: 844px;
   margin: 0px auto;
 
   background-color: #161524;
