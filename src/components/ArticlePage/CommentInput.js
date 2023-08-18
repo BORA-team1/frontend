@@ -57,6 +57,7 @@ const CommentInput = ({
         <Inputbox
           value={comment}
           onChange={(e) => setComment(e.target.value)}
+          placeholder='밑줄 친 문장을 읽고 드는 생각을 댓글로 공유해 보세요.'
         ></Inputbox>
         <img
           onClick={() => {
@@ -111,10 +112,14 @@ const Inputbox = styled.input`
   background-color: #161524;
   padding-left: 10px;
 
-  color: rgba(255, 255, 255, 0.6);
+  color: white;
   font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
 `;

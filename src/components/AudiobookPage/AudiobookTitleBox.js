@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 //components
-import PlaylistDetailBottomSheet from "../../components/AudiobookPage/PlaylistDetailBottomSheet";
+import PlaylistDetailBottomSheet from '../../components/AudiobookPage/PlaylistDetailBottomSheet';
 
 //img
-import more from "../../images/more.svg";
-import audiobookdetail from "../../images/Audiobook/audiobookdetail.svg";
-import CLOVA_dubbing from "../../images/Audiobook/CLOVA_dubbing.svg";
+import more from '../../images/more.svg';
+import audiobookdetail from '../../images/Audiobook/audiobookdetail.svg';
+import CLOVA_dubbing from '../../images/Audiobook/CLOVA_dubbing.svg';
 
-const AudiobookTitleBox = ({ audio }) => {
+const AudiobookTitleBox = ({audio}) => {
   //보는 아티클로 이동 버튼
   const navigate = useNavigate();
   const post_id = audio?.audio_post?.post_id;
@@ -28,13 +27,13 @@ const AudiobookTitleBox = ({ audio }) => {
   //난이도 판단
   const getDifficultyText = (difficulty) => {
     if (difficulty === 1) {
-      return "Light";
+      return 'Light';
     } else if (difficulty === 2) {
-      return "Medium";
+      return 'Medium';
     } else if (difficulty === 3) {
-      return "Heavy";
+      return 'Heavy';
     } else {
-      return "";
+      return '';
     }
   };
   const user_id = audio?.author_id;
@@ -42,20 +41,20 @@ const AudiobookTitleBox = ({ audio }) => {
     <>
       <Box>
         <ChangeBtn onClick={() => navigate(`/article/${post_id}`)}>
-          보는 아티클로 읽기 <img src={more} alt="morereview" />
+          보는 아티클로 읽기 <img src={more} alt='morereview' />
         </ChangeBtn>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
           }}
         >
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
             }}
           >
             <Clova src={CLOVA_dubbing} />
@@ -101,7 +100,7 @@ const Box = styled.div`
 
 const Font = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-style: normal;
   line-height: normal;
   letter-spacing: -0.22px;
@@ -112,7 +111,7 @@ const ChangeBtn = styled(Font)`
   justify-content: center;
   font-size: 15px;
   font-weight: 600;
-  margin-top: 10px;
+  margin-top: 15px;
 
   opacity: 0.5;
 
@@ -128,7 +127,8 @@ const ChangeBtn = styled(Font)`
 const Clova = styled.img`
   width: 88px;
   height: 11.297px;
-  margin-bottom: 7px;
+  margin-top: 24.69px;
+  margin-bottom: 10px;
 `;
 
 const Title = styled(Font)`
@@ -155,6 +155,7 @@ const AudiobookDetail = styled.img`
 const TagBox = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 5px;
 `;
 
 const Difficulty = styled(Font)`

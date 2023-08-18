@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import styled, {keyframes} from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
 //components
-import PlaylistCreateModal from "../AudiobookPage/PlaylistCreateModal";
-import PlaylistCompleteModal from "../AudiobookPage/PlaylistCompleteModal";
-import Audiobook from "../AudiobookPage/Audiobook";
-import { useParams } from "react-router-dom";
+import PlaylistCreateModal from '../AudiobookPage/PlaylistCreateModal';
+import PlaylistCompleteModal from '../AudiobookPage/PlaylistCompleteModal';
+import Audiobook from '../AudiobookPage/Audiobook';
+import {useParams} from 'react-router-dom';
 
 const PlaylistBottomSheet = ({
   handleOpenBottomSheet,
@@ -40,7 +40,7 @@ const PlaylistBottomSheet = ({
   // 재생목록 삭제 리스트
   const [playlistItems, setPlaylistItems] = useState([]);
   const [remainingAudioIds, setRemainingAudioIds] = useState([]);
-  const { playlist_id } = useParams();
+  const {playlist_id} = useParams();
 
   useEffect(() => {
     setPlaylistItems(playlist?.playlist_audio);
@@ -66,7 +66,7 @@ const PlaylistBottomSheet = ({
   if (!handleOpenBottomSheet) return null;
   return (
     <>
-      <BottomSheetOverlay>
+      <BottomSheetOverlay onClick={handleCloseBottomSheet}>
         <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
           <BottomSheetHeader>
             <HeaderText>
@@ -132,13 +132,14 @@ const slideInAnimation = keyframes`
 const BottomSheetOverlay = styled.div`
   z-index: 1;
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 390px;
   height: 844px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  overflow: hidden;
 `;
 
 const BottomSheetContainer = styled.div`
@@ -163,7 +164,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   line-height: 100%; /* 15px */
@@ -215,7 +216,7 @@ const HR = styled.div`
 const SaveContainer = styled.div``;
 
 const SaveBtn = styled.div`
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -234,7 +235,7 @@ const SaveBtn = styled.div`
 
 const NoPlaylistText = styled.div`
   color: #fff;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 16px;
   text-align: center;
   margin-top: 50px;

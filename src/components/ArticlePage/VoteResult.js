@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Pie from './Pie';
 
 const VoteResult = ({donevote}) => {
-  const selectedVote = donevote;
   const initialPercentages = {
     result1: 0,
     result2: 0,

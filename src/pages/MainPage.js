@@ -109,10 +109,7 @@ const MainPage = () => {
         {posts.HotLine && (
           <OtherAgeGroupArticle>
             <AgeGroupTitle>
-              <span style={{height: '460px'}}>
-                {' '}
-                #{posts.HotLine.hot_age}0대
-              </span>
+              <span style={{height: '460px'}}>#{posts.HotLine.hot_age}0대</span>
               가 관심있는 아티클 엿보기
             </AgeGroupTitle>
             <PickedArticle>
