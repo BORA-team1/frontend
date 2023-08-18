@@ -3,10 +3,9 @@ import {SheetContext} from '../../contexts/SheetContext';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import Reply from '../BottomSheet/Reply';
+import HanReply from '../BottomSheet/HanReply';
 
 //images
-import profile from '../../images/profile.svg';
 import thumbsup from '../../images/thumbsup.svg';
 import thumbsupclick from '../../images/thumbsupclick.svg';
 import submiticon from '../../images/submiticon.svg';
@@ -175,7 +174,7 @@ const Review = ({
       </Container>
       {replies &&
         replies.map((reply) => (
-          <Reply
+          <HanReply
             key={reply.hancom_id}
             replyId={reply.hancom_id}
             mention={reply.mention}
@@ -188,7 +187,7 @@ const Review = ({
             handleReplyDelete={handleReplyDelete}
             nickname={nickname}
             BASE_URL={BASE_URL}
-          ></Reply>
+          ></HanReply>
         ))}
       {showReplyForm && (
         <>
