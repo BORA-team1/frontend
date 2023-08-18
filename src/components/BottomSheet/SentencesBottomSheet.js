@@ -262,8 +262,10 @@ const SentencesBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                         comment={question}
                         commentContent={question.content}
                         nickname={question.que_user.nickname}
+                        profile={question.que_user.profile}
                         addReply={addReply}
                         handleDelete={handleDelete}
+                        BASE_URL={BASE_URL}
                       ></QnABox>
                     </QContainer>
                     {question.Answer.map((answer) => (
@@ -272,7 +274,9 @@ const SentencesBottomSheet = ({handleCloseBottomSheet, postPk}) => {
                           comment={answer}
                           commentContent={answer.content}
                           nickname={answer.ans_user.nickname}
+                          profile={answer.ans_user.profile}
                           handleDelete={handleDelete}
+                          BASE_URL={BASE_URL}
                         ></QnABox>
                       </AContainer>
                     ))}

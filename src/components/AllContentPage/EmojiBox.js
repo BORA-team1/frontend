@@ -8,11 +8,8 @@ import surprised from '../../images/emoji/surprised.svg';
 import anger from '../../images/emoji/anger.svg';
 import sad from '../../images/emoji/sad.svg';
 import curious from '../../images/emoji/curious.svg';
-// import createemoji from '../../images/emoji/createemoji.svg';
 
 const EmojiBox = ({emoji}) => {
-  // const [isEmojiBarOpen, setIsEmojiBarOpen] = useState(false);
-
   //감정표현 이미지
   const emojiImages = {
     1: happy,
@@ -34,7 +31,6 @@ const EmojiBox = ({emoji}) => {
                   borderColor: item.is_my ? '#A397FF' : '#fff',
                   background: item.is_my ? '#1C154D' : 'none',
                 }}
-                // onClick={() => deleteEmoji(item.is_my, item.content)}
               >
                 <img src={emojiImages[item.content]} alt='Emoji' />
                 <span

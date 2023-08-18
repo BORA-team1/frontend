@@ -129,7 +129,7 @@ const TitleBox = styled.div`
 
 const Title = styled.div`
   width: 81px;
-  height: 22.3px;
+  height: 25.3px;
   align-self: stretch;
 
   overflow: hidden;

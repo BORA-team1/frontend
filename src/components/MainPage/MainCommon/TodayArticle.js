@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 //components
-import Difficulty from "../../Common/Difficulty";
+import Difficulty from '../../Common/Difficulty';
 //images
-import bookmark_on from "../../../images/bookmark_on.svg";
-import bookmark_off from "../../../images/bookmark-off.svg";
+import bookmark_on from '../../../images/bookmark_on.svg';
+import bookmark_off from '../../../images/bookmark-off.svg';
 
 //api
-import { postBookMark } from "../../../api/bookmark";
+import {postBookMark} from '../../../api/bookmark';
 
-const TodayArticle = ({ article, width, height, BASE_URL }) => {
+const TodayArticle = ({article, width, height, BASE_URL}) => {
   const navigate = useNavigate();
 
   let difficulty;
   if (article.diff === 1) {
-    difficulty = "light";
+    difficulty = 'light';
   } else if (article.diff === 2) {
-    difficulty = "medium";
+    difficulty = 'medium';
   } else if (article.diff === 3) {
-    difficulty = "heavy";
+    difficulty = 'heavy';
   }
 
   //북마크 여부에 따른 이미지 띄우기, 여부 변경하기
@@ -32,7 +32,7 @@ const TodayArticle = ({ article, width, height, BASE_URL }) => {
     const newBookmarkSrc =
       bookmarkSrc === bookmark_on ? bookmark_off : bookmark_on;
     setBookmarkSrc(newBookmarkSrc);
-    postBookMark({ postId: article.post_id });
+    postBookMark({postId: article.post_id});
   };
 
   return (
@@ -49,10 +49,10 @@ const TodayArticle = ({ article, width, height, BASE_URL }) => {
         <Title>{article.title}</Title>
         <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            width: "113px",
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            width: '113px',
           }}
         >
           <TagBox>
@@ -60,7 +60,7 @@ const TodayArticle = ({ article, width, height, BASE_URL }) => {
               <Tag key={tagIndex}>#{tag.hashtag}</Tag>
             ))}
           </TagBox>
-          <Difficulty size="small" difficulty={difficulty}>
+          <Difficulty size='verysmall' difficulty={difficulty}>
             {difficulty}
           </Difficulty>
         </div>
@@ -73,8 +73,8 @@ export default TodayArticle;
 
 const Box = styled.div`
   position: relative;
-  width: ${({ width }) => width || "133px"};
-  height: ${({ height }) => height || "171px"};
+  width: ${({width}) => width || '133px'};
+  height: ${({height}) => height || '171px'};
   overflow: hidden;
 
   border-radius: 10px;
@@ -127,7 +127,7 @@ const Title = styled.div`
   color: #fff;
   text-overflow: ellipsis;
   white-space: normal;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -143,11 +143,11 @@ const TagBox = styled.ul`
 const Tag = styled.li`
   display: inline-block;
   &:not(:last-child)::after {
-    content: " • ";
+    content: ' • ';
     margin: 0 1px;
   }
   color: rgba(255, 255, 255, 0.5);
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;

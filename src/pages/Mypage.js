@@ -126,7 +126,11 @@ const MyPage = () => {
           <BoxWrapper>
             {data.myPlaylist &&
               data.myPlaylist.map((playlist, index) => (
-                <SavedPlayList key={index} playlist={playlist} />
+                <SavedPlayList
+                  key={index}
+                  playlist={playlist}
+                  BASE_URL={BASE_URL}
+                />
               ))}
           </BoxWrapper>
         </PlayList>

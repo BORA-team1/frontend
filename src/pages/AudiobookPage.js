@@ -44,6 +44,15 @@ const AudiobookPage = () => {
       });
   };
 
+  //북마크 여부 변경
+  const [isBooked, setIsBooked] = useState(audio.is_booked);
+
+  useEffect(() => {
+    setIsBooked(audio.is_booked);
+  }, [audio.is_booked]);
+
+  console.log(isBooked);
+
   return (
     <>
       <Container>
@@ -66,6 +75,8 @@ const AudiobookPage = () => {
             audioRef={audioRef}
             audio={audio}
             playlistPk={playlist_id}
+            isBooked={isBooked}
+            setIsBooked={setIsBooked}
           />
         </Background>
       </Container>

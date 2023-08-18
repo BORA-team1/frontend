@@ -54,6 +54,7 @@ const Title = styled.div`
 const TagBox = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 2px;
 `;
 
 const Tag = styled.div`
