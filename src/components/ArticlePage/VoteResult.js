@@ -3,14 +3,30 @@ import styled from 'styled-components';
 import Pie from './Pie';
 
 const VoteResult = ({donevote}) => {
-  const initialPercentages = {
+  const initialtotal =
+    donevote.result.result1_1 +
+    donevote.result.result2_1 +
+    donevote.result.result3_1;
+
+  let newPercentages = {
     result1: 0,
     result2: 0,
     result3: 0,
   };
 
+  const [percentages, setPercentages] = useState(newPercentages);
+
+  if (initialtotal !== 0) {
+    newPercentages = {
+      result1: (donevote.result.result1_1 / initialtotal) * 100,
+      result2: (donevote.result.result2_1 / initialtotal) * 100,
+      result3: (donevote.result.result3_1 / initialtotal) * 100,
+    };
+
+    setPercentages(newPercentages);
+  }
+
   const [selectedAgeGroup, setSelectedAgeGroup] = useState('10대');
-  const [percentages, setPercentages] = useState(initialPercentages);
 
   const handleAgeGroupClick = (ageGroup, result1, result2, result3) => {
     setSelectedAgeGroup(ageGroup);

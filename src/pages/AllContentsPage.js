@@ -86,7 +86,7 @@ const AllContentsPage = () => {
         >
           닫기
         </ClosePage>
-        {title.title}
+        <span>{title.title}</span>
       </ArticleTitle>
       <SectionBar>
         {sections.map((section, index) => (
@@ -242,6 +242,7 @@ const ArticleTitle = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   width: 390px;
   padding-top: 81px;
 
@@ -251,6 +252,12 @@ const ArticleTitle = styled.div`
   font-weight: 600;
   line-height: 100%; /* 15px */
   letter-spacing: -0.3px;
+
+  span {
+    width: 280px;
+    text-align: center;
+    word-break: keep-all;
+  }
 `;
 
 const ClosePage = styled.div`
