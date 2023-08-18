@@ -54,33 +54,31 @@ const AudiobookPage = () => {
   console.log(isBooked);
 
   return (
-    <>
-      <Container>
-        <Background>
-          <AudiobookTitleBox audio={audio} />
-          <Scroll>
-            <>
-              <Box>
-                <AudioContent
-                  isAudioPlaying={isAudioPlaying}
-                  audioRef={audioRef}
-                  audio={audio}
-                />
-              </Box>
-            </>
-          </Scroll>
-          <PlayingBar
-            isAudioPlaying={isAudioPlaying}
-            setIsAudioPlaying={setIsAudioPlaying}
-            audioRef={audioRef}
-            audio={audio}
-            playlistPk={playlist_id}
-            isBooked={isBooked}
-            setIsBooked={setIsBooked}
-          />
-        </Background>
-      </Container>
-    </>
+    <Container>
+      <Background>
+        <AudiobookTitleBox audio={audio} />
+        <Scroll>
+          <>
+            <Box>
+              <AudioContent
+                isAudioPlaying={isAudioPlaying}
+                audioRef={audioRef}
+                audio={audio}
+              />
+            </Box>
+          </>
+        </Scroll>
+        <PlayingBar
+          isAudioPlaying={isAudioPlaying}
+          setIsAudioPlaying={setIsAudioPlaying}
+          audioRef={audioRef}
+          audio={audio}
+          playlistPk={playlist_id}
+          isBooked={isBooked}
+          setIsBooked={setIsBooked}
+        />
+      </Background>
+    </Container>
   );
 };
 
@@ -94,7 +92,7 @@ const Container = styled.div`
   position: relative;
 
   max-width: 390px;
-  max-height: 844px;
+  height: 844px;
   margin: 0px auto;
 
   background-color: #161524;
@@ -107,7 +105,7 @@ const Background = styled.div`
   position: relative;
 
   max-width: 390px;
-  max-height: 844px;
+  height: 844px;
   margin: 0px auto;
 
   background: linear-gradient(

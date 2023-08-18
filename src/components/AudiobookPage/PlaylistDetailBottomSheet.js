@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled, { keyframes, css } from "styled-components";
-import copy from "copy-to-clipboard";
-import axios from "axios";
+import React, {useState, useEffect} from 'react';
+import styled, {keyframes, css} from 'styled-components';
+import copy from 'copy-to-clipboard';
+import axios from 'axios';
 
 //context
-import { useAuth } from "../../contexts/AuthContext";
+import {useAuth} from '../../contexts/AuthContext';
 //img
-import share from "../../images/Audiobook/share.svg";
-import follow from "../../images/Audiobook/follow.svg";
-import check from "../../images/Audiobook/check.svg";
+import share from '../../images/Audiobook/share.svg';
+import follow from '../../images/Audiobook/follow.svg';
+import check from '../../images/Audiobook/check.svg';
 
-const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
+const PlaylistDetailBottomSheet = ({handleCloseBottomSheet, user_id}) => {
   const [showInstruction, setShowInstruction] = useState(false);
   const [followInstruction, setFollowInstruction] = useState(false);
   //주소 복사
@@ -19,7 +19,7 @@ const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
     copy(currentURL);
     setShowInstruction(true);
   };
-  const { authToken, BASE_URL } = useAuth();
+  const {authToken, BASE_URL} = useAuth();
 
   //POST: 에디터 팔로우
   const followUser = (user_pk, authToken) => {
@@ -30,11 +30,11 @@ const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
         },
       })
       .then((response) => {
-        console.log("유저를 팔로우했습니다.", response);
+        console.log('유저를 팔로우했습니다.', response);
         showFollowInstruction();
       })
       .catch((error) => {
-        console.error("유저 팔로우 중 오류가 발생했습니다.", error);
+        console.error('유저 팔로우 중 오류가 발생했습니다.', error);
       });
   };
 
@@ -65,7 +65,7 @@ const PlaylistDetailBottomSheet = ({ handleCloseBottomSheet, user_id }) => {
 
   return (
     <>
-      <BottomSheetOverlay>
+      <BottomSheetOverlay onClick={handleCloseBottomSheet}>
         <BottomSheetContainer onClick={(e) => e.stopPropagation()}>
           <BottomSheetHeader>
             <HeaderText>
@@ -119,13 +119,14 @@ const slideInAnimation = keyframes`
 const BottomSheetOverlay = styled.div`
   z-index: 1;
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 390px;
   height: 844px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  overflow: hidden;
 `;
 
 const BottomSheetContainer = styled.div`
@@ -150,7 +151,7 @@ const BottomSheetHeader = styled.div`
   display: flex;
   flex-direction: column;
 
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   line-height: 100%; /* 15px */
@@ -237,7 +238,7 @@ const InstructionContainer = styled.div`
 const InstructionText = styled.div`
   color: #fff;
   text-align: center;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 13px;
   font-style: normal;
   font-weight: 600;

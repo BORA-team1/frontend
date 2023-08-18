@@ -319,9 +319,9 @@ const slideInAnimation = keyframes`
 const BottomSheetOverlay = styled.div`
   z-index: 1;
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 390px;
-  height: 844px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;

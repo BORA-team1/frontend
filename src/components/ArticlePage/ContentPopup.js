@@ -43,10 +43,7 @@ const ContentPopup = ({line, lineContent, onHover, offHover}) => {
           {isVoteOpen &&
             line.DoneVote.map((donevote) => (
               <ContentContainer>
-                <VoteResult
-                  // user={donevote.vote_user}
-                  donevote={donevote}
-                ></VoteResult>
+                <VoteResult donevote={donevote}></VoteResult>
               </ContentContainer>
             ))}
           <Popup onClick={handleVotePopup} isopen={isVoteOpen}>

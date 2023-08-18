@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import axios from "axios";
-
-//context
-import { useAuth } from "../../contexts/AuthContext";
+import React, {useState, useEffect, useRef} from 'react';
+import styled from 'styled-components';
 
 //data
-import { timeIntervalsData } from "../../data/timeIntervalsData";
+import {timeIntervalsData} from '../../data/timeIntervalsData';
 
-const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
+const AudioContent = ({isAudioPlaying, audioRef, audio}) => {
   const [highlightedSectionIndex, setHighlightedSectionIndex] = useState(0);
 
-  const { PostSec: sections } = audio;
+  const {PostSec: sections} = audio;
 
   const timeIntervals = timeIntervalsData[audio.audio_id - 1];
 
@@ -31,12 +27,12 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
     };
 
     if (audioRef.current) {
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
       }
     };
   }, [isAudioPlaying, audioRef, timeIntervals]);
@@ -62,7 +58,7 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
         `#section-${highlightedSectionIndex}`
       );
       if (sectionElement) {
-        sectionElement.scrollIntoView({ behavior: "smooth" });
+        sectionElement.scrollIntoView({behavior: 'smooth'});
       }
     }
   }, [highlightedSectionIndex]);
@@ -73,20 +69,20 @@ const AudioContent = ({ isAudioPlaying, audioRef, audio }) => {
         sections.length > 0 &&
         sections.map((sec, sectionIndex) => {
           const sentences = sec.content
-            .split("·")
-            .filter((paragraph) => paragraph.trim() !== "");
+            .split('·')
+            .filter((paragraph) => paragraph.trim() !== '');
           return (
             <Gap key={sec.sec_id}>
               <Section
                 id={`section-${sectionIndex}`}
-                className="ebook-container"
+                className='ebook-container'
               >
                 {sec.title && (
                   <SectionTitle
                     className={
                       sectionIndex === highlightedSectionIndex
-                        ? "highlighted"
-                        : ""
+                        ? 'highlighted'
+                        : ''
                     }
                   >
                     {sec.title}
@@ -117,12 +113,13 @@ export default AudioContent;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 37.4px;
-  width: 370px;
-  gap: 50px;
+  margin-top: 20px;
+  width: 390px;
+  box-sizing: border-box;
+  padding: 0px 30px;
 
   color: white;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
   font-size: 15px;
   font-style: normal;
   font-weight: 300;
@@ -132,13 +129,11 @@ const Wrapper = styled.div`
 const Gap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
 `;
 
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
 `;
 
 const SectionContent = styled.div`
@@ -153,7 +148,7 @@ const TextContainer = styled.div`
 const HighlightedSpan = styled.div`
   cursor: pointer;
   margin-bottom: 20px;
-  color: ${(props) => (props.isHighlighted ? "#A397FF" : "white")};
+  color: ${(props) => (props.isHighlighted ? '#A397FF' : 'white')};
 `;
 
 const SectionTitle = styled.div`
