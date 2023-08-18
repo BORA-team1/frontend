@@ -95,14 +95,17 @@ const Box = styled.div`
 
 const StarOne = styled.img`
   padding-left: 60px;
+  cursor: pointer;
 `;
 
 const StarTwo = styled.img`
   padding-left: 90px;
+  cursor: pointer;
 `;
 
 const StarThree = styled.img`
   padding-left: 95px;
+  cursor: pointer;
 `;
 
 const StarPinList = styled.div``;
