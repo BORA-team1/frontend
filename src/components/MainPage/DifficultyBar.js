@@ -104,7 +104,7 @@ const StarTwo = styled.img`
 `;
 
 const StarThree = styled.img`
-  margin-left: 90px;
+  margin-left: 75px;
   cursor: pointer;
 `;
 
@@ -135,5 +135,5 @@ const TextMedium = styled.img`
 `;
 
 const TextHeavy = styled.img`
-  padding-left: 90px;
+  padding-left: 70px;
 `;
